@@ -21,8 +21,26 @@ Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
 Asema::Asema()
 {
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			_lauta[i][j] = nullptr;
+		}
+	}
 	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
 
+	// mustat sotilaat
+	for (int i = 0; i < 8; i++)
+	{
+		_lauta[i][6] = ms;
+	}
+
+	// valkoiset sotilaat
+	for (int i = 0; i < 8; i++)
+	{
+		_lauta[i][1] = vs;
+	}
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
 	
 }
