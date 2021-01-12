@@ -1,2 +1,3 @@
-﻿  asema.cpp
-  shakki.vcxproj -> C:\Users\tomva\Documents\GitHub\Shakki-projekti\Debug\shakki.exe
+﻿  kayttoliittyma.cpp
+E:\Shakki-projekti\shakki\kayttoliittyma.cpp(43,20): warning C4552: '!=': result of expression not used
+  shakki.vcxproj -> E:\Shakki-projekti\Debug\shakki.exe
