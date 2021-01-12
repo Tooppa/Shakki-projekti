@@ -23,16 +23,19 @@ Kayttoliittyma* Kayttoliittyma::getInstance()
 void Kayttoliittyma::piirraLauta()
 {
 	_setmode(_fileno(stdout), _O_U16TEXT);
-	
+
 	bool lastSquareBlack = true;
 
-	
+
 	for (int i = 0; i < 8; i++)
 	{
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+			BACKGROUND_GREEN | BACKGROUND_BLUE);
+		wcout << " " << i + 1 << " ";
 		for (int j = 0; j < 8; j++)
 		{
-			if(lastSquareBlack){
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED  |
+			if (lastSquareBlack) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
 					BACKGROUND_GREEN | BACKGROUND_BLUE);
 			}
 			else SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_GREEN);
@@ -40,12 +43,18 @@ void Kayttoliittyma::piirraLauta()
 			if (_asema->_lauta[i][j] == nullptr) {
 				wcout << "   ";
 			}
-			else wcout <<" " << _asema->_lauta[i][j]->getUnicode()<<" ";
+			else wcout << " " << _asema->_lauta[i][j]->getUnicode() << " ";
 
 			lastSquareBlack = !lastSquareBlack;
 		}
 		wcout << "\n";
 		lastSquareBlack = !lastSquareBlack;
+	}
+	char kirjaimet[8] = { 'a','b','c','d','e','f','g','h' };
+	wcout << "   ";
+	for (int i = 0; i < 8; i++)
+	{
+		wcout << " " << kirjaimet[i] << " ";
 	}
 }
 
