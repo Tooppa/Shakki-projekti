@@ -22,6 +22,16 @@ Kayttoliittyma* Kayttoliittyma::getInstance()
 
 void Kayttoliittyma::piirraLauta()
 {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+		BACKGROUND_GREEN | BACKGROUND_BLUE);
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			wcout << _asema->_lauta[i][j];
+		}
+		cout << "\n";
+	}
 }
 
 

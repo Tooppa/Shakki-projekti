@@ -33,13 +33,13 @@ Asema::Asema()
 	// mustat sotilaat
 	for (int i = 0; i < 8; i++)
 	{
-		_lauta[i][6] = ms;
+		_lauta[6][i] = ms;
 	}
 
 	// valkoiset sotilaat
 	for (int i = 0; i < 8; i++)
 	{
-		_lauta[i][1] = vs;
+		_lauta[1][i] = vs;
 	}
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
 	
