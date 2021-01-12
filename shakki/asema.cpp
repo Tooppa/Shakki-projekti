@@ -35,12 +35,31 @@ Asema::Asema()
 	{
 		_lauta[6][i] = ms;
 	}
+	_lauta[7][7] = mt;
+	_lauta[7][6] = mr;
+	_lauta[7][5] = ml;
+	_lauta[7][4] = mk;
+	_lauta[7][3] = md;
+	_lauta[7][2] = ml;
+	_lauta[7][1] = mr;
+	_lauta[7][0] = mt;
+	//muut mustat nappulat
 
 	// valkoiset sotilaat
 	for (int i = 0; i < 8; i++)
 	{
 		_lauta[1][i] = vs;
 	}
+	//muut valkoiset nappulat
+	_lauta[0][7] = vt;
+	_lauta[0][6] = vr;
+	_lauta[0][5] = vl;
+	_lauta[0][4] = vk;
+	_lauta[0][3] = vd;
+	_lauta[0][2] = vl;
+	_lauta[0][1] = vr;
+	_lauta[0][0] = vt;
+
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
 	
 }
