@@ -15,6 +15,7 @@ public:
 	void piirraLauta();
 	Siirto annaVastustajanSiirto();
 	int kysyVastustajanVari();
+	int koordinaattiKirjainNumeroksi(char kirjain);
 
 	static Kayttoliittyma* getInstance();
 
@@ -22,6 +23,7 @@ private:
 
 	Asema* _asema;
 	static Kayttoliittyma* instance; // osoitin luokan ainoaan olioon (Singleton).
+	char _kirjaimet[8] = { 'a','b','c','d','e','f','g','h' };
 
 	Kayttoliittyma() {}
 	Kayttoliittyma(Asema* asema) { this->_asema = asema; }

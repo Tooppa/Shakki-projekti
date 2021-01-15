@@ -73,20 +73,23 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 
 	//Tarkastetaan on siirto lyhyt linna
+	if (siirto->onkoLyhytLinna()) 
+	{
 
-
+	}
 	// onko pitk‰ linna
+	else if (siirto->onkoPitk‰linna())
+	{
 
-
-
+	}
 	// Kaikki muut siirrot
-
-
+	else
+	{
 		//Ottaa siirron alkuruudussa olleen nappulan talteen 
-
+		Nappula *nappula = _lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
 
 		//Laittaa talteen otetun nappulan uuteen ruutuun
-
+		_lauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = nappula;
 
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
@@ -104,7 +107,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v‰reille ja molemmille torneille)
 
 	//p‰ivitet‰‰n _siirtovuoro
-
+	}
 }
 
 

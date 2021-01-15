@@ -5,12 +5,22 @@ Siirto::Siirto(Ruutu alkuRuutu, Ruutu loppuRuutu)
 {
 	_alkuRuutu = alkuRuutu;
 	_loppuRuutu = loppuRuutu;
+	_lyhytLinna = false;
+	_pitkaLinna = false;
 }
 
 
-Siirto::Siirto(bool _lyhytLinna, bool _pitkaLinna) 
+Siirto::Siirto(bool lyhytLinna, bool pitkaLinna) 
 {
-	
+	_lyhytLinna = lyhytLinna;
+	_pitkaLinna = pitkaLinna;
+
+	// wörk in prögress
+	if (_pitkaLinna) 
+	{
+		Siirto();
+		Siirto();
+	}
 }
 
 
@@ -28,11 +38,11 @@ Ruutu Siirto::getLoppuruutu()
 
 bool Siirto::onkoLyhytLinna() 
 {
-	return 0;
+	return _lyhytLinna;
 }
 
 
 bool Siirto::onkoPitkälinna() 
 {
-	return 0;
+	return _pitkaLinna;
 }

@@ -1,5 +1,12 @@
-﻿  kayttoliittyma.cpp
+﻿  asema.cpp
+  kayttoliittyma.cpp
+C:\Users\tomva\Documents\GitHub\Shakki-projekti\shakki\kayttoliittyma.cpp(75,6): warning C4302: '<function-style-cast>': truncation from 'const wchar_t *' to 'wchar_t'
+C:\Users\tomva\Documents\GitHub\Shakki-projekti\shakki\kayttoliittyma.cpp(80,68): warning C4244: 'argument': conversion from 'wchar_t' to 'char', possible loss of data
+C:\Users\tomva\Documents\GitHub\Shakki-projekti\shakki\kayttoliittyma.cpp(83,68): warning C4244: 'argument': conversion from 'wchar_t' to 'char', possible loss of data
+C:\Users\tomva\Documents\GitHub\Shakki-projekti\shakki\kayttoliittyma.cpp(90,68): warning C4244: 'argument': conversion from 'wchar_t' to 'char', possible loss of data
+C:\Users\tomva\Documents\GitHub\Shakki-projekti\shakki\kayttoliittyma.cpp(93,68): warning C4244: 'argument': conversion from 'wchar_t' to 'char', possible loss of data
   main.cpp
   siirto.cpp
   Generating Code...
-  shakki.vcxproj -> E:\Shakki-projekti\Debug\shakki.exe
+C:\Users\tomva\Documents\GitHub\Shakki-projekti\shakki\kayttoliittyma.cpp(115): warning C4715: 'Kayttoliittyma::koordinaattiKirjainNumeroksi': not all control paths return a value
+  shakki.vcxproj -> C:\Users\tomva\Documents\GitHub\Shakki-projekti\Debug\shakki.exe

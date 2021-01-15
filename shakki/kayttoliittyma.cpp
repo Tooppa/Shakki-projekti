@@ -50,11 +50,11 @@ void Kayttoliittyma::piirraLauta()
 		wcout << "\n";
 		lastSquareBlack = !lastSquareBlack;
 	}
-	char kirjaimet[8] = { 'a','b','c','d','e','f','g','h' };
+	
 	wcout << "   ";
 	for (int i = 0; i < 8; i++)
 	{
-		wcout << " " << kirjaimet[i] << " ";
+		wcout << " " << _kirjaimet[i] << " ";
 	}
 }
 
@@ -69,16 +69,49 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 	Siirto siirto;
 	wstring vastaus;
 	wcin >> vastaus;
-	if (vastaus.length() == 4) {
-		//sotilas input
 
-	}
 	if (vastaus.length() == 5) {
-		//joku nappula siirto;
+		// pitkä linna
+		if (vastaus[0] == wchar_t(L"O")) 
+		{
+			siirto = Siirto(false, true);
+		}
+		//sotilas input
+		int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
+		Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1]);
 
+		int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
+		Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4]);
+
+		siirto = Siirto(aloitusRuutu, lopetusRuutu);
+	}
+	else if (vastaus.length() == 6) {
+		//joku nappula siirto;
+		int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[1]);
+		Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[2]);
+
+		int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[4]);
+		Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[5]);
+
+		siirto = Siirto(aloitusRuutu, lopetusRuutu);
+	}
+	else if (vastaus.length() == 3)
+	{
+		siirto = Siirto(true, false);
 	}
 	return siirto;
 	
+}
+
+int Kayttoliittyma::koordinaattiKirjainNumeroksi(char kirjain) 
+{
+	for (int i = 0; i < 8; i++)
+	{
+		if (_kirjaimet[i] == kirjain) 
+		{
+			return i;
+		}
+	}
 }
 
 
