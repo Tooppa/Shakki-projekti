@@ -1,8 +1,10 @@
 #include "siirto.h"
 
 
-Siirto::Siirto(Ruutu _alkuRuutu, Ruutu _loppuRuutu)
+Siirto::Siirto(Ruutu alkuRuutu, Ruutu loppuRuutu)
 {
+	_alkuRuutu = alkuRuutu;
+	_loppuRuutu = loppuRuutu;
 }
 
 

@@ -58,6 +58,16 @@ void Kayttoliittyma::piirraLauta()
 Siirto Kayttoliittyma::annaVastustajanSiirto()
 {
 	Siirto siirto;
+	wstring vastaus;
+	wcin >> vastaus;
+	if (vastaus.length() == 4) {
+		//sotilas input
+
+	}
+	if (vastaus.length() == 5) {
+		//joku nappula siirto;
+
+	}
 	return siirto;
 	
 }
