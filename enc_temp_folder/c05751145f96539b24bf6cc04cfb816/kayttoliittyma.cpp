@@ -72,7 +72,6 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 
 	if (vastaus.length() == 5) {
 		// pitkä linna
-		//0 unikodessa numero 48
 		if (vastaus[0] == 48)
 		{
 			siirto = Siirto(false, true);
@@ -81,7 +80,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 		{
 		//sotilas input
 			int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
-			Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1]-49); //0 unikodessa numero 48, eli 49 miinustetaan vastauksesta ja saadaan int muotoinen numero. "Purkkaa" t. menneisyyden minä.
+			Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1]-49);
 
 			int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
 			Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
