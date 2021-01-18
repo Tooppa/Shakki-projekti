@@ -72,18 +72,23 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 
 	if (vastaus.length() == 5) {
 		// pitkä linna
-		if (vastaus[0] == wchar_t(L"0")) 
+		if (vastaus[0] == wchar_t(L"0"))
 		{
+			wcout << "yee";
 			siirto = Siirto(false, true);
 		}
+		else 
+		{
 		//sotilas input
-		int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
-		Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1]-49);
+			int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
+			Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1]-49);
 
-		int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
-		Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
+			int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
+			Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
 
-		siirto = Siirto(aloitusRuutu, lopetusRuutu);
+			siirto = Siirto(aloitusRuutu, lopetusRuutu);
+		}
+		
 	}
 	else if (vastaus.length() == 6) {
 		//joku nappula siirto;

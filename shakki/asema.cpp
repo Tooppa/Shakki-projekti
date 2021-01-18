@@ -21,6 +21,7 @@ Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
 Asema::Asema()
 {
+	_siirtovuoro = 1;
 	_onkoValkeaKuningasLiikkunut = false;;
 	_onkoMustaKuningasLiikkunut = false;	
 	_onkoValkeaDTliikkunut = false;
@@ -81,29 +82,29 @@ void Asema::paivitaAsema(Siirto *siirto)
 	//Tarkastetaan on siirto lyhyt linna
 	if (siirto->onkoLyhytLinna()) 
 	{
-		if (getSiirtovuoro() == 0 && getOnkoValkeaKTliikkunut() && getOnkoValkeaKuningasLiikkunut()) {
+		if (getSiirtovuoro() == 0 && !getOnkoValkeaKTliikkunut() && !getOnkoValkeaKuningasLiikkunut()) {
 			_lauta[0][4] = nullptr;
 			_lauta[0][7] = nullptr;
 			_lauta[0][5] = vt;
 			_lauta[0][5] = vk;
 		}
-		if (getSiirtovuoro() == 1 && getOnkoMustaKTliikkunut() && getOnkoMustaKuningasLiikkunut()) {
+		if (getSiirtovuoro() == 1 && !getOnkoMustaKTliikkunut() && !getOnkoMustaKuningasLiikkunut()) {
 			_lauta[7][4] = nullptr;
 			_lauta[7][7] = nullptr;
 			_lauta[7][5] = vt;
 			_lauta[7][5] = vk;
-		}
+		} 
 	}
 	// onko pitkä linna
-	else if (siirto->onkoPitkälinna())
+	else if (siirto->onkoPitkalinna())
 	{
-		if (getSiirtovuoro() == 0 && getOnkoValkeaDTliikkunut() && getOnkoValkeaKuningasLiikkunut()) {
+		if (getSiirtovuoro() == 0 && !getOnkoValkeaDTliikkunut() && !getOnkoValkeaKuningasLiikkunut()) {
 			_lauta[0][4] = nullptr;
 			_lauta[0][0] = nullptr;
 			_lauta[0][3] = vt;
 			_lauta[0][2] = vk;
 		}
-		if (getSiirtovuoro() == 1 && getOnkoMustaDTliikkunut() && getOnkoMustaKuningasLiikkunut()) {
+		if (getSiirtovuoro() == 1 && !getOnkoMustaDTliikkunut() && !getOnkoMustaKuningasLiikkunut()) {
 			_lauta[7][4] = nullptr;
 			_lauta[7][0] = nullptr;
 			_lauta[7][3] = vt;

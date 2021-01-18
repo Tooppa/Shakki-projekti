@@ -14,13 +14,6 @@ Siirto::Siirto(bool lyhytLinna, bool pitkaLinna)
 {
 	_lyhytLinna = lyhytLinna;
 	_pitkaLinna = pitkaLinna;
-
-	// wörk in prögress
-	if (_pitkaLinna) 
-	{
-		Siirto();
-		Siirto();
-	}
 }
 
 
@@ -42,7 +35,7 @@ bool Siirto::onkoLyhytLinna()
 }
 
 
-bool Siirto::onkoPitkälinna() 
+bool Siirto::onkoPitkalinna() 
 {
 	return _pitkaLinna;
 }

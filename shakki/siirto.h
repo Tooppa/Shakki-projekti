@@ -17,7 +17,7 @@ public:
 	Ruutu getAlkuruutu();
 	Ruutu getLoppuruutu();
 	bool onkoLyhytLinna();
-	bool onkoPitkälinna();
+	bool onkoPitkalinna();
 	Nappula* _miksikorotetaan = 0; 
 
 private:
