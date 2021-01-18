@@ -115,7 +115,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 	{
 		//Ottaa siirron alkuruudussa olleen nappulan talteen 
 		Nappula *nappula = _lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
-
+		_lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = nullptr;
 		//Laittaa talteen otetun nappulan uuteen ruutuun
 		_lauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = nappula;
 		

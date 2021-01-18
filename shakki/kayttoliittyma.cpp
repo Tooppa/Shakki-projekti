@@ -78,20 +78,20 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 		}
 		//sotilas input
 		int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
-		Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1]);
+		Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1]-49);
 
 		int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
-		Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4]);
+		Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
 
 		siirto = Siirto(aloitusRuutu, lopetusRuutu);
 	}
 	else if (vastaus.length() == 6) {
 		//joku nappula siirto;
 		int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[1]);
-		Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[2]);
+		Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[2] - 49);
 
 		int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[4]);
-		Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[5]);
+		Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[5] - 49);
 
 		siirto = Siirto(aloitusRuutu, lopetusRuutu);
 	}
