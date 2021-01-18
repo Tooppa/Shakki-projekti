@@ -72,7 +72,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 
 	if (vastaus.length() == 5) {
 		// pitkä linna
-		if (vastaus[0] == wchar_t(L"O")) 
+		if (vastaus[0] == wchar_t(L"0")) 
 		{
 			siirto = Siirto(false, true);
 		}
