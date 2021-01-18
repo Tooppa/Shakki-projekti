@@ -91,8 +91,8 @@ void Asema::paivitaAsema(Siirto *siirto)
 		if (getSiirtovuoro() == 1 && !getOnkoMustaKTliikkunut() && !getOnkoMustaKuningasLiikkunut()) {
 			_lauta[7][4] = nullptr;
 			_lauta[7][7] = nullptr;
-			_lauta[7][5] = vt;
-			_lauta[7][5] = vk;
+			_lauta[7][5] = mt;
+			_lauta[7][5] = mk;
 		} 
 	}
 	// onko pitkä linna
@@ -107,8 +107,8 @@ void Asema::paivitaAsema(Siirto *siirto)
 		if (getSiirtovuoro() == 1 && !getOnkoMustaDTliikkunut() && !getOnkoMustaKuningasLiikkunut()) {
 			_lauta[7][4] = nullptr;
 			_lauta[7][0] = nullptr;
-			_lauta[7][3] = vt;
-			_lauta[7][2] = vk;
+			_lauta[7][3] = mt;
+			_lauta[7][2] = mk;
 		}
 	}
 	// Kaikki muut siirrot
