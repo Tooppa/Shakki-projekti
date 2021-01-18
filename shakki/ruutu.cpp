@@ -1,7 +1,7 @@
 #include "ruutu.h"
 
 
-Ruutu::Ruutu(int sarake, int rivi)
+Ruutu::Ruutu(int rivi, int sarake)
 {
 	_rivi = rivi;
 	_sarake = sarake;

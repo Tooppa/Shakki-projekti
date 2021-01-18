@@ -30,11 +30,11 @@ int main()
 		wcout << "\n";
 		// Tarkasta onko peli loppu?
 		asema.annaLaillisetSiirrot(lista);
-		if (lista.size() == 0) {
+		/*if (lista.size() == 0) {
 			lopetus = 0;
 			std::wcout << "Peli loppui";
 			continue;
-		}
+		}*/
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
 			MinMaxPaluu paluu;
