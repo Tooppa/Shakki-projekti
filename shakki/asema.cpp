@@ -35,6 +35,7 @@ Asema::Asema()
 	{
 		_lauta[6][i] = ms;
 	}
+	//muut mustat nappulat
 	_lauta[7][7] = mt;
 	_lauta[7][6] = mr;
 	_lauta[7][5] = ml;
@@ -43,7 +44,6 @@ Asema::Asema()
 	_lauta[7][2] = ml;
 	_lauta[7][1] = mr;
 	_lauta[7][0] = mt;
-	//muut mustat nappulat
 
 	// valkoiset sotilaat
 	for (int i = 0; i < 8; i++)
@@ -67,7 +67,6 @@ Asema::Asema()
 
 void Asema::paivitaAsema(Siirto *siirto)
 {
-
 	// Kaksoisaskel-lippu on oletusarvoisesti pois päältä.
 	// Asetetaan myöhemmin, jos tarvii.
 
