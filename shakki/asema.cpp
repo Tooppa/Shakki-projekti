@@ -136,6 +136,8 @@ void Asema::paivitaAsema(Siirto *siirto)
 		if (nappula->getKoodi() == 10 && !_onkoMustaKuningasLiikkunut)_onkoMustaKuningasLiikkunut = true;
 		if (nappula->getKoodi() == 4 && !_onkoValkeaKuningasLiikkunut)_onkoValkeaKuningasLiikkunut = true;
 		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille väreille ja molemmille torneille)
+
+		// NÄMÄ KUTSUT OIS HYVÄ ALUSTAA
 		if(nappula->getKoodi() == 0 && siirto->getAlkuruutu().getRivi() == 0 && siirto->getAlkuruutu().getSarake() == 7) _onkoValkeaKTliikkunut = true;
 		if (nappula->getKoodi() == 0 && siirto->getAlkuruutu().getRivi() == 0 && siirto->getAlkuruutu().getSarake() == 0) _onkoValkeaDTliikkunut = true;
 		if (nappula->getKoodi() == 6 && siirto->getAlkuruutu().getRivi() == 7 && siirto->getAlkuruutu().getSarake() == 7) _onkoMustaKTliikkunut = true;
