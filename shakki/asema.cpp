@@ -78,6 +78,13 @@ void Asema::paivitaAsema(Siirto *siirto)
 	// Kaksoisaskel-lippu on oletusarvoisesti pois p‰‰lt‰.
 	// Asetetaan myˆhemmin, jos tarvii.
 
+	// Alustus
+	int alkuRivi = siirto->getAlkuruutu().getRivi();
+	int alkuSarake = siirto->getAlkuruutu().getSarake();
+
+	int loppuRivi = siirto->getLoppuruutu().getRivi();
+	int loppuSarake = siirto->getLoppuruutu().getSarake();
+
 
 	//Tarkastetaan on siirto lyhyt linna
 	if (siirto->onkoLyhytLinna()) 
@@ -115,10 +122,14 @@ void Asema::paivitaAsema(Siirto *siirto)
 	else
 	{
 		//Ottaa siirron alkuruudussa olleen nappulan talteen 
-		Nappula *nappula = _lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()];
-		_lauta[siirto->getAlkuruutu().getRivi()][siirto->getAlkuruutu().getSarake()] = nullptr;
-		//Laittaa talteen otetun nappulan uuteen ruutuun
-		_lauta[siirto->getLoppuruutu().getRivi()][siirto->getLoppuruutu().getSarake()] = nappula;
+		Nappula *nappula = _lauta[alkuRivi][alkuSarake];
+
+		//Alustus
+		int nappulanKoodi = nappula->getKoodi();
+
+		_lauta[alkuRivi][alkuSarake] = nullptr;
+		//Laittaa talteen otettu nappula uuteen ruutuun
+		_lauta[loppuRivi][loppuSarake] = nappula;
 		
 
 		// Tarkistetaan oliko sotilaan kaksoisaskel
@@ -133,13 +144,21 @@ void Asema::paivitaAsema(Siirto *siirto)
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l‰htenyt nappula
 
 		// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v‰reille)
-		if (nappula->getKoodi() == 10 && !_onkoMustaKuningasLiikkunut)_onkoMustaKuningasLiikkunut = true;
-		if (nappula->getKoodi() == 4 && !_onkoValkeaKuningasLiikkunut)_onkoValkeaKuningasLiikkunut = true;
 		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v‰reille ja molemmille torneille)
-		if(nappula->getKoodi() == 0 && siirto->getAlkuruutu().getRivi() == 0 && siirto->getAlkuruutu().getSarake() == 7) _onkoValkeaKTliikkunut = true;
-		if (nappula->getKoodi() == 0 && siirto->getAlkuruutu().getRivi() == 0 && siirto->getAlkuruutu().getSarake() == 0) _onkoValkeaDTliikkunut = true;
-		if (nappula->getKoodi() == 6 && siirto->getAlkuruutu().getRivi() == 7 && siirto->getAlkuruutu().getSarake() == 7) _onkoMustaKTliikkunut = true;
-		if (nappula->getKoodi() == 6 && siirto->getAlkuruutu().getRivi() == 7 && siirto->getAlkuruutu().getSarake() == 0) _onkoMustaDTliikkunut = true;
+
+		switch (nappulanKoodi) 
+		{
+		case VT:
+			if (alkuRivi == 0 && alkuSarake == 7) _onkoValkeaKTliikkunut = true;
+			else if (nappulanKoodi == 0 && alkuRivi == 0 && alkuSarake == 0) _onkoValkeaDTliikkunut = true;
+		case VK:
+			if (!_onkoValkeaKuningasLiikkunut)_onkoValkeaKuningasLiikkunut = true;
+		case MT:
+			if (alkuRivi == 7 && alkuSarake == 7) _onkoMustaKTliikkunut = true;
+			else if (alkuRivi == 7 && alkuSarake == 0) _onkoMustaDTliikkunut = true;
+		case MK:
+			if (!_onkoMustaKuningasLiikkunut)_onkoMustaKuningasLiikkunut = true;
+		}
 	//p‰ivitet‰‰n _siirtovuoro
 		
 	}
