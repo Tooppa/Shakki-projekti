@@ -153,38 +153,38 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 	if (vari == (int)0) {
 		if (aloitusRivi == 1) {
 			if (asema->_lauta[aloitusSarake][2] == nullptr) {
-				lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, 2)));
+				lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, 2)));
 				if (asema->_lauta[aloitusSarake][3] == nullptr)
-					lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, 3)));
+					lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, 3)));
 			}
 		}else if (asema->_lauta[aloitusSarake][aloitusRivi + 1] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake,aloitusRivi + 1)));
+			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake,aloitusRivi + 1)));
 
 		nappula = asema->_lauta[aloitusSarake + 1][aloitusRivi + 1];
 		if(nappula != nullptr && nappula->getVari() != vari)
-			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake + 1, aloitusRivi + 1 )));
+			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake + 1, aloitusRivi + 1 )));
 
 		nappula = asema->_lauta[aloitusSarake - 1][aloitusRivi + 1];
 		if (nappula != nullptr && nappula->getVari() != vari)
-			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake - 1, aloitusRivi + 1)));
+			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake - 1, aloitusRivi + 1)));
 	}
 	if (vari == (int)1) {
 		if (aloitusRivi == 6) {
 			if (asema->_lauta[aloitusSarake][5] == nullptr) {
-				lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, 5)));
+				lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, 5)));
 				if (asema->_lauta[aloitusSarake][4] == nullptr)
-					lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, 4)));
+					lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, 4)));
 			}
 		}else if (asema->_lauta[aloitusSarake][aloitusRivi - 1] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, aloitusRivi - 1)));
+			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, aloitusRivi - 1)));
 
 		nappula = asema->_lauta[aloitusSarake - 1][aloitusRivi - 1];
 		if (nappula != nullptr && nappula->getVari() != vari)
-			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake - 1, aloitusRivi - 1 )));
+			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake - 1, aloitusRivi - 1 )));
 
 		nappula = asema->_lauta[aloitusSarake + 1][aloitusRivi - 1];
 		if (nappula != nullptr && nappula->getVari() != vari)
-			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake + 1, aloitusRivi - 1)));
+			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake + 1, aloitusRivi - 1)));
 	}
 }
 
