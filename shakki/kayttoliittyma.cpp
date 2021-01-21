@@ -40,10 +40,10 @@ void Kayttoliittyma::piirraLauta()
 			}
 			else SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_GREEN);
 
-			if (_asema->_lauta[i][j] == nullptr) {
+			if (_asema->_lauta[j][i] == nullptr) {
 				wcout << "   ";
 			}
-			else wcout << " " << _asema->_lauta[i][j]->getUnicode() << " ";
+			else wcout << " " << _asema->_lauta[j][i]->getUnicode() << " ";
 
 			lastSquareBlack = !lastSquareBlack;
 		}

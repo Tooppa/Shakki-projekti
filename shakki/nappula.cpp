@@ -17,38 +17,42 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 {
 	int aloitusRivi = ruutu->getRivi();
 	int aloitusSarake = ruutu->getSarake();
-	for (int i = ruutu->getRivi() + 1; i < 8; i++){
-		if (asema->_lauta[i][aloitusSarake] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, aloitusSarake)));
-		else if (asema->_lauta[i][aloitusRivi]->getVari() != vari) {
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, aloitusSarake)));
+
+	for (int i = ruutu->getSarake() + 1; i < 8; i++){
+		if (asema->_lauta[aloitusSarake][i] == nullptr)
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(i, aloitusRivi)));
+		else if (asema->_lauta[aloitusRivi][i]->getVari() != vari) {
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(i, aloitusRivi)));
 			break;
 		}	
 		else break;
 	}
-	for (int i = ruutu->getRivi() - 1; i >= 0; i--) {
-		if (asema->_lauta[i][aloitusSarake] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, aloitusSarake)));
-		else if (asema->_lauta[i][aloitusRivi]->getVari() != vari) {
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, aloitusSarake)));
-			break;
-		}
-		else break;
-	}
-	for (int i = ruutu->getSarake() + 1; i < 8; i++) {
-		if (asema->_lauta[aloitusRivi][i] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusRivi, i)));
-		else if (asema->_lauta[i][aloitusRivi]->getVari() != vari) {
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusRivi, i)));
-			break;
-		}
-		else break;
-	}
+
 	for (int i = ruutu->getSarake() - 1; i >= 0; i--) {
-		if (asema->_lauta[aloitusRivi][i] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusRivi, i)));
+		if (asema->_lauta[aloitusSarake][i] == nullptr)
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(i, aloitusRivi)));
 		else if (asema->_lauta[aloitusRivi][i]->getVari() != vari) {
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusRivi, i)));
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(i, aloitusRivi)));
+			break;
+		}
+		else break;
+	}
+
+	for (int i = ruutu->getRivi() + 1; i < 8; i++) {
+		if (asema->_lauta[i][aloitusRivi] == nullptr)
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, i)));
+		else if (asema->_lauta[aloitusRivi][i]->getVari() != vari) {
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, i)));
+			break;
+		}
+		else break;
+	}
+
+	for (int i = ruutu->getSarake() - 1; i >= 0; i--) {
+		if (asema->_lauta[i][aloitusRivi] == nullptr)
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, i)));
+		else if (asema->_lauta[i][aloitusRivi]->getVari() != vari) {
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, i)));
 			break;
 		}
 		else break;
@@ -75,38 +79,38 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 {
 	int aloitusRivi = ruutu->getRivi();
 	int aloitusSarake = ruutu->getSarake();
-	for (int i = ruutu->getRivi() + 1, j = ruutu->getSarake() + 1; i < 8 && j < 8; i++, j++) {
+	for (int i = ruutu->getSarake() + 1, j = ruutu->getRivi() + 1; i < 8 && j < 8; i++, j++) {
 		if (asema->_lauta[i][j] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, j)));
+			lista.push_back(Siirto(Ruutu(aloitusSarake,aloitusRivi), Ruutu(i, j)));
 		else if (asema->_lauta[i][j]->getVari() != vari) {
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, j)));
+			lista.push_back(Siirto(Ruutu(aloitusSarake,aloitusRivi), Ruutu(i, j)));
 			break;
 		}
 		else break;
 	}
-	for (int i = ruutu->getRivi() + 1, j = ruutu->getSarake() - 1; i < 8 && j >= 0; i++, j--) {
+	for (int i = ruutu->getSarake() + 1, j = ruutu->getRivi() - 1; i < 8 && j >= 0; i++, j--) {
 		if (asema->_lauta[i][j] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, j)));
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(i, j)));
 		else if (asema->_lauta[i][j]->getVari() != vari) {
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, j)));
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(i, j)));
 			break;
 		}
 		else break;
 	}
-	for (int i = ruutu->getRivi() - 1, j = ruutu->getSarake() - 1; i >= 0 && j >= 0; i--, j--) {
+	for (int i = ruutu->getSarake() - 1, j = ruutu->getRivi() - 1; i >= 0 && j >= 0; i--, j--) {
 		if (asema->_lauta[i][j] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, j)));
+			lista.push_back(Siirto(Ruutu(aloitusSarake,aloitusRivi), Ruutu(i, j)));
 		else if (asema->_lauta[i][j]->getVari() != vari) {
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, j)));
+			lista.push_back(Siirto(Ruutu(aloitusSarake,aloitusRivi), Ruutu(i, j)));
 			break;
 		}
 		else break;
 	}
-	for (int i = ruutu->getRivi() - 1, j = ruutu->getSarake() + 1; i >= 0 && j < 8; i--, j++) {
+	for (int i = ruutu->getSarake() - 1, j = ruutu->getRivi() + 1; i >= 0 && j < 8; i--, j++) {
 		if (asema->_lauta[i][j] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, j)));
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(i, j)));
 		else if (asema->_lauta[i][j]->getVari() != vari) {
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(i, j)));
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(i, j)));
 			break;
 		}
 		else break;
@@ -134,8 +138,8 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	for (int i = 0; i < 8; i++) {
 		int x = aloitusRivi + Xmoves[i];
 		int y = aloitusSarake + Ymoves[i];
-		if (x >= 0 && y >= 0 && x < 8 && y < 8 && (asema->_lauta[x][y] == nullptr || asema->_lauta[x][y]->getVari() != vari))
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(x, y)));
+		if (x >= 0 && y >= 0 && x < 8 && y < 8 && (asema->_lauta[y][x] == nullptr || asema->_lauta[y][x]->getVari() != vari))
+			lista.push_back(Siirto(Ruutu(aloitusSarake,aloitusRivi), Ruutu(y,x )));
 	}
 }
 
@@ -147,35 +151,35 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 	if (vari == (int)0) {
 		if (aloitusRivi == 1) {
-			if (asema->_lauta[2][aloitusSarake] == nullptr) {
-				lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(2, aloitusSarake)));
-				if (asema->_lauta[3][aloitusSarake] == nullptr)
-					lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(3, aloitusSarake)));
+			if (asema->_lauta[aloitusSarake][2] == nullptr) {
+				lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, 2)));
+				if (asema->_lauta[aloitusSarake][3] == nullptr)
+					lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, 3)));
 			}
-		}else if (asema->_lauta[aloitusRivi + 1][aloitusSarake] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusRivi + 1, aloitusSarake)));
-		if(asema->_lauta[aloitusRivi + 1][aloitusSarake + 1] != nullptr)
-			if(asema->_lauta[aloitusRivi + 1][aloitusSarake + 1]->getVari() != vari)
-				lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusRivi + 1, aloitusSarake + 1)));
-		if (asema->_lauta[aloitusRivi + 1][aloitusSarake - 1] != nullptr)
-			if(asema->_lauta[aloitusRivi + 1][aloitusSarake - 1]->getVari() != vari)
-				lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusRivi + 1, aloitusSarake - 1)));
+		}else if (asema->_lauta[aloitusSarake][aloitusRivi + 1] == nullptr)
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake,aloitusRivi + 1)));
+		if(asema->_lauta[aloitusSarake + 1][aloitusRivi + 1] != nullptr)
+			if(asema->_lauta[aloitusSarake + 1][aloitusRivi + 1]->getVari() != vari)
+				lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusSarake + 1, aloitusRivi + 1 )));
+		if (asema->_lauta[aloitusSarake - 1][aloitusRivi + 1] != nullptr)
+			if(asema->_lauta[aloitusSarake - 1][aloitusRivi + 1]->getVari() != vari)
+				lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake - 1, aloitusRivi + 1)));
 	}
 	if (vari == (int)1) {
 		if (aloitusRivi == 6) {
-			if (asema->_lauta[5][aloitusSarake] == nullptr) {
-				lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(5, aloitusSarake)));
-				if (asema->_lauta[4][aloitusSarake] == nullptr)
-					lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(4, aloitusSarake)));
+			if (asema->_lauta[aloitusSarake][5] == nullptr) {
+				lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, 5)));
+				if (asema->_lauta[aloitusSarake][4] == nullptr)
+					lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, 4)));
 			}
-		}else if (asema->_lauta[aloitusRivi - 1][aloitusSarake] == nullptr)
-			lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusRivi - 1, aloitusSarake)));
-		if (asema->_lauta[aloitusRivi - 1][aloitusSarake - 1] != nullptr)
-			if(asema->_lauta[aloitusRivi - 1][aloitusSarake - 1]->getVari() != vari)
-				lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusRivi - 1, aloitusSarake - 1)));
-		if (asema->_lauta[aloitusRivi - 1][aloitusSarake + 1] != nullptr)
-			if(asema->_lauta[aloitusRivi - 1][aloitusSarake + 1]->getVari() != vari)
-				lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusRivi - 1, aloitusSarake + 1)));
+		}else if (asema->_lauta[aloitusSarake][aloitusRivi - 1] == nullptr)
+			lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake, aloitusRivi - 1)));
+		if (asema->_lauta[aloitusSarake - 1][aloitusRivi - 1] != nullptr)
+			if(asema->_lauta[aloitusSarake - 1][aloitusRivi - 1]->getVari() != vari)
+				lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake - 1, aloitusRivi - 1 )));
+		if (asema->_lauta[aloitusSarake + 1][aloitusRivi - 1] != nullptr)
+			if(asema->_lauta[aloitusSarake + 1][aloitusRivi - 1]->getVari() != vari)
+				lista.push_back(Siirto(Ruutu(aloitusSarake, aloitusRivi), Ruutu(aloitusSarake + 1, aloitusRivi - 1)));
 	}
 }
 

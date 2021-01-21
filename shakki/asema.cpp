@@ -36,30 +36,30 @@ Asema::Asema()
 
 	// mustat sotilaat
 	for (int i = 0; i < 8; i++)
-		_lauta[6][i] = ms;
+		_lauta[i][6] = ms;
 	//muut mustat nappulat
 	_lauta[7][7] = mt;
-	_lauta[7][6] = mr;
-	_lauta[7][5] = ml;
-	_lauta[7][4] = mk;
-	_lauta[7][3] = md;
-	_lauta[7][2] = ml;
-	_lauta[7][1] = mr;
-	_lauta[7][0] = mt;
+	_lauta[6][7] = mr;
+	_lauta[5][7] = ml;
+	_lauta[4][7] = mk;
+	_lauta[3][7] = md;
+	_lauta[2][7] = ml;
+	_lauta[1][7] = mr;
+	_lauta[0][7] = mt;
 
 	// valkoiset sotilaat
 	for (int i = 0; i < 8; i++)
 	{
-		_lauta[1][i] = vs;
+		_lauta[i][1] = vs;
 	}
 	//muut valkoiset nappulat
-	_lauta[0][7] = vt;
-	_lauta[0][6] = vr;
-	_lauta[0][5] = vl;
-	_lauta[0][4] = vk;
-	_lauta[0][3] = vd;
-	_lauta[0][2] = vl;
-	_lauta[0][1] = vr;
+	_lauta[7][0] = vt;
+	_lauta[6][0] = vr;
+	_lauta[5][0] = vl;
+	_lauta[4][0] = vk;
+	_lauta[3][0] = vd;
+	_lauta[2][0] = vl;
+	_lauta[1][0] = vr;
 	_lauta[0][0] = vt;
 
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
@@ -84,46 +84,46 @@ void Asema::paivitaAsema(Siirto *siirto)
 	if (siirto->onkoLyhytLinna()) 
 	{
 		if (getSiirtovuoro() == 0 && !getOnkoValkeaKTliikkunut() && !getOnkoValkeaKuningasLiikkunut()) {
-			_lauta[0][4] = nullptr;
-			_lauta[0][7] = nullptr;
-			_lauta[0][5] = vt;
-			_lauta[0][5] = vk;
+			_lauta[4][0] = nullptr;
+			_lauta[7][0] = nullptr;
+			_lauta[5][0] = vt;
+			_lauta[5][0] = vk;
 		}
 		if (getSiirtovuoro() == 1 && !getOnkoMustaKTliikkunut() && !getOnkoMustaKuningasLiikkunut()) {
-			_lauta[7][4] = nullptr;
+			_lauta[4][7] = nullptr;
 			_lauta[7][7] = nullptr;
-			_lauta[7][5] = mt;
-			_lauta[7][5] = mk;
+			_lauta[5][7] = mt;
+			_lauta[5][7] = mk;
 		} 
 	}
 	// onko pitkä linna
 	else if (siirto->onkoPitkalinna())
 	{
 		if (getSiirtovuoro() == 0 && !getOnkoValkeaDTliikkunut() && !getOnkoValkeaKuningasLiikkunut()) {
-			_lauta[0][4] = nullptr;
+			_lauta[4][0] = nullptr;
 			_lauta[0][0] = nullptr;
-			_lauta[0][3] = vt;
-			_lauta[0][2] = vk;
+			_lauta[3][0] = vt;
+			_lauta[2][0] = vk;
 		}
 		if (getSiirtovuoro() == 1 && !getOnkoMustaDTliikkunut() && !getOnkoMustaKuningasLiikkunut()) {
-			_lauta[7][4] = nullptr;
-			_lauta[7][0] = nullptr;
-			_lauta[7][3] = mt;
-			_lauta[7][2] = mk;
+			_lauta[4][7] = nullptr;
+			_lauta[0][7] = nullptr;
+			_lauta[3][7] = mt;
+			_lauta[2][7] = mk;
 		}
 	}
 	// Kaikki muut siirrot
 	else
 	{
 		//Ottaa siirron alkuruudussa olleen nappulan talteen 
-		Nappula *nappula = _lauta[alkuRivi][alkuSarake];
+		Nappula *nappula = _lauta[alkuSarake][alkuRivi];
 
 		//Alustus
 		int nappulanKoodi = nappula->getKoodi();
 
-		_lauta[alkuRivi][alkuSarake] = nullptr;
+		_lauta[alkuSarake][alkuRivi] = nullptr;
 		//Laittaa talteen otettu nappula uuteen ruutuun
-		_lauta[loppuRivi][loppuSarake] = nappula;
+		_lauta[loppuSarake][loppuRivi] = nappula;
 		
 
 		// Tarkistetaan oliko sotilaan kaksoisaskel
