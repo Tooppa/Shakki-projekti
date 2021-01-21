@@ -145,7 +145,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 	int aloitusRivi = ruutu->getRivi();
 	int aloitusSarake = ruutu->getSarake();
 
-	if (vari == 0) {
+	if (vari == (int)0) {
 		if (aloitusRivi == 1) {
 			if (asema->_lauta[2][aloitusSarake] == nullptr) {
 				lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(2, aloitusSarake)));
@@ -161,7 +161,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			if(asema->_lauta[aloitusRivi + 1][aloitusSarake - 1]->getVari() != vari)
 				lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(aloitusRivi + 1, aloitusSarake - 1)));
 	}
-	if (vari == 1) {
+	if (vari == (int)1) {
 		if (aloitusRivi == 6) {
 			if (asema->_lauta[5][aloitusSarake] == nullptr) {
 				lista.push_back(Siirto(Ruutu(aloitusRivi, aloitusSarake), Ruutu(5, aloitusSarake)));

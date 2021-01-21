@@ -366,5 +366,5 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
 			if (_lauta[i][j] != nullptr && _lauta[i][j]->getVari() == _siirtovuoro)
-				_lauta[i][j]->annaSiirrot(lista, new Ruutu(i,j), this, _siirtovuoro);
+				_lauta[i][j]->annaSiirrot(lista, new Ruutu(j,i), this, _siirtovuoro);
 }
