@@ -30,19 +30,13 @@ Asema::Asema()
 	_onkoMustaKTliikkunut=false;
 
 	for (int i = 0; i < 8; i++)
-	{
 		for (int j = 0; j < 8; j++)
-		{
 			_lauta[i][j] = nullptr;
-		}
-	}
 	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
 
 	// mustat sotilaat
 	for (int i = 0; i < 8; i++)
-	{
 		_lauta[6][i] = ms;
-	}
 	//muut mustat nappulat
 	_lauta[7][7] = mt;
 	_lauta[7][6] = mr;
