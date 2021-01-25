@@ -351,7 +351,19 @@ MinMaxPaluu Asema::mini(int syvyys)
 
 bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 {
+	Asema uusiAsema;
+	std::list<Siirto> lista;
 
+	uusiAsema.setSiirtovuoro(vastustajanVari);
+	uusiAsema.annaLaillisetSiirrot(lista);
+
+	std::list<Siirto>::iterator iterator;
+	for (iterator = lista.begin(); iterator != lista.end(); iterator++)
+	{
+		if (&iterator->getLoppuruutu() == ruutu) {
+			return true;
+		}
+	}
 	return false;
 }
 
