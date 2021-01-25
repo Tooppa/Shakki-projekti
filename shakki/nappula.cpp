@@ -18,7 +18,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 	int aloitusRivi = ruutu->getRivi();
 	int aloitusSarake = ruutu->getSarake();
 
-	for (int i = ruutu->getRivi() + 1; i < 8; i++){
+	for (int i = aloitusRivi + 1; i < 8; i++){
 		if (asema->_lauta[aloitusSarake][i] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, i)));
 		else if (asema->_lauta[aloitusSarake][i]->getVari() != vari) {
@@ -28,7 +28,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 		else break;
 	}
 
-	for (int i = ruutu->getRivi() - 1; i >= 0; i--) {
+	for (int i = aloitusRivi - 1; i >= 0; i--) {
 		if (asema->_lauta[aloitusSarake][i] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, i)));
 		else if (asema->_lauta[aloitusSarake][i]->getVari() != vari) {
@@ -38,7 +38,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 		else break;
 	}
 
-	for (int i = ruutu->getSarake() + 1; i < 8; i++) {
+	for (int i = aloitusSarake + 1; i < 8; i++) {
 		if (asema->_lauta[i][aloitusRivi] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(i, aloitusRivi)));
 		else if (asema->_lauta[i][aloitusRivi]->getVari() != vari) {
@@ -48,7 +48,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 		else break;
 	}
 
-	for (int i = ruutu->getSarake() - 1; i >= 0; i--) {
+	for (int i = aloitusSarake - 1; i >= 0; i--) {
 		if (asema->_lauta[i][aloitusRivi] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(i, aloitusRivi)));
 		else if (asema->_lauta[i][aloitusRivi]->getVari() != vari) {
@@ -79,7 +79,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 {
 	int aloitusRivi = ruutu->getRivi();
 	int aloitusSarake = ruutu->getSarake();
-	for (int i = ruutu->getSarake() + 1, j = ruutu->getRivi() + 1; i < 8 && j < 8; i++, j++) {
+	for (int i = aloitusSarake + 1, j = aloitusRivi + 1; i < 8 && j < 8; i++, j++) {
 		if (asema->_lauta[i][j] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
 		else if (asema->_lauta[i][j]->getVari() != vari) {
@@ -88,7 +88,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		}
 		else break;
 	}
-	for (int i = ruutu->getSarake() + 1, j = ruutu->getRivi() - 1; i < 8 && j >= 0; i++, j--) {
+	for (int i = aloitusSarake + 1, j = aloitusRivi - 1; i < 8 && j >= 0; i++, j--) {
 		if (asema->_lauta[i][j] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
 		else if (asema->_lauta[i][j]->getVari() != vari) {
@@ -97,7 +97,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		}
 		else break;
 	}
-	for (int i = ruutu->getSarake() - 1, j = ruutu->getRivi() - 1; i >= 0 && j >= 0; i--, j--) {
+	for (int i = aloitusSarake - 1, j = aloitusRivi - 1; i >= 0 && j >= 0; i--, j--) {
 		if (asema->_lauta[i][j] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
 		else if (asema->_lauta[i][j]->getVari() != vari) {
@@ -106,7 +106,7 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		}
 		else break;
 	}
-	for (int i = ruutu->getSarake() - 1, j = ruutu->getRivi() + 1; i >= 0 && j < 8; i--, j++) {
+	for (int i = aloitusSarake - 1, j = aloitusRivi + 1; i >= 0 && j < 8; i--, j++) {
 		if (asema->_lauta[i][j] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
 		else if (asema->_lauta[i][j]->getVari() != vari) {
