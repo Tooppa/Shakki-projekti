@@ -125,11 +125,23 @@ void Asema::paivitaAsema(Siirto *siirto)
 		//Laittaa talteen otettu nappula uuteen ruutuun
 		_lauta[loppuSarake][loppuRivi] = nappula;
 		
-
+		bool kaksoisAskel = false;
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
+		if (kaksoisAskel)
+		{
+			// Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
+			if (nappulanKoodi == MS)
+				if (alkuSarake != loppuSarake)
+					if (_lauta[loppuSarake][loppuRivi] == nullptr)
+						_lauta[loppuSarake][loppuRivi + 1] == nullptr;
 
-		// Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
+			if (nappulanKoodi == VS)
+				if (alkuSarake != loppuSarake)
+					if (_lauta[loppuSarake][loppuRivi] == nullptr)
+						_lauta[loppuSarake][loppuRivi - 1] == nullptr;
+		}
+		
 
 		//// Katsotaan jos nappula on sotilas ja rivi on päätyrivi niin ei vaihdeta nappulaa 
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittymän laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
