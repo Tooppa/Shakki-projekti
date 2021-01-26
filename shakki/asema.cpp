@@ -417,9 +417,14 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro))
 				lista.remove(siirto);
 
-
 			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
 			_lauta[loppuSarake][loppuRivi] = poistoNappula;
 		}
+	}
+
+	if (!getOnkoValkeaKuningasLiikkunut && !getOnkoValkeaDTliikkunut) {
+		bool laiton = false;
+		if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
+			lista.push_back(Siirto(false, true));
 	}
 }
