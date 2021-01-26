@@ -384,7 +384,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
-			if ((_siirtovuoro == 0 && _lauta[i][j] == vk) || (_siirtovuoro == 1 && _lauta[i][j] == mk))
+			if ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK))
 				kuninkaanRuutu = new Ruutu(i, j);
 
 	for each (Siirto siirto in lista)
@@ -400,12 +400,12 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 		_lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
 		_lauta[alkuSarake][alkuRivi] = nullptr;
 
-		if ((_siirtovuoro == 0 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()] == vk)|| (_siirtovuoro == 1 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()] == mk)) 
+		if ((_siirtovuoro == 0 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()]->getKoodi() == VK)|| (_siirtovuoro == 1 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()]->getKoodi() == MK)) 
 		{
 			Ruutu* tempRuutu = kuninkaanRuutu;
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
-					if ((_siirtovuoro == 0 && _lauta[i][j] == vk) || (_siirtovuoro == 1 && _lauta[i][j] == mk)) {
+					if ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK)) {
 						kuninkaanRuutu = new Ruutu(i, j);
 					}
 					
