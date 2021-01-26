@@ -351,19 +351,18 @@ MinMaxPaluu Asema::mini(int syvyys)
 
 bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 {
-	Asema uusiAsema;
 	std::list<Siirto> lista;
 
-	uusiAsema.setSiirtovuoro(vastustajanVari);
-	uusiAsema.annaLaillisetSiirrot(lista);
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++)
+			if (_lauta[i][j] != nullptr && _lauta[i][j]->getVari() == vastustajanVari)
+				_lauta[i][j]->annaSiirrot(lista, new Ruutu(j, i), this, vastustajanVari);
 
 	std::list<Siirto>::iterator iterator;
 	for (iterator = lista.begin(); iterator != lista.end(); iterator++)
-	{
-		if (&iterator->getLoppuruutu() == ruutu) {
+		if (&iterator->getLoppuruutu() == ruutu) 
 			return true;
-		}
-	}
+
 	return false;
 }
 
@@ -379,4 +378,62 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 		for (int j = 0; j < 8; j++)
 			if (_lauta[i][j] != nullptr && _lauta[i][j]->getVari() == _siirtovuoro)
 				_lauta[i][j]->annaSiirrot(lista, new Ruutu(j,i), this, _siirtovuoro);
+	
+
+	Ruutu* kuninkaanRuutu;
+
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++)
+			if ((_siirtovuoro == 0 && _lauta[i][j] == vk) || (_siirtovuoro == 1 && _lauta[i][j] == mk))
+				kuninkaanRuutu = new Ruutu(i, j);
+
+	for each (Siirto siirto in lista)
+	{
+		
+
+		int alkuSarake = siirto.getAlkuruutu().getSarake();
+		int alkuRivi = siirto.getAlkuruutu().getRivi();
+		int loppuSarake = siirto.getLoppuruutu().getSarake();
+		int loppuRivi = siirto.getLoppuruutu().getRivi();
+
+		Nappula* poistoNappula = _lauta[loppuSarake][loppuRivi];
+		_lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
+		_lauta[alkuSarake][alkuRivi] = nullptr;
+
+		if ((_siirtovuoro == 0 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()] == vk)|| (_siirtovuoro == 1 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()] == mk)) 
+		{
+			Ruutu* tempRuutu = kuninkaanRuutu;
+			for (int i = 0; i < 8; i++)
+				for (int j = 0; j < 8; j++)
+					if ((_siirtovuoro == 0 && _lauta[i][j] == vk) || (_siirtovuoro == 1 && _lauta[i][j] == mk)) {
+						kuninkaanRuutu = new Ruutu(i, j);
+					}
+					
+			if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro))
+				lista.remove(siirto);
+
+
+			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
+			_lauta[loppuSarake][loppuRivi] = poistoNappula;
+
+			kuninkaanRuutu = tempRuutu;
+		}
+		else 
+		{
+			if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro))
+				lista.remove(siirto);
+
+
+			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
+			_lauta[loppuSarake][loppuRivi] = poistoNappula;
+		}
+
+		
+
+
+
+		
+
+	}
+
 }
