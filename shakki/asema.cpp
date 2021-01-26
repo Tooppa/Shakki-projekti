@@ -355,14 +355,13 @@ bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
-			if (_lauta[i][j] != nullptr && _lauta[i][j]->getVari() == vastustajanVari)
-				_lauta[i][j]->annaSiirrot(tempLista, new Ruutu(j, i), this, vastustajanVari);
+			if (_lauta[i][j] && _lauta[i][j]->getVari() == vastustajanVari)
+				_lauta[i][j]->annaSiirrot(tempLista, new Ruutu(i, j), this, vastustajanVari);
 
 	std::list<Siirto>::iterator iterator;
 	for (iterator = tempLista.begin(); iterator != tempLista.end(); iterator++)
 		if (&iterator->getLoppuruutu() == ruutu) 
 			return true;
-
 	return false;
 }
 
@@ -376,15 +375,15 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
-			if (_lauta[i][j] != nullptr && _lauta[i][j]->getVari() == _siirtovuoro)
-				_lauta[i][j]->annaSiirrot(lista, new Ruutu(j,i), this, _siirtovuoro);
+			if (_lauta[i][j] && _lauta[i][j]->getVari() == _siirtovuoro)
+				_lauta[i][j]->annaSiirrot(lista, new Ruutu(i, j), this, _siirtovuoro);
 	
 
 	Ruutu* kuninkaanRuutu;
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
-			if ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK))
+			if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK)))
 				kuninkaanRuutu = new Ruutu(i, j);
 
 	for each (Siirto siirto in lista)
@@ -405,7 +404,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			Ruutu* tempRuutu = kuninkaanRuutu;
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
-					if ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK)) {
+					if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK))) {
 						kuninkaanRuutu = new Ruutu(i, j);
 					}
 					
@@ -427,13 +426,5 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
 			_lauta[loppuSarake][loppuRivi] = poistoNappula;
 		}
-
-		
-
-
-
-		
-
 	}
-
 }

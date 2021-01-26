@@ -160,13 +160,17 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		}else if (asema->_lauta[aloitusSarake][aloitusRivi + 1] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake,aloitusRivi + 1)));
 
-		nappula = asema->_lauta[aloitusSarake + 1][aloitusRivi + 1];
-		if(nappula != nullptr && nappula->getVari() != vari)
-			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake + 1, aloitusRivi + 1 )));
+		if (aloitusSarake < 7) {
+			nappula = asema->_lauta[aloitusSarake + 1][aloitusRivi + 1];
+			if (nappula != nullptr && nappula->getVari() != vari)
+				lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake + 1, aloitusRivi + 1)));
+		}
 
-		nappula = asema->_lauta[aloitusSarake - 1][aloitusRivi + 1];
-		if (nappula != nullptr && nappula->getVari() != vari)
-			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake - 1, aloitusRivi + 1)));
+		if (aloitusSarake > 0) {
+			nappula = asema->_lauta[aloitusSarake - 1][aloitusRivi + 1];
+			if (nappula != nullptr && nappula->getVari() != vari)
+				lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake - 1, aloitusRivi + 1)));
+		}
 	}
 	if (vari == (int)1) {
 		if (aloitusRivi == 6) {
@@ -178,13 +182,17 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		}else if (asema->_lauta[aloitusSarake][aloitusRivi - 1] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, aloitusRivi - 1)));
 
-		nappula = asema->_lauta[aloitusSarake - 1][aloitusRivi - 1];
-		if (nappula != nullptr && nappula->getVari() != vari)
-			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake - 1, aloitusRivi - 1 )));
+		if (aloitusSarake < 7) {
+			nappula = asema->_lauta[aloitusSarake + 1][aloitusRivi - 1];
+			if (nappula != nullptr && nappula->getVari() != vari)
+				lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake + 1, aloitusRivi - 1)));
+		}
 
-		nappula = asema->_lauta[aloitusSarake + 1][aloitusRivi - 1];
-		if (nappula != nullptr && nappula->getVari() != vari)
-			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake + 1, aloitusRivi - 1)));
+		if (aloitusSarake > 0) {
+			nappula = asema->_lauta[aloitusSarake - 1][aloitusRivi - 1];
+			if (nappula != nullptr && nappula->getVari() != vari)
+				lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake - 1, aloitusRivi - 1)));
+		}
 	}
 }
 
