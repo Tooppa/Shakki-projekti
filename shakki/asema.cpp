@@ -410,6 +410,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
 			_lauta[loppuSarake][loppuRivi] = poistoNappula;
 
+			delete(kuninkaanRuutu),
 			kuninkaanRuutu = tempRuutu;
 		}
 		else 
@@ -421,10 +422,52 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			_lauta[loppuSarake][loppuRivi] = poistoNappula;
 		}
 	}
-
-	if (!getOnkoValkeaKuningasLiikkunut && !getOnkoValkeaDTliikkunut) {
+	//Tornitukset
+	if (_siirtovuoro == 0 && (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaDTliikkunut())) {
 		bool laiton = false;
+		Ruutu* ruutu1 = new Ruutu(2, 0);
+		Ruutu* ruutu2 = new Ruutu(3, 0);
 		if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
-			lista.push_back(Siirto(false, true));
+		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
+		else if (onkoRuutuUhattu(ruutu2, !_siirtovuoro)) laiton = true;
+		if(!laiton) lista.push_back(Siirto(false, true));
+		delete(ruutu1);
+		delete(ruutu2);
 	}
+	if (_siirtovuoro == 1 && (!getOnkoMustaKuningasLiikkunut() && !getOnkoMustaDTliikkunut())) {
+		bool laiton = false;
+		Ruutu* ruutu1 = new Ruutu(2, 7);
+		Ruutu* ruutu2 = new Ruutu(3, 7);
+		if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
+		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
+		else if (onkoRuutuUhattu(ruutu2, !_siirtovuoro)) laiton = true;
+		if (!laiton) lista.push_back(Siirto(false, true));
+		delete(ruutu1);
+		delete(ruutu2);
+	}
+	if (_siirtovuoro == 0 && (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaKTliikkunut())) {
+		bool laiton = false;
+		Ruutu* ruutu1 = new Ruutu(5, 0);
+		if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
+		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
+		if (!laiton) lista.push_back(Siirto(false, true));
+		delete(ruutu1);
+		
+	}
+	if (_siirtovuoro == 1 && (!getOnkoMustaKuningasLiikkunut() && !getOnkoMustaKTliikkunut())) {
+		bool laiton = false;
+		Ruutu* ruutu1 = new Ruutu(5, 7);
+		if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
+		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
+		if (!laiton) lista.push_back(Siirto(false, true));
+		delete(ruutu1);
+	}
+
+
+
+
+
+
+
+	delete(kuninkaanRuutu);
 }
