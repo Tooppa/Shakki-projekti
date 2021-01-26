@@ -377,7 +377,6 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 		for (int j = 0; j < 8; j++)
 			if (_lauta[i][j] && _lauta[i][j]->getVari() == _siirtovuoro)
 				_lauta[i][j]->annaSiirrot(lista, new Ruutu(i, j), this, _siirtovuoro);
-	
 
 	Ruutu* kuninkaanRuutu;
 
@@ -388,8 +387,6 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 
 	for each (Siirto siirto in lista)
 	{
-		
-
 		int alkuSarake = siirto.getAlkuruutu().getSarake();
 		int alkuRivi = siirto.getAlkuruutu().getRivi();
 		int loppuSarake = siirto.getLoppuruutu().getSarake();
@@ -404,13 +401,11 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			Ruutu* tempRuutu = kuninkaanRuutu;
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
-					if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK))) {
+					if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK))) 
 						kuninkaanRuutu = new Ruutu(i, j);
-					}
 					
 			if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro))
 				lista.remove(siirto);
-
 
 			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
 			_lauta[loppuSarake][loppuRivi] = poistoNappula;
