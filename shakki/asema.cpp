@@ -3,6 +3,7 @@
 #include "minMaxPaluu.h"
 #include "nappula.h"
 #include "ruutu.h"
+using namespace std;
 
 Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK);
 Nappula* Asema::vd = new Daami(L"\u2655", 0, VD);
@@ -79,6 +80,13 @@ void Asema::paivitaAsema(Siirto *siirto)
 	int loppuRivi = siirto->getLoppuruutu().getRivi();
 	int loppuSarake = siirto->getLoppuruutu().getSarake();
 
+	if (alkuRivi < 0 || alkuRivi > 7 || loppuRivi < 0 || loppuRivi > 7 || alkuSarake < 0 || alkuSarake > 7 || loppuSarake < 0 || loppuSarake > 7) 
+	{
+		if (_siirtovuoro == 1) _siirtovuoro = 0;
+		else _siirtovuoro = 1;
+		return;
+	}
+		
 
 	//Tarkastetaan on siirto lyhyt linna
 	if (siirto->onkoLyhytLinna()) 
@@ -125,18 +133,23 @@ void Asema::paivitaAsema(Siirto *siirto)
 		//Laittaa talteen otettu nappula uuteen ruutuun
 		_lauta[loppuSarake][loppuRivi] = nappula;
 		
-		bool kaksoisAskel = false;
 		// Tarkistetaan oliko sotilaan kaksoisaskel
+		if (nappulanKoodi == MS || nappulanKoodi == VS)
+			if (abs(alkuRivi - loppuRivi) == 2)
+				kaksoisaskelSarakkeella = alkuSarake;
+			else
+				kaksoisaskelSarakkeella = -1;
+
 		// (asetetaan kaksoisaskel-lippu)
-		if (kaksoisAskel)
+		if (kaksoisaskelSarakkeella != -1 && loppuSarake == kaksoisaskelSarakkeella)
 		{
 			// Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
-			if (nappulanKoodi == MS)
+			if (nappulanKoodi == MS && alkuRivi == 3)
 				if (alkuSarake != loppuSarake)
 					if (_lauta[loppuSarake][loppuRivi] == nullptr)
 						_lauta[loppuSarake][loppuRivi + 1] == nullptr;
 
-			if (nappulanKoodi == VS)
+			if (nappulanKoodi == VS && alkuRivi == 4)
 				if (alkuSarake != loppuSarake)
 					if (_lauta[loppuSarake][loppuRivi] == nullptr)
 						_lauta[loppuSarake][loppuRivi - 1] == nullptr;
@@ -145,7 +158,44 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		//// Katsotaan jos nappula on sotilas ja rivi on päätyrivi niin ei vaihdeta nappulaa 
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittymän laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
-
+		if (nappulanKoodi == MS)
+			if (loppuRivi == 0)
+			{
+				cout << "Miksi korotetaan N/R/B/Q" << endl;
+				char input;
+				cin >> input;
+				_lauta[alkuSarake][alkuRivi] = nullptr;
+				switch (input)
+				{
+				case 'N':
+					_lauta[loppuSarake][loppuRivi] = mr;
+				case 'R':
+					_lauta[loppuSarake][loppuRivi] = mt;
+				case 'B':
+					_lauta[loppuSarake][loppuRivi] = ml;
+				case 'Q':
+					_lauta[loppuSarake][loppuRivi] = md;
+				}
+			}
+		else if (nappulanKoodi == VS)
+			if (loppuRivi == 7)
+			{
+				cout << "Miksi korotetaan N/R/B/Q" << endl;
+				char input;
+				cin >> input;
+				_lauta[alkuSarake][alkuRivi] = nullptr;
+				switch (input)
+				{
+				case 'N':
+					_lauta[loppuSarake][loppuRivi] = vr;
+				case 'R':
+					_lauta[loppuSarake][loppuRivi] = vt;
+				case 'B':
+					_lauta[loppuSarake][loppuRivi] = vl;
+				case 'Q':
+					_lauta[loppuSarake][loppuRivi] = vd;
+				}
+			}
 		//
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta lähtenyt nappula
 
