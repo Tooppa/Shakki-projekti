@@ -159,43 +159,56 @@ void Asema::paivitaAsema(Siirto *siirto)
 		//// Katsotaan jos nappula on sotilas ja rivi on p‰‰tyrivi niin ei vaihdeta nappulaa 
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym‰n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
 		if (nappulanKoodi == MS)
+		{
 			if (loppuRivi == 0)
 			{
-				cout << "Miksi korotetaan N/R/B/Q" << endl;
-				char input;
-				cin >> input;
+				wcout << "Miksi korotetaan N/R/B/Q" << endl;
+				wchar_t input;
+				wcin >> input;
 				_lauta[alkuSarake][alkuRivi] = nullptr;
 				switch (input)
 				{
-				case 'N':
+				case 78:
 					_lauta[loppuSarake][loppuRivi] = mr;
-				case 'R':
+					break;
+				case 82:
 					_lauta[loppuSarake][loppuRivi] = mt;
-				case 'B':
+					break;
+				case 66:
 					_lauta[loppuSarake][loppuRivi] = ml;
-				case 'Q':
+					break;
+				case 81:
 					_lauta[loppuSarake][loppuRivi] = md;
+					break;
 				}
 			}
+		}
 		else if (nappulanKoodi == VS)
+		{
 			if (loppuRivi == 7)
 			{
-				cout << "Miksi korotetaan N/R/B/Q" << endl;
-				char input;
-				cin >> input;
+				wcout << "Miksi korotetaan N/R/B/Q" << endl;
+				wchar_t input;
+				wcin >> input;
 				_lauta[alkuSarake][alkuRivi] = nullptr;
 				switch (input)
 				{
-				case 'N':
+				case 78:
 					_lauta[loppuSarake][loppuRivi] = vr;
-				case 'R':
+					break;
+				case 82:
 					_lauta[loppuSarake][loppuRivi] = vt;
-				case 'B':
+					break;
+				case 66:
 					_lauta[loppuSarake][loppuRivi] = vl;
-				case 'Q':
+					break;
+				case 81:
 					_lauta[loppuSarake][loppuRivi] = vd;
+					break;
 				}
 			}
+		}
+			
 		//
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l‰htenyt nappula
 
