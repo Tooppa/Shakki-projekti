@@ -501,7 +501,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 
 	std::list<Siirto> siirrot;
 	annaLaillisetSiirrot(siirrot);
-	double korkeinArvo;
+	double korkeinArvo = 0;
 	Siirto parasSiirto;
 
 	for each (Siirto siirto in siirrot) {
@@ -510,7 +510,11 @@ MinMaxPaluu Asema::maxi(int syvyys)
 		int alkuRivi = siirto.getAlkuruutu().getRivi();
 		int loppuSarake = siirto.getLoppuruutu().getSarake();
 		int loppuRivi = siirto.getLoppuruutu().getRivi();
-		Nappula* poistoNappula = _lauta[loppuSarake][loppuRivi];
+
+		Nappula* poistoNappula = nullptr;
+		if(_lauta[loppuSarake][loppuRivi])
+			poistoNappula = _lauta[loppuSarake][loppuRivi];
+
 		_lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
 		_lauta[alkuSarake][alkuRivi] = nullptr;
 		//katsotaan seuraavat arvot
@@ -523,6 +527,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 
 		//siirret‰‰n nappula takaisin.
 		_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
+
 		_lauta[loppuSarake][loppuRivi] = poistoNappula;
 	}
 	paluu._evaluointiArvo = korkeinArvo;
@@ -544,7 +549,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 
 	std::list<Siirto> siirrot;
 	annaLaillisetSiirrot(siirrot);
-	double matalinArvo;
+	double matalinArvo = 0;
 	Siirto parasSiirto;
 
 	for each (Siirto siirto in siirrot) {
@@ -553,7 +558,11 @@ MinMaxPaluu Asema::mini(int syvyys)
 		int alkuRivi = siirto.getAlkuruutu().getRivi();
 		int loppuSarake = siirto.getLoppuruutu().getSarake();
 		int loppuRivi = siirto.getLoppuruutu().getRivi();
-		Nappula* poistoNappula = _lauta[loppuSarake][loppuRivi];
+
+		Nappula* poistoNappula = nullptr;
+		if (_lauta[loppuSarake][loppuRivi])
+			poistoNappula = _lauta[loppuSarake][loppuRivi];
+
 		_lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
 		_lauta[alkuSarake][alkuRivi] = nullptr;
 		//katsotaan seuraavat arvot
@@ -566,6 +575,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 
 		//siirret‰‰n nappula takaisin.
 		_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
+
 		_lauta[loppuSarake][loppuRivi] = poistoNappula;
 	}
 	paluu._evaluointiArvo = matalinArvo;
