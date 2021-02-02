@@ -9,8 +9,8 @@
 // Vakioarvot nappulatyypeille.
 enum
 {
-	VT,VR,VL,VD,VK,VS,
-	MT,MR,ML,MD,MK,MS
+	VT, VR, VL, VD, VK, VS,
+	MT, MR, ML, MD, MK, MS
 };
 
 
@@ -31,12 +31,12 @@ public:
 	// omalla tavallaan.
 	virtual void annaSiirrot(std::list<Siirto>& lista, Ruutu*, Asema*, int vari) = 0;
 
-	void setUnicode(std::wstring unicode)	{ _unicode = unicode;			}
-	std::wstring getUnicode()				{ return _unicode;				}
-	void setVari(int vari)					{ _vari = vari;					}
-	int getVari()							{ return _vari;					}
-	int getKoodi()							{ return _koodi;				}
-	void setKoodi(int koodi)				{ _koodi = koodi;				}
+	void setUnicode(std::wstring unicode) { _unicode = unicode; }
+	std::wstring getUnicode() { return _unicode; }
+	void setVari(int vari) { _vari = vari; }
+	int getVari() { return _vari; }
+	int getKoodi() { return _koodi; }
+	void setKoodi(int koodi) { _koodi = koodi; }
 };
 
 // Torni-aliluokka. Virtuaalinen perint‰ tarkoittaa, ett‰ kantaluokka perit‰‰n moniperinn‰ss‰ vain kerran
@@ -65,7 +65,7 @@ public:
 // Daami-aliluokka. Perii sek‰ l‰hetin ett‰ tornin.
 class Daami : public Lahetti, public Torni {
 public:
-	Daami(std::wstring unicode, int vari, int koodi) : 
+	Daami(std::wstring unicode, int vari, int koodi) :
 		Nappula(unicode, vari, koodi), Lahetti(unicode, vari, koodi), Torni(unicode, vari, koodi) {}
 	void annaSiirrot(std::list<Siirto>& lista, Ruutu*, Asema*, int vari);
 };
