@@ -301,18 +301,94 @@ vai olla est‰m‰ss‰ vastustajan korotusta siksi ei oteta kantaa
 */
 double Asema::evaluoi() 
 {
-	return 0;
+	double evaluaatio = 0;
 
+	Ruutu* valkoinenK;
+	Ruutu* mustaK;
 	//kertoimet asetettu sen takia ett‰ niiden avulla asioiden painoarvoa voidaan s‰‰t‰‰ helposti yhdest‰ paikasta
+	double d = 9, t = 5, l = 3.25, r = 3, s = 1;
 	
 	//1. Nappuloiden arvo
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++)
+		{
+			if (_lauta[i][j])
+			{
+				if (_lauta[i][j]->getVari() == 0)
+				{
+					switch (_lauta[i][j]->getKoodi())
+					{
+					case VS:
+						evaluaatio += s;
+					case VT:
+						evaluaatio += t;
+					case VR:
+						evaluaatio += r;
+					case VL:
+						evaluaatio += l;
+					case VD:
+						evaluaatio += d;
+						// otetaan kuningas talteen
+					case VK:
+						valkoinenK = new Ruutu(i, j);
+					}
+
+				}
+				else
+				{
+					switch (_lauta[i][j]->getKoodi())
+					{
+					case MS:
+						evaluaatio -= s;
+					case MT:
+						evaluaatio -= t;
+					case MR:
+						evaluaatio -= r;
+					case ML:
+						evaluaatio -= l;
+					case MD:
+						evaluaatio -= d;
+						// otetaan kuningas talteen
+					case MK:
+						mustaK = new Ruutu(i, j);
+					}
+				}
+			}
+		}
 	
-	//2. Kuningas turvassa
+	int vkSarake = valkoinenK->getSarake();
+	int vkRivi = valkoinenK->getRivi();
+
+	int mkSarake = mustaK->getSarake();
+	int mkRivi = mustaK->getRivi();
+
+	// 2. kuninkaan turvallisuus
+	// evaluaatioon lis‰t‰‰n 0.25 jos kuningas on tornittanut ja/tai liikkunut pois keskelt‰
+	// lis‰ksi mik‰li kuninkaan edess‰ ja ainakin toisessa viistoruudussa on oma nappula lis‰t‰‰n 0.75
+	// numeroita varmasti pit‰‰ viilata
+	if (vkRivi == 0)
+		if (vkSarake <= 7 || vkSarake >= 6 || vkSarake <= 2 || vkSarake >= 0)
+		{
+			evaluaatio += 0.25;
+			if((_lauta[vkSarake][1] && _lauta[vkSarake][1]->getVari() == 0) && 
+				((vkSarake - 1 >= 0 && _lauta[vkSarake - 1][1] && _lauta[vkSarake - 1][1]->getVari() == 0) || 
+					(vkSarake + 1 <= 7 && _lauta[vkSarake + 1][1] && _lauta[vkSarake + 1][1]->getVari() == 0)))
+				evaluaatio += 0.75;
+		}
+	if (mkRivi == 7)
+		if (mkSarake <= 7 || mkSarake == 6 || mkSarake == 2 || mkSarake >= 0)
+		{
+			evaluaatio -= 0.25;
+			if ((_lauta[mkSarake][6] && _lauta[mkSarake][6]->getVari() == 0) &&
+				((mkSarake - 1 >= 0 && _lauta[mkSarake - 1][6] && _lauta[mkSarake - 1][6]->getVari() == 0) ||
+					(mkSarake + 1 <= 7 && _lauta[mkSarake + 1][6] && _lauta[mkSarake + 1][6]->getVari() == 0)))
+				evaluaatio -= 0.75;
+		}
+
 	
-	//3. Arvosta keskustaa
+	// 3. Arvosta keskustaa
 	
 	// 4. Arvosta linjoja
-	
 }
 
 
@@ -448,17 +524,17 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 
 
 void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
-	for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 8; j++)
-			if (_lauta[i][j] && _lauta[i][j]->getVari() == _siirtovuoro)
-				_lauta[i][j]->annaSiirrot(lista, new Ruutu(i, j), this, _siirtovuoro);
-
 	Ruutu* kuninkaanRuutu;
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
+		{
+			if (_lauta[i][j] && _lauta[i][j]->getVari() == _siirtovuoro)
+				_lauta[i][j]->annaSiirrot(lista, new Ruutu(i, j), this, _siirtovuoro);
+
 			if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK)))
 				kuninkaanRuutu = new Ruutu(i, j);
+		}
 
 	for each (Siirto siirto in lista)
 	{
@@ -537,12 +613,5 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 		if (!laiton) lista.push_back(Siirto(false, true));
 		delete(ruutu1);
 	}
-
-
-
-
-
-
-
 	delete(kuninkaanRuutu);
 }
