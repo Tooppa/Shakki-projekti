@@ -585,7 +585,6 @@ MinMaxPaluu Asema::mini(int syvyys)
 				_lauta[5][7] = mt;
 				_lauta[5][7] = mk;
 
-
 			}
 			// onko pitkä linna
 			else if (siirto.onkoPitkalinna())
