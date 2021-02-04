@@ -526,7 +526,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 				_lauta[2][0] = vk;
 			}
 			double ehdotettuArvo = mini(syvyys - 1)._evaluointiArvo;
-			if (korkeinArvo < ehdotettuArvo) {
+			if (korkeinArvo <= ehdotettuArvo) {
 				korkeinArvo = ehdotettuArvo;
 				parasSiirto = siirto;
 			}
@@ -562,7 +562,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 			//katsotaan seuraavat arvot
 
 			double ehdotettuArvo = mini(syvyys - 1)._evaluointiArvo;
-			if (korkeinArvo < ehdotettuArvo) {
+			if (korkeinArvo <= ehdotettuArvo) {
 				korkeinArvo = ehdotettuArvo;
 				parasSiirto = siirto;
 			}
@@ -617,7 +617,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 				_lauta[2][7] = mk;
 			}
 			double ehdotettuArvo = maxi(syvyys - 1)._evaluointiArvo;
-			if (ehdotettuArvo < matalinArvo) {
+			if (ehdotettuArvo <= matalinArvo) {
 				matalinArvo = ehdotettuArvo;
 				parasSiirto = siirto;
 			}
@@ -654,7 +654,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 			//katsotaan seuraavat arvot
 
 			double ehdotettuArvo = maxi(syvyys - 1)._evaluointiArvo;
-			if (ehdotettuArvo < matalinArvo) {
+			if (ehdotettuArvo <= matalinArvo) {
 				matalinArvo = ehdotettuArvo;
 				parasSiirto = siirto;
 			}
