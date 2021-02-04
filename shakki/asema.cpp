@@ -506,29 +506,37 @@ MinMaxPaluu Asema::maxi(int syvyys)
 
 	for each (Siirto siirto in siirrot) {
 		//siirret‰‰n nappulaa siirron mukaisesti
-		int alkuSarake = siirto.getAlkuruutu().getSarake();
-		int alkuRivi = siirto.getAlkuruutu().getRivi();
-		int loppuSarake = siirto.getLoppuruutu().getSarake();
-		int loppuRivi = siirto.getLoppuruutu().getRivi();
+		if (siirto.onkoLyhytLinna() || siirto.onkoPitkalinna())
+		{
 
-		Nappula* poistoNappula = nullptr;
-		if(_lauta[loppuSarake][loppuRivi])
-			poistoNappula = _lauta[loppuSarake][loppuRivi];
-
-		_lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
-		_lauta[alkuSarake][alkuRivi] = nullptr;
-		//katsotaan seuraavat arvot
-
-		double ehdotettuArvo = mini(syvyys - 1)._evaluointiArvo;
-		if (korkeinArvo < ehdotettuArvo) {
-			korkeinArvo = ehdotettuArvo;
-			parasSiirto = siirto;
 		}
+		else
+		{
+			int alkuSarake = siirto.getAlkuruutu().getSarake();
+			int alkuRivi = siirto.getAlkuruutu().getRivi();
+			int loppuSarake = siirto.getLoppuruutu().getSarake();
+			int loppuRivi = siirto.getLoppuruutu().getRivi();
 
-		//siirret‰‰n nappula takaisin.
-		_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
+			Nappula* poistoNappula = nullptr;
+			if (_lauta[loppuSarake][loppuRivi])
+				poistoNappula = _lauta[loppuSarake][loppuRivi];
 
-		_lauta[loppuSarake][loppuRivi] = poistoNappula;
+			_lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
+			_lauta[alkuSarake][alkuRivi] = nullptr;
+			//katsotaan seuraavat arvot
+
+			double ehdotettuArvo = mini(syvyys - 1)._evaluointiArvo;
+			if (korkeinArvo < ehdotettuArvo) {
+				korkeinArvo = ehdotettuArvo;
+				parasSiirto = siirto;
+			}
+
+			//siirret‰‰n nappula takaisin.
+			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
+
+			_lauta[loppuSarake][loppuRivi] = poistoNappula;
+		}
+		
 	}
 	paluu._evaluointiArvo = korkeinArvo;
 	paluu._parasSiirto = parasSiirto;
@@ -664,7 +672,8 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 		bool laiton = false;
 		Ruutu* ruutu1 = new Ruutu(2, 0);
 		Ruutu* ruutu2 = new Ruutu(3, 0);
-		if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
+		if(_lauta[1][0] && _lauta[2][0] && _lauta[3][0]) laiton = true;
+		else if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
 		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
 		else if (onkoRuutuUhattu(ruutu2, !_siirtovuoro)) laiton = true;
 		if (!laiton) lista.push_back(Siirto(false, true));
@@ -675,7 +684,8 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 		bool laiton = false;
 		Ruutu* ruutu1 = new Ruutu(2, 7);
 		Ruutu* ruutu2 = new Ruutu(3, 7);
-		if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
+		if (_lauta[1][7] && _lauta[2][7] && _lauta[3][7]) laiton = true;
+		else if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
 		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
 		else if (onkoRuutuUhattu(ruutu2, !_siirtovuoro)) laiton = true;
 		if (!laiton) lista.push_back(Siirto(false, true));
@@ -685,18 +695,20 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 	if (_siirtovuoro == 0 && (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaKTliikkunut())) {
 		bool laiton = false;
 		Ruutu* ruutu1 = new Ruutu(5, 0);
-		if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
+		if (_lauta[5][0] && _lauta[6][0]) laiton = true;
+		else if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
 		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
-		if (!laiton) lista.push_back(Siirto(false, true));
+		if (!laiton) lista.push_back(Siirto(true, false));
 		delete(ruutu1);
 
 	}
 	if (_siirtovuoro == 1 && (!getOnkoMustaKuningasLiikkunut() && !getOnkoMustaKTliikkunut())) {
 		bool laiton = false;
 		Ruutu* ruutu1 = new Ruutu(5, 7);
-		if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
+		if (_lauta[5][7] && _lauta[6][7]) laiton = true;
+		else if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
 		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
-		if (!laiton) lista.push_back(Siirto(false, true));
+		if (!laiton) lista.push_back(Siirto(true, false));
 		delete(ruutu1);
 	}
 	delete(kuninkaanRuutu);
