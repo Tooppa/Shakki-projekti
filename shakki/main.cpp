@@ -8,14 +8,14 @@
 #include "Siirto.h"
 #include "asema.h"
 
-using namespace std; 
+using namespace std;
 
 int main()
 {
 	wcout << "HeippariShakki\n";
 	wcout << "Tervetuloa pelaamaan!\n";
 	int lopetus = 100;
-	Asema asema; 
+	Asema asema;
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
 
 	Peli peli(Kayttoliittyma::getInstance()->
@@ -39,10 +39,10 @@ int main()
 		if (asema.getSiirtovuoro() == koneenVari) {
 			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
-				paluu = asema.maxi(8);
+				paluu = asema.maxi(4, asema);
 			}
 			else {
-				paluu = asema.mini(8);
+				paluu = asema.mini(4, asema);
 			}
 			siirto = paluu._parasSiirto;
 		}
@@ -53,6 +53,6 @@ int main()
 		asema.paivitaAsema(&siirto);
 	}
 
-	
+
 	return 0;
 }
