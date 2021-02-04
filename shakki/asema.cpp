@@ -1,4 +1,4 @@
-#include <iostream>
+Ôªø#include <iostream>
 #include "asema.h"
 #include "minMaxPaluu.h"
 #include "nappula.h"
@@ -70,8 +70,8 @@ Asema::Asema()
 
 void Asema::paivitaAsema(Siirto* siirto)
 {
-	// Kaksoisaskel-lippu on oletusarvoisesti pois p‰‰lt‰.
-	// Asetetaan myˆhemmin, jos tarvii.
+	// Kaksoisaskel-lippu on oletusarvoisesti pois p√§√§lt√§.
+	// Asetetaan my√∂hemmin, jos tarvii.
 
 	// Alustus
 	int alkuRivi = siirto->getAlkuruutu().getRivi();
@@ -104,7 +104,7 @@ void Asema::paivitaAsema(Siirto* siirto)
 			_lauta[5][7] = mk;
 		}
 	}
-	// onko pitk‰ linna
+	// onko pitk√§ linna
 	else if (siirto->onkoPitkalinna())
 	{
 		if (getSiirtovuoro() == 0 && !getOnkoValkeaDTliikkunut() && !getOnkoValkeaKuningasLiikkunut()) {
@@ -143,7 +143,7 @@ void Asema::paivitaAsema(Siirto* siirto)
 		// (asetetaan kaksoisaskel-lippu)
 		if (kaksoisaskelSarakkeella != -1 && loppuSarake == kaksoisaskelSarakkeella)
 		{
-			// Ohestalyˆnti on tyhj‰‰n ruutuun. Vieress‰ oleva (sotilas) poistetaan.
+			// Ohestaly√∂nti on tyhj√§√§n ruutuun. Vieress√§ oleva (sotilas) poistetaan.
 			if (nappulanKoodi == MS && alkuRivi == 3)
 				if (alkuSarake != loppuSarake)
 					if (_lauta[loppuSarake][loppuRivi] == nullptr)
@@ -156,8 +156,8 @@ void Asema::paivitaAsema(Siirto* siirto)
 		}
 
 
-		//// Katsotaan jos nappula on sotilas ja rivi on p‰‰tyrivi niin ei vaihdeta nappulaa 
-		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym‰n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
+		//// Katsotaan jos nappula on sotilas ja rivi on p√§√§tyrivi niin ei vaihdeta nappulaa 
+		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym√§n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
 		if (nappulanKoodi == MS)
 		{
 			if (loppuRivi == 0)
@@ -210,10 +210,10 @@ void Asema::paivitaAsema(Siirto* siirto)
 		}
 
 		//
-		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l‰htenyt nappula
+		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l√§htenyt nappula
 
-		// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v‰reille)
-		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v‰reille ja molemmille torneille)
+		// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v√§reille)
+		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v√§reille ja molemmille torneille)
 
 		switch (nappulanKoodi)
 		{
@@ -228,7 +228,7 @@ void Asema::paivitaAsema(Siirto* siirto)
 		case MK:
 			if (!_onkoMustaKuningasLiikkunut)_onkoMustaKuningasLiikkunut = true;
 		}
-		//p‰ivitet‰‰n _siirtovuoro
+		//p√§ivitet√§√§n _siirtovuoro
 
 	}
 	if (_siirtovuoro == 1) _siirtovuoro = 0;
@@ -288,16 +288,16 @@ bool Asema::getOnkoMustaKTliikkunut()
 /* 1. Laske nappuloiden arvo
 Daami = 9
 Torni = 5
-L‰hetti = 3,25
+L√§hetti = 3,25
 Ratsu = 3
 Sotilas = 1
 
 2. Kuninkaan hyvyys
-Jos avaus tai keskipeli, niin hyv‰ ett‰ kunigas g1 tai b1/c1
-Loppupeliss‰ vaikea sanoa halutaanko olla auttamassa omaa sotilasta korottumaan
-vai olla est‰m‰ss‰ vastustajan korotusta siksi ei oteta kantaa
+Jos avaus tai keskipeli, niin hyv√§ ett√§ kunigas g1 tai b1/c1
+Loppupeliss√§ vaikea sanoa halutaanko olla auttamassa omaa sotilasta korottumaan
+vai olla est√§m√§ss√§ vastustajan korotusta siksi ei oteta kantaa
 3. Arvosta keskustaa sotilailla ja ratsuilla
-4. Arvosta pitki‰ linjoja daami, torni ja l‰hetti
+4. Arvosta pitki√§ linjoja daami, torni ja l√§hetti
 */
 double Asema::evaluoi()
 {
@@ -305,7 +305,7 @@ double Asema::evaluoi()
 
 	Ruutu* valkoinenK;
 	Ruutu* mustaK;
-	//kertoimet asetettu sen takia ett‰ niiden avulla asioiden painoarvoa voidaan s‰‰t‰‰ helposti yhdest‰ paikasta
+	//kertoimet asetettu sen takia ett√§ niiden avulla asioiden painoarvoa voidaan s√§√§t√§√§ helposti yhdest√§ paikasta
 	double d = 9, t = 5, l = 3.25, r = 3, s = 1;
 
 	//1. Nappuloiden arvo
@@ -363,9 +363,9 @@ double Asema::evaluoi()
 	int mkRivi = mustaK->getRivi();
 
 	// 2. kuninkaan turvallisuus
-	// evaluaatioon lis‰t‰‰n 0.25 jos kuningas on tornittanut ja/tai liikkunut pois keskelt‰
-	// lis‰ksi mik‰li kuninkaan edess‰ ja ainakin toisessa viistoruudussa on oma nappula lis‰t‰‰n 0.75
-	// numeroita varmasti pit‰‰ viilata
+	// evaluaatioon lis√§t√§√§n 0.25 jos kuningas on tornittanut ja/tai liikkunut pois keskelt√§
+	// lis√§ksi mik√§li kuninkaan edess√§ ja ainakin toisessa viistoruudussa on oma nappula lis√§t√§√§n 0.75
+	// numeroita varmasti pit√§√§ viilata
 	if (vkRivi == 0)
 		if (vkSarake <= 7 || vkSarake >= 6 || vkSarake <= 2 || vkSarake >= 0)
 		{
@@ -403,8 +403,8 @@ double Asema::laskeNappuloidenArvo(int vari)
 bool Asema::onkoAvausTaiKeskipeli(int vari)
 {
 	return 0;
-	// Jos upseereita 3 tai v‰hemm‰n on loppupeli
-	// mutta jos daami laudalla on loppueli vasta kun kuin vain daami j‰ljell‰
+	// Jos upseereita 3 tai v√§hemm√§n on loppupeli
+	// mutta jos daami laudalla on loppueli vasta kun kuin vain daami j√§ljell√§
 
 	//Jos vari on 0 eli valkoiset
 	//niin on keskipeli jos mustalla upseereita yli 2 tai jos daami+1
@@ -448,7 +448,7 @@ double Asema::linjat(int vari)
 }
 
 
-// https://chessprogramming.wikispaces.com/Minimax MinMax-algoritmin pseudokoodi (lis‰sin parametrina aseman)
+// https://chessprogramming.wikispaces.com/Minimax MinMax-algoritmin pseudokoodi (lis√§sin parametrina aseman)
 //int maxi(int depth, asema a) 
 //	if (depth == 0) return evaluate();
 //	int max = -oo;
@@ -482,7 +482,7 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	if (siirrot.size() == 0) {
 		return paluuarvo;
 	}
-	// Rekursion kantatapaus 2: katkaisusyvyydess‰
+	// Rekursion kantatapaus 2: katkaisusyvyydess√§
 	else if (getSiirtovuoro() == 0) paluuarvo = maxi(syvyys);
 	else if (getSiirtovuoro() == 1) paluuarvo = mini(syvyys);
 
@@ -505,7 +505,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 	Siirto parasSiirto;
 
 	for each (Siirto siirto in siirrot) {
-		//siirret‰‰n nappulaa siirron mukaisesti
+		//siirret√§√§n nappulaa siirron mukaisesti
 		if (siirto.onkoLyhytLinna() || siirto.onkoPitkalinna())
 		{
 			if (siirto.onkoLyhytLinna())
@@ -515,7 +515,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 				_lauta[5][0] = vt;
 				_lauta[5][0] = vk;
 			}
-			// onko pitk‰ linna
+			// onko pitk√§ linna
 			else if (siirto.onkoPitkalinna())
 			{
 
@@ -523,6 +523,26 @@ MinMaxPaluu Asema::maxi(int syvyys)
 				_lauta[0][0] = nullptr;
 				_lauta[3][0] = vt;
 				_lauta[2][0] = vk;
+			}
+			double ehdotettuArvo = mini(syvyys - 1)._evaluointiArvo;
+			if (korkeinArvo < ehdotettuArvo) {
+				korkeinArvo = ehdotettuArvo;
+				parasSiirto = siirto;
+			}
+			if (siirto.onkoLyhytLinna())
+			{
+				_lauta[4][0] = vk;
+				_lauta[7][0] = vt;
+				_lauta[5][0] = nullptr;
+				_lauta[5][0] = nullptr;
+			}
+			// onko pitkÔøΩ linna
+			else if (siirto.onkoPitkalinna())
+			{
+				_lauta[4][0] = vk;
+				_lauta[0][0] = vt;
+				_lauta[3][0] = nullptr;
+				_lauta[2][0] = nullptr;
 			}
 		}
 		else
@@ -546,7 +566,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 				parasSiirto = siirto;
 			}
 
-			//siirret‰‰n nappula takaisin.
+			//siirret√§√§n nappula takaisin.
 			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
 
 			_lauta[loppuSarake][loppuRivi] = poistoNappula;
@@ -587,7 +607,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 
 
 			}
-			// onko pitk‰ linna
+			// onko pitk√§ linna
 			else if (siirto.onkoPitkalinna())
 			{
 
@@ -597,11 +617,30 @@ MinMaxPaluu Asema::mini(int syvyys)
 				_lauta[2][7] = mk;
 
 			}
-
+			double ehdotettuArvo = maxi(syvyys - 1)._evaluointiArvo;
+			if (ehdotettuArvo < matalinArvo) {
+				matalinArvo = ehdotettuArvo;
+				parasSiirto = siirto;
+			}
+			if (siirto.onkoLyhytLinna())
+			{
+				_lauta[4][7] = mk;
+				_lauta[7][7] = mt;
+				_lauta[5][7] = nullptr;
+				_lauta[5][7] = nullptr;
+			}
+			// onko pitkÔøΩ linna
+			else if (siirto.onkoPitkalinna())
+			{
+				_lauta[4][7] = mk;
+				_lauta[0][7] = mt;
+				_lauta[3][7] = nullptr;
+				_lauta[2][7] = nullptr;
+			}
 		}
 		else
 		{
-			//siirret‰‰n nappulaa siirron mukaisesti
+			//siirret√§√§n nappulaa siirron mukaisesti
 			int alkuSarake = siirto.getAlkuruutu().getSarake();
 			int alkuRivi = siirto.getAlkuruutu().getRivi();
 			int loppuSarake = siirto.getLoppuruutu().getSarake();
@@ -621,7 +660,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 				parasSiirto = siirto;
 			}
 
-			//siirret‰‰n nappula takaisin.
+			//siirret√§√§n nappula takaisin.
 			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
 
 			_lauta[loppuSarake][loppuRivi] = poistoNappula;
@@ -683,7 +722,9 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 		_lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
 		_lauta[alkuSarake][alkuRivi] = nullptr;
 
-		if ( _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()] &&(_siirtovuoro == 0 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()]->getKoodi() == MK))
+		if ( _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()] && 
+			(_siirtovuoro == 0 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()]->getKoodi() == VK) || 
+			(_siirtovuoro == 1 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()]->getKoodi() == MK))
 		{
 			Ruutu* tempRuutu = kuninkaanRuutu;
 			for (int i = 0; i < 8; i++)
