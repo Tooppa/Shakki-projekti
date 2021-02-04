@@ -308,8 +308,8 @@ double Asema::evaluoi()
 {
 	double evaluaatio = 0;
 
-	Ruutu* valkoinenK;
-	Ruutu* mustaK;
+	Ruutu valkoinenK;
+	Ruutu mustaK;
 	//kertoimet asetettu sen takia että niiden avulla asioiden painoarvoa voidaan säätää helposti yhdestä paikasta
 	double d = 9, t = 5, l = 3.25, r = 3, s = 1;
 
@@ -335,7 +335,7 @@ double Asema::evaluoi()
 						evaluaatio += d;
 						// otetaan kuningas talteen
 					case VK:
-						valkoinenK = new Ruutu(i, j);
+						valkoinenK = Ruutu(i, j);
 					}
 
 				}
@@ -355,21 +355,18 @@ double Asema::evaluoi()
 						evaluaatio -= d;
 						// otetaan kuningas talteen
 					case MK:
-						mustaK = new Ruutu(i, j);
+						mustaK = Ruutu(i, j);
 					}
 				}
 			}
 		}
 
-	int vkSarake = valkoinenK->getSarake();
-	int vkRivi = valkoinenK->getRivi();
+	int vkSarake = valkoinenK.getSarake();
+	int vkRivi = valkoinenK.getRivi();
 
-	delete valkoinenK;
+	int mkSarake = mustaK.getSarake();
+	int mkRivi = mustaK.getRivi();
 
-	int mkSarake = mustaK->getSarake();
-	int mkRivi = mustaK->getRivi();
-
-	delete mustaK;
 
 	// 2. kuninkaan turvallisuus
 	// evaluaatioon lisätään 0.25 jos kuningas on tornittanut ja/tai liikkunut pois keskeltä
