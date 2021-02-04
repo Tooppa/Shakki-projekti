@@ -505,6 +505,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 	Siirto parasSiirto;
 
 	for each (Siirto siirto in siirrot) {
+		_siirtovuoro = 1;
 		//siirretään nappulaa siirron mukaisesti
 		if (siirto.onkoLyhytLinna() || siirto.onkoPitkalinna())
 		{
@@ -575,7 +576,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 	}
 	paluu._evaluointiArvo = korkeinArvo;
 	paluu._parasSiirto = parasSiirto;
-
+	_siirtovuoro = 0;
 
 	return paluu;
 }
@@ -596,6 +597,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 	Siirto parasSiirto;
 
 	for each (Siirto siirto in siirrot) {
+		_siirtovuoro = 0;
 		if (siirto.onkoLyhytLinna() || siirto.onkoPitkalinna())
 		{
 			if (siirto.onkoLyhytLinna())
@@ -604,8 +606,6 @@ MinMaxPaluu Asema::mini(int syvyys)
 				_lauta[7][7] = nullptr;
 				_lauta[5][7] = mt;
 				_lauta[5][7] = mk;
-
-
 			}
 			// onko pitkä linna
 			else if (siirto.onkoPitkalinna())
@@ -615,7 +615,6 @@ MinMaxPaluu Asema::mini(int syvyys)
 				_lauta[0][7] = nullptr;
 				_lauta[3][7] = mt;
 				_lauta[2][7] = mk;
-
 			}
 			double ehdotettuArvo = maxi(syvyys - 1)._evaluointiArvo;
 			if (ehdotettuArvo < matalinArvo) {
@@ -668,6 +667,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 
 		paluu._evaluointiArvo = matalinArvo;
 		paluu._parasSiirto = parasSiirto;
+		_siirtovuoro = 1;
 
 
 		return paluu;
