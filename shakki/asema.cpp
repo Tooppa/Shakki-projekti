@@ -95,13 +95,13 @@ void Asema::paivitaAsema(Siirto* siirto)
 			_lauta[4][0] = nullptr;
 			_lauta[7][0] = nullptr;
 			_lauta[5][0] = vt;
-			_lauta[5][0] = vk;
+			_lauta[6][0] = vk;
 		}
 		if (getSiirtovuoro() == 1 && !getOnkoMustaKTliikkunut() && !getOnkoMustaKuningasLiikkunut()) {
 			_lauta[4][7] = nullptr;
 			_lauta[7][7] = nullptr;
 			_lauta[5][7] = mt;
-			_lauta[5][7] = mk;
+			_lauta[6][7] = mk;
 		}
 	}
 	// onko pitkä linna
@@ -514,7 +514,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 				_lauta[4][0] = nullptr;
 				_lauta[7][0] = nullptr;
 				_lauta[5][0] = vt;
-				_lauta[5][0] = vk;
+				_lauta[6][0] = vk;
 			}
 			// onko pitkä linna
 			else if (siirto.onkoPitkalinna())
@@ -535,7 +535,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 				_lauta[4][0] = vk;
 				_lauta[7][0] = vt;
 				_lauta[5][0] = nullptr;
-				_lauta[5][0] = nullptr;
+				_lauta[6][0] = nullptr;
 			}
 			// onko pitk� linna
 			else if (siirto.onkoPitkalinna())
@@ -569,14 +569,13 @@ MinMaxPaluu Asema::maxi(int syvyys)
 
 			//siirretään nappula takaisin.
 			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
-
 			_lauta[loppuSarake][loppuRivi] = poistoNappula;
+			_siirtovuoro = 0;
 		}
 
 	}
 	paluu._evaluointiArvo = korkeinArvo;
 	paluu._parasSiirto = parasSiirto;
-	_siirtovuoro = 0;
 
 	return paluu;
 }
@@ -605,7 +604,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 				_lauta[4][7] = nullptr;
 				_lauta[7][7] = nullptr;
 				_lauta[5][7] = mt;
-				_lauta[5][7] = mk;
+				_lauta[6][7] = mk;
 			}
 			// onko pitkä linna
 			else if (siirto.onkoPitkalinna())
@@ -626,7 +625,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 				_lauta[4][7] = mk;
 				_lauta[7][7] = mt;
 				_lauta[5][7] = nullptr;
-				_lauta[5][7] = nullptr;
+				_lauta[6][7] = nullptr;
 			}
 			// onko pitk� linna
 			else if (siirto.onkoPitkalinna())
@@ -661,14 +660,12 @@ MinMaxPaluu Asema::mini(int syvyys)
 
 			//siirretään nappula takaisin.
 			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
-
 			_lauta[loppuSarake][loppuRivi] = poistoNappula;
+			_siirtovuoro = 1;
 		}
 
 		paluu._evaluointiArvo = matalinArvo;
 		paluu._parasSiirto = parasSiirto;
-		_siirtovuoro = 1;
-
 
 		return paluu;
 	}
