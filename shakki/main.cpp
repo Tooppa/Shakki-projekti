@@ -8,14 +8,14 @@
 #include "Siirto.h"
 #include "asema.h"
 
-using namespace std; 
+using namespace std;
 
 int main()
 {
 	wcout << "HeippariShakki\n";
 	wcout << "Tervetuloa pelaamaan!\n";
 	int lopetus = 100;
-	Asema asema; 
+	Asema asema;
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
 
 	Peli peli(Kayttoliittyma::getInstance()->
@@ -53,6 +53,6 @@ int main()
 		asema.paivitaAsema(&siirto);
 	}
 
-	
+
 	return 0;
 }

@@ -508,7 +508,22 @@ MinMaxPaluu Asema::maxi(int syvyys)
 		//siirret‰‰n nappulaa siirron mukaisesti
 		if (siirto.onkoLyhytLinna() || siirto.onkoPitkalinna())
 		{
+			if (siirto.onkoLyhytLinna())
+			{
+				_lauta[4][0] = nullptr;
+				_lauta[7][0] = nullptr;
+				_lauta[5][0] = vt;
+				_lauta[5][0] = vk;
+			}
+			// onko pitk‰ linna
+			else if (siirto.onkoPitkalinna())
+			{
 
+				_lauta[4][0] = nullptr;
+				_lauta[0][0] = nullptr;
+				_lauta[3][0] = vt;
+				_lauta[2][0] = vk;
+			}
 		}
 		else
 		{
@@ -536,7 +551,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 
 			_lauta[loppuSarake][loppuRivi] = poistoNappula;
 		}
-		
+
 	}
 	paluu._evaluointiArvo = korkeinArvo;
 	paluu._parasSiirto = parasSiirto;
@@ -561,36 +576,62 @@ MinMaxPaluu Asema::mini(int syvyys)
 	Siirto parasSiirto;
 
 	for each (Siirto siirto in siirrot) {
-		//siirret‰‰n nappulaa siirron mukaisesti
-		int alkuSarake = siirto.getAlkuruutu().getSarake();
-		int alkuRivi = siirto.getAlkuruutu().getRivi();
-		int loppuSarake = siirto.getLoppuruutu().getSarake();
-		int loppuRivi = siirto.getLoppuruutu().getRivi();
+		if (siirto.onkoLyhytLinna() || siirto.onkoPitkalinna())
+		{
+			if (siirto.onkoLyhytLinna())
+			{
+				_lauta[4][7] = nullptr;
+				_lauta[7][7] = nullptr;
+				_lauta[5][7] = mt;
+				_lauta[5][7] = mk;
 
-		Nappula* poistoNappula = nullptr;
-		if (_lauta[loppuSarake][loppuRivi])
-			poistoNappula = _lauta[loppuSarake][loppuRivi];
+			}
+			// onko pitk‰ linna
+			else if (siirto.onkoPitkalinna())
+			{
 
-		_lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
-		_lauta[alkuSarake][alkuRivi] = nullptr;
-		//katsotaan seuraavat arvot
+				_lauta[4][7] = nullptr;
+				_lauta[0][7] = nullptr;
+				_lauta[3][7] = mt;
+				_lauta[2][7] = mk;
 
-		double ehdotettuArvo = maxi(syvyys - 1)._evaluointiArvo;
-		if (ehdotettuArvo < matalinArvo) {
-			matalinArvo = ehdotettuArvo;
-			parasSiirto = siirto;
+			}
+
+		}
+		else
+		{
+			//siirret‰‰n nappulaa siirron mukaisesti
+			int alkuSarake = siirto.getAlkuruutu().getSarake();
+			int alkuRivi = siirto.getAlkuruutu().getRivi();
+			int loppuSarake = siirto.getLoppuruutu().getSarake();
+			int loppuRivi = siirto.getLoppuruutu().getRivi();
+
+			Nappula* poistoNappula = nullptr;
+			if (_lauta[loppuSarake][loppuRivi])
+				poistoNappula = _lauta[loppuSarake][loppuRivi];
+
+			_lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
+			_lauta[alkuSarake][alkuRivi] = nullptr;
+			//katsotaan seuraavat arvot
+
+			double ehdotettuArvo = maxi(syvyys - 1)._evaluointiArvo;
+			if (ehdotettuArvo < matalinArvo) {
+				matalinArvo = ehdotettuArvo;
+				parasSiirto = siirto;
+			}
+
+			//siirret‰‰n nappula takaisin.
+			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
+
+			_lauta[loppuSarake][loppuRivi] = poistoNappula;
 		}
 
-		//siirret‰‰n nappula takaisin.
-		_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
+		paluu._evaluointiArvo = matalinArvo;
+		paluu._parasSiirto = parasSiirto;
 
-		_lauta[loppuSarake][loppuRivi] = poistoNappula;
+
+		return paluu;
 	}
-	paluu._evaluointiArvo = matalinArvo;
-	paluu._parasSiirto = parasSiirto;
-
-
-	return paluu;
 }
 
 
@@ -641,7 +682,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 		_lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
 		_lauta[alkuSarake][alkuRivi] = nullptr;
 
-		if ((_siirtovuoro == 0 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()]->getKoodi() == MK))
+		if ((_siirtovuoro == 0 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()] && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[kuninkaanRuutu->getSarake()][kuninkaanRuutu->getRivi()]->getKoodi() == MK))
 		{
 			Ruutu* tempRuutu = kuninkaanRuutu;
 			for (int i = 0; i < 8; i++)
@@ -672,7 +713,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 		bool laiton = false;
 		Ruutu* ruutu1 = new Ruutu(2, 0);
 		Ruutu* ruutu2 = new Ruutu(3, 0);
-		if(_lauta[1][0] && _lauta[2][0] && _lauta[3][0]) laiton = true;
+		if (_lauta[1][0] && _lauta[2][0] && _lauta[3][0]) laiton = true;
 		else if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
 		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
 		else if (onkoRuutuUhattu(ruutu2, !_siirtovuoro)) laiton = true;
