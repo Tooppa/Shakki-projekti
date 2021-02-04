@@ -67,6 +67,11 @@ Asema::Asema()
 
 }
 
+//Asema::~Asema()
+//{
+//		delete[] _lauta;
+//}
+
 
 void Asema::paivitaAsema(Siirto* siirto)
 {
@@ -359,8 +364,12 @@ double Asema::evaluoi()
 	int vkSarake = valkoinenK->getSarake();
 	int vkRivi = valkoinenK->getRivi();
 
+	delete valkoinenK;
+
 	int mkSarake = mustaK->getSarake();
 	int mkRivi = mustaK->getRivi();
+
+	delete mustaK;
 
 	// 2. kuninkaan turvallisuus
 	// evaluaatioon lisätään 0.25 jos kuningas on tornittanut ja/tai liikkunut pois keskeltä
@@ -551,7 +560,6 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema a)
 				korkeinArvo = ehdotettuArvo;
 				parasSiirto = siirto;
 			}
-
 		}
 	}
 	siirrot.clear();
@@ -639,14 +647,18 @@ MinMaxPaluu Asema::mini(int syvyys, Asema a)
 
 bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 {
-	std::list<Siirto> tempLista;
+	list<Siirto> tempLista;
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
 			if (_lauta[i][j] && _lauta[i][j]->getVari() == vastustajanVari)
-				_lauta[i][j]->annaSiirrot(tempLista, new Ruutu(i, j), this, vastustajanVari);
+			{
+				Ruutu* temp = new Ruutu(i, j);
+				_lauta[i][j]->annaSiirrot(tempLista, temp, this, vastustajanVari);
+				delete temp;
+			}
 
-	std::list<Siirto>::iterator iterator;
+	list<Siirto>::iterator iterator;
 	for (iterator = tempLista.begin(); iterator != tempLista.end(); iterator++)
 		if (&iterator->getLoppuruutu() == ruutu)
 			return true;
@@ -654,20 +666,24 @@ bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 }
 
 
-void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
+void Asema::huolehdiKuninkaanShakeista(list<Siirto>& lista, int vari)
 {
 
 }
 
 
-void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
+void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 	Ruutu* kuninkaanRuutu;
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
 		{
 			if (_lauta[i][j] && _lauta[i][j]->getVari() == _siirtovuoro)
-				_lauta[i][j]->annaSiirrot(lista, new Ruutu(i, j), this, _siirtovuoro);
+			{
+				Ruutu* temp = new Ruutu(i, j);
+				_lauta[i][j]->annaSiirrot(lista, temp, this, _siirtovuoro);
+				delete temp;
+			}
 
 			if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK)))
 				kuninkaanRuutu = new Ruutu(i, j);

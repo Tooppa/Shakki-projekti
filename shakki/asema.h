@@ -31,7 +31,7 @@ public:
 	int kaksoisaskelSarakkeella = -1;
 
 
-	Asema();												// Asettaa alkuaseman.
+	Asema();	
 	void paivitaAsema(Siirto*);								// P‰ivitt‰‰ aseman annetulla siirrolla.
 	double evaluoi();										// Aseman numeerinen arviointi.
 	MinMaxPaluu maxi(int syvyys, Asema a);							// Minimax (max:n siirtovuoro).
