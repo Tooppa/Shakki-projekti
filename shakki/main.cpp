@@ -20,7 +20,7 @@ int main()
 
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
-	std::list<Siirto> lista;
+	list<Siirto> lista;
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
 
@@ -32,17 +32,17 @@ int main()
 		asema.annaLaillisetSiirrot(lista);
 		if (lista.size() == 0) {
 			lopetus = 0;
-			std::wcout << "Peli loppui";
+			wcout << "Peli loppui";
 			continue;
 		}
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
 			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
-				paluu = asema.maxi(4, asema);
+				paluu = asema.maxi(2);
 			}
 			else {
-				paluu = asema.mini(4, asema);
+				paluu = asema.mini(2);
 			}
 			siirto = paluu._parasSiirto;
 		}

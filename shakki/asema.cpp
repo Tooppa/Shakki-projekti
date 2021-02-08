@@ -307,11 +307,11 @@ vai olla estämässä vastustajan korotusta siksi ei oteta kantaa
 double Asema::evaluoi()
 {
 	double evaluaatio = 0;
+	//kertoimet asetettu sen takia että niiden avulla asioiden painoarvoa voidaan säätää helposti yhdestä paikasta
+	double d = 9, t = 5, l = 3.25, r = 3, s = 1;
 
 	Ruutu valkoinenK;
 	Ruutu mustaK;
-	//kertoimet asetettu sen takia että niiden avulla asioiden painoarvoa voidaan säätää helposti yhdestä paikasta
-	double d = 9, t = 5, l = 3.25, r = 3, s = 1;
 
 	//1. Nappuloiden arvo
 	for (int i = 0; i < 8; i++)
@@ -337,7 +337,6 @@ double Asema::evaluoi()
 					case VK:
 						valkoinenK = Ruutu(i, j);
 					}
-
 				}
 				else
 				{
@@ -367,7 +366,6 @@ double Asema::evaluoi()
 	int mkSarake = mustaK.getSarake();
 	int mkRivi = mustaK.getRivi();
 
-
 	// 2. kuninkaan turvallisuus
 	// evaluaatioon lisätään 0.25 jos kuningas on tornittanut ja/tai liikkunut pois keskeltä
 	// lisäksi mikäli kuninkaan edessä ja ainakin toisessa viistoruudussa on oma nappula lisätään 0.75
@@ -382,10 +380,10 @@ double Asema::evaluoi()
 				evaluaatio += 0.75;
 		}
 	if (mkRivi == 7)
-		if (mkSarake <= 7 || mkSarake == 6 || mkSarake == 2 || mkSarake >= 0)
+		if (mkSarake <= 7 || mkSarake >= 6 || mkSarake <= 2 || mkSarake >= 0)
 		{
 			evaluaatio -= 0.25;
-			if ((_lauta[mkSarake][6] && _lauta[mkSarake][6]->getVari() == 0) &&
+			if ((_lauta[mkSarake][6] && _lauta[mkSarake][6]->getVari() == 1) &&
 				((mkSarake - 1 >= 0 && _lauta[mkSarake - 1][6] && _lauta[mkSarake - 1][6]->getVari() == 0) ||
 					(mkSarake + 1 <= 7 && _lauta[mkSarake + 1][6] && _lauta[mkSarake + 1][6]->getVari() == 0)))
 				evaluaatio -= 0.75;
@@ -398,11 +396,10 @@ double Asema::evaluoi()
 	return evaluaatio;
 }
 
-
-double Asema::laskeNappuloidenArvo(int vari)
+// laskee nappuloiden arvot ja ottaa kuninkaat talteen
+double Asema::laskeNappuloidenArvo(int i)
 {
 	return 0;
-
 }
 
 
@@ -476,175 +473,137 @@ double Asema::linjat(int vari)
 //	}
 //	return min;
 //}
-MinMaxPaluu Asema::minimax(int syvyys)
+//MinMaxPaluu Asema::minimax(int syvyys)
+//{
+//	MinMaxPaluu paluuarvo;
+//
+//
+//	// Generoidaan aseman lailliset siirrot.
+//	std::list<Siirto> siirrot;
+//	annaLaillisetSiirrot(siirrot);
+//	// Rekursion kantatapaus 1: peli on loppu
+//	if (siirrot.size() == 0) {
+//		return paluuarvo;
+//	}
+//	// Rekursion kantatapaus 2: katkaisusyvyydessä
+//	else if (getSiirtovuoro() == 0) paluuarvo = maxi(syvyys, *this);
+//	else if (getSiirtovuoro() == 1) paluuarvo = mini(syvyys, *this);
+//	// Rekursioaskel: kokeillaan jokaista laillista siirtoa s
+//	// (alustetaan paluuarvo huonoimmaksi mahdolliseksi).
+//
+//	return paluuarvo;
+//}
+//
+
+
+MinMaxPaluu Asema::maxi(int syvyys)
 {
-	MinMaxPaluu paluuarvo;
-
-
-	// Generoidaan aseman lailliset siirrot.
-	std::list<Siirto> siirrot;
-	annaLaillisetSiirrot(siirrot);
-	// Rekursion kantatapaus 1: peli on loppu
-	if (siirrot.size() == 0) {
-		return paluuarvo;
-	}
-	// Rekursion kantatapaus 2: katkaisusyvyydessä
-	else if (getSiirtovuoro() == 0) paluuarvo = maxi(syvyys, *this);
-	else if (getSiirtovuoro() == 1) paluuarvo = mini(syvyys, *this);
-	// Rekursioaskel: kokeillaan jokaista laillista siirtoa s
-	// (alustetaan paluuarvo huonoimmaksi mahdolliseksi).
-
-	return paluuarvo;
-}
-
-
-MinMaxPaluu Asema::maxi(int syvyys, Asema a)
-{
+	list<Siirto> siirrot;
 	MinMaxPaluu paluu;
-	paluu._evaluointiArvo = evaluoi();
-	if (syvyys == 0) return paluu;
-
-	std::list<Siirto> siirrot;
+	Ruutu kuninkaanRuutu;
 	annaLaillisetSiirrot(siirrot);
-	double korkeinArvo = 0;
+	double korkeinArvo = -100000;
+	double ehdotettuArvo;
+	Asema uusiAsema;
 	Siirto parasSiirto;
-
-	for each (Siirto siirto in siirrot) {
-
-		//siirretään nappulaa siirron mukaisesti
-		if (siirto.onkoLyhytLinna() || siirto.onkoPitkalinna())
+	
+	if (siirrot.size() == 0)
+	{
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++)
+				if (_lauta[i][j] && _lauta[i][j]->getKoodi() == VK)
+				{
+					kuninkaanRuutu.setSarake(i);
+					kuninkaanRuutu.setRivi(j);
+				}
+		if (onkoRuutuUhattu(kuninkaanRuutu, 1))
 		{
-			if (siirto.onkoLyhytLinna())
-			{
-				a._lauta[4][0] = nullptr;
-				a._lauta[7][0] = nullptr;
-				a._lauta[5][0] = vt;
-				a._lauta[6][0] = vk;
-			}
-			// onko pitkä linna
-			else if (siirto.onkoPitkalinna()) {
-				a._lauta[4][0] = nullptr;
-				a._lauta[0][0] = nullptr;
-				a._lauta[3][0] = vt;
-				a._lauta[2][0] = vk;
-			}
-			a._siirtovuoro = 1;
-			double ehdotettuArvo = mini(syvyys - 1, a)._evaluointiArvo;
-			a._siirtovuoro = 0;
-			if (korkeinArvo <= ehdotettuArvo) {
-				korkeinArvo = ehdotettuArvo;
-				parasSiirto = siirto;
-			}
+			paluu._evaluointiArvo = -100000;
+			return paluu;
 		}
-		else
+		if (!onkoRuutuUhattu(kuninkaanRuutu, 1))
 		{
-			int alkuSarake = siirto.getAlkuruutu().getSarake();
-			int alkuRivi = siirto.getAlkuruutu().getRivi();
-			int loppuSarake = siirto.getLoppuruutu().getSarake();
-			int loppuRivi = siirto.getLoppuruutu().getRivi();
-
-			Nappula* poistoNappula = nullptr;
-			if (a._lauta[loppuSarake][loppuRivi])
-				poistoNappula = _lauta[loppuSarake][loppuRivi];
-
-			a._lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
-			a._lauta[alkuSarake][alkuRivi] = nullptr;
-			//katsotaan seuraavat arvot
-			a._siirtovuoro = 1;
-			double ehdotettuArvo = mini(syvyys - 1, a)._evaluointiArvo;
-			a._siirtovuoro = 0;
-			if (korkeinArvo <= ehdotettuArvo) {
-				korkeinArvo = ehdotettuArvo;
-				parasSiirto = siirto;
-			}
+			paluu._evaluointiArvo = 0;
+			return paluu;
 		}
 	}
-	siirrot.clear();
+	
+	if (syvyys == 0) 
+	{
+		paluu._evaluointiArvo = evaluoi();
+		return paluu;
+	}
+	for each (Siirto siirto in siirrot)
+	{
+		uusiAsema = *this;
+		uusiAsema.paivitaAsema(&siirto);
+		ehdotettuArvo = uusiAsema.mini(syvyys - 1)._evaluointiArvo;
+		if (korkeinArvo < ehdotettuArvo) {
+			korkeinArvo = ehdotettuArvo;
+			parasSiirto = siirto;
+		}
+	}
 	paluu._evaluointiArvo = korkeinArvo;
 	paluu._parasSiirto = parasSiirto;
-
 	return paluu;
 }
 
 
-MinMaxPaluu Asema::mini(int syvyys, Asema a)
+MinMaxPaluu Asema::mini(int syvyys)
 {
+	list<Siirto> siirrot;
 	MinMaxPaluu paluu;
+	Ruutu kuninkaanRuutu;
+	annaLaillisetSiirrot(siirrot);
+	double matalinArvo = 100000;
+	double ehdotettuArvo;
+	Asema uusiAsema;
+	Siirto parasSiirto;
 
-	if (syvyys == 0) {
+	if (siirrot.size() == 0)
+	{
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++)
+				if (_lauta[i][j] && _lauta[i][j]->getKoodi() == MK)
+				{
+					kuninkaanRuutu.setSarake(i);
+					kuninkaanRuutu.setRivi(j);
+				}
+		if (onkoRuutuUhattu(kuninkaanRuutu, 1))
+		{
+			paluu._evaluointiArvo = 100000;
+			return paluu;
+		}
+		if (!onkoRuutuUhattu(kuninkaanRuutu, 1))
+		{
+			paluu._evaluointiArvo = 0;
+			return paluu;
+		}
+	}
+		
+	if (syvyys == 0)
+	{
 		paluu._evaluointiArvo = evaluoi();
 		return paluu;
 	}
-
-	std::list<Siirto> siirrot;
-	annaLaillisetSiirrot(siirrot);
-	double matalinArvo = 0;
-	Siirto parasSiirto;
-
-	for each (Siirto siirto in siirrot) {
-
-		if (siirto.onkoLyhytLinna() || siirto.onkoPitkalinna())
-		{
-			if (siirto.onkoLyhytLinna())
-			{
-				a._lauta[4][7] = nullptr;
-				a._lauta[7][7] = nullptr;
-				a._lauta[5][7] = mt;
-				a._lauta[6][7] = mk;
-			}
-			// onko pitkä linna
-			else if (siirto.onkoPitkalinna())
-			{
-
-				a._lauta[4][7] = nullptr;
-				a._lauta[0][7] = nullptr;
-				a._lauta[3][7] = mt;
-				a._lauta[2][7] = mk;
-			}
-			a._siirtovuoro = 0;
-			double ehdotettuArvo = maxi(syvyys - 1, a)._evaluointiArvo;
-			a._siirtovuoro = 1;
-			if (ehdotettuArvo <= matalinArvo) {
-				matalinArvo = ehdotettuArvo;
-				parasSiirto = siirto;
-			}
+	for each (Siirto siirto in siirrot)
+	{
+		uusiAsema = *this;
+		uusiAsema.paivitaAsema(&siirto);
+		ehdotettuArvo = uusiAsema.maxi(syvyys - 1)._evaluointiArvo;
+		if (matalinArvo > ehdotettuArvo) {
+			matalinArvo = ehdotettuArvo;
+			parasSiirto = siirto;
 		}
-		else
-		{
-			//siirretään nappulaa siirron mukaisesti
-			int alkuSarake = siirto.getAlkuruutu().getSarake();
-			int alkuRivi = siirto.getAlkuruutu().getRivi();
-			int loppuSarake = siirto.getLoppuruutu().getSarake();
-			int loppuRivi = siirto.getLoppuruutu().getRivi();
-
-			Nappula* poistoNappula = nullptr;
-			if (a._lauta[loppuSarake][loppuRivi])
-				poistoNappula = a._lauta[loppuSarake][loppuRivi];
-
-			a._lauta[loppuSarake][loppuRivi] = a._lauta[alkuSarake][alkuRivi];
-			a._lauta[alkuSarake][alkuRivi] = nullptr;
-			//katsotaan seuraavat arvot
-			a._siirtovuoro = 0;
-			double ehdotettuArvo = maxi(syvyys - 1, a)._evaluointiArvo;
-			a._siirtovuoro = 1;
-			if (ehdotettuArvo <= matalinArvo) {
-				matalinArvo = ehdotettuArvo;
-				parasSiirto = siirto;
-			}
-
-		}
-
 	}
-	siirrot.clear();
 	paluu._evaluointiArvo = matalinArvo;
 	paluu._parasSiirto = parasSiirto;
-	
 	return paluu;
 }
 
 bool Asema::onkoRuutuUhattu(Ruutu ruutu, int vastustajanVari)
 {
-	list<Siirto> tempLista;
+	list<Siirto> siirrot;
 	Ruutu temp;
 
 	for (int i = 0; i < 8; i++)
@@ -652,10 +611,10 @@ bool Asema::onkoRuutuUhattu(Ruutu ruutu, int vastustajanVari)
 			if (_lauta[i][j] && _lauta[i][j]->getVari() == vastustajanVari)
 			{
 				temp = Ruutu(i, j);
-				_lauta[i][j]->annaSiirrot(tempLista, &temp, this, vastustajanVari);
+				_lauta[i][j]->annaSiirrot(siirrot, &temp, this, vastustajanVari);
 			}
 
-	for each (Siirto siirto in tempLista)
+	for each (Siirto siirto in siirrot)
 		if (siirto.getLoppuruutu() == ruutu)
 			return true;
 	return false;
@@ -671,6 +630,8 @@ void Asema::huolehdiKuninkaanShakeista(list<Siirto>& lista, int vari)
 void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 	Ruutu kuninkaanRuutu;
 	Ruutu temp;
+	Asema uusiAsema;
+	Siirto poistettava;
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
@@ -687,43 +648,22 @@ void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 
 	for each (Siirto siirto in lista)
 	{
-		int alkuSarake = siirto.getAlkuruutu().getSarake();
-		int alkuRivi = siirto.getAlkuruutu().getRivi();
-		int loppuSarake = siirto.getLoppuruutu().getSarake();
-		int loppuRivi = siirto.getLoppuruutu().getRivi();
-
-		Nappula* poistoNappula = _lauta[loppuSarake][loppuRivi];
-		_lauta[loppuSarake][loppuRivi] = _lauta[alkuSarake][alkuRivi];
-		_lauta[alkuSarake][alkuRivi] = nullptr;
+		uusiAsema = *this;
+		uusiAsema.paivitaAsema(&siirto);
 
 		if (_lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()] &&
 			((_siirtovuoro == 0 && _lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == VK) ||
 				(_siirtovuoro == 1 && _lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == MK)))
 		{
-			Ruutu tempRuutu = kuninkaanRuutu;
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
 					if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK)))
 						kuninkaanRuutu = Ruutu(i, j);
-
-			if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro))
-				lista.remove(siirto);
-
-			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
-			_lauta[loppuSarake][loppuRivi] = poistoNappula;
-
-
-			kuninkaanRuutu = tempRuutu;
 		}
-		else
-		{
-			if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro))
-				lista.remove(siirto);
-
-			_lauta[alkuSarake][alkuRivi] = _lauta[loppuSarake][loppuRivi];
-			_lauta[loppuSarake][loppuRivi] = poistoNappula;
-		}
+		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro))
+			poistettava = siirto;
 	}
+	if (poistettava.getAlkuruutu().getRivi() < 0)lista.remove(poistettava);
 	//Tornitukset
 	if (_siirtovuoro == 0 && (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaDTliikkunut())) {
 		bool laiton = false;
