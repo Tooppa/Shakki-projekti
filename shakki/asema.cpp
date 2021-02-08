@@ -660,9 +660,10 @@ void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 					if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK)))
 						kuninkaanRuutu = Ruutu(i, j);
 		}
-		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro))
-			poistettava = siirto;
+		//mikäli siirto uhkaa kuningasta laitetaan se poistettavaksi
+		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) poistettava = siirto;
 	}
+	// hmm ehkä vähän huono tapa mutta kun siirtoa ei ole alustettu niin sen rivit on jotai overflow kamaa 
 	if (poistettava.getAlkuruutu().getRivi() < 0)lista.remove(poistettava);
 	//Tornitukset
 	if (_siirtovuoro == 0 && (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaDTliikkunut())) {
