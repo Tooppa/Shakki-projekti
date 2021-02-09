@@ -32,7 +32,7 @@ void Kayttoliittyma::piirraLauta()
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
 			BACKGROUND_GREEN | BACKGROUND_BLUE);
 		wcout << " " << i + 1 << " ";
-		for (int j = 0; j < 8; j++)
+		for (int j = 7; j >= 0; j--)
 		{
 			if (lastSquareBlack) {
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
@@ -50,9 +50,9 @@ void Kayttoliittyma::piirraLauta()
 		wcout << "\n";
 		lastSquareBlack = !lastSquareBlack;
 	}
-	
+
 	wcout << "   ";
-	for (int i = 0; i < 8; i++)
+	for (int i = 7; i >= 0; i--)
 	{
 		wcout << " " << _kirjaimet[i] << " ";
 	}
@@ -60,7 +60,7 @@ void Kayttoliittyma::piirraLauta()
 
 
 /*
-	Aliohjelma tarkistaa että käyttäjän antama syöte siirroksi on 
+	Aliohjelma tarkistaa että käyttäjän antama syöte siirroksi on
 	muodollisesti korrekti (ei tarkista aseman laillisuutta)
 	Ottaa irti myös nappulan kirjaimen (K/D/L/R/T), tarkistaa että kirjain korrekti
 */
@@ -77,20 +77,20 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 		{
 			siirto = Siirto(false, true);
 		}
-		else 
+		else
 		{
-		//sotilas input
-			// 0 unikodessa numero 48, eli 49 miinustetaan vastauksesta ja 
-			// saadaan int muotoinen numero. "Purkkaa" t. menneisyyden Miika.
+			//sotilas input
+				// 0 unikodessa numero 48, eli 49 miinustetaan vastauksesta ja 
+				// saadaan int muotoinen numero. "Purkkaa" t. menneisyyden Miika.
 			int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
-			Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1]-49);
+			Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1] - 49);
 
 			int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
 			Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
 
 			siirto = Siirto(aloitusRuutu, lopetusRuutu);
 		}
-		
+
 	}
 	else if (vastaus.length() == 6) {
 		//joku nappula siirto;
@@ -107,14 +107,14 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 		siirto = Siirto(true, false);
 	}
 	return siirto;
-	
+
 }
 
-int Kayttoliittyma::koordinaattiKirjainNumeroksi(char kirjain) 
+int Kayttoliittyma::koordinaattiKirjainNumeroksi(char kirjain)
 {
 	for (int i = 0; i < 8; i++)
 	{
-		if (_kirjaimet[i] == kirjain) 
+		if (_kirjaimet[i] == kirjain)
 		{
 			return i;
 		}

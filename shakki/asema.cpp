@@ -79,18 +79,7 @@ void Asema::paivitaAsema(Siirto* siirto)
 	// Asetetaan myöhemmin, jos tarvii.
 
 	// Alustus
-	int alkuRivi = siirto->getAlkuruutu().getRivi();
-	int alkuSarake = siirto->getAlkuruutu().getSarake();
 
-	int loppuRivi = siirto->getLoppuruutu().getRivi();
-	int loppuSarake = siirto->getLoppuruutu().getSarake();
-
-	if (alkuRivi < 0 || alkuRivi > 7 || loppuRivi < 0 || loppuRivi > 7 || alkuSarake < 0 || alkuSarake > 7 || loppuSarake < 0 || loppuSarake > 7)
-	{
-		if (_siirtovuoro == 1) _siirtovuoro = 0;
-		else _siirtovuoro = 1;
-		return;
-	}
 
 
 	//Tarkastetaan on siirto lyhyt linna
@@ -128,6 +117,18 @@ void Asema::paivitaAsema(Siirto* siirto)
 	// Kaikki muut siirrot
 	else
 	{
+		int alkuRivi = siirto->getAlkuruutu().getRivi();
+		int alkuSarake = siirto->getAlkuruutu().getSarake();
+
+		int loppuRivi = siirto->getLoppuruutu().getRivi();
+		int loppuSarake = siirto->getLoppuruutu().getSarake();
+
+		if (alkuRivi < 0 || alkuRivi > 7 || loppuRivi < 0 || loppuRivi > 7 || alkuSarake < 0 || alkuSarake > 7 || loppuSarake < 0 || loppuSarake > 7)
+		{
+			if (_siirtovuoro == 1) _siirtovuoro = 0;
+			else _siirtovuoro = 1;
+			return;
+		}
 		//Ottaa siirron alkuruudussa olleen nappulan talteen 
 		Nappula* nappula = _lauta[alkuSarake][alkuRivi];
 
@@ -508,7 +509,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 	double ehdotettuArvo;
 	Asema uusiAsema;
 	Siirto parasSiirto;
-	
+
 	if (siirrot.size() == 0)
 	{
 		for (int i = 0; i < 8; i++)
@@ -529,8 +530,8 @@ MinMaxPaluu Asema::maxi(int syvyys)
 			return paluu;
 		}
 	}
-	
-	if (syvyys == 0) 
+
+	if (syvyys == 0)
 	{
 		paluu._evaluointiArvo = evaluoi();
 		return paluu;
@@ -582,7 +583,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 			return paluu;
 		}
 	}
-		
+
 	if (syvyys == 0)
 	{
 		paluu._evaluointiArvo = evaluoi();
@@ -650,13 +651,13 @@ void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 		uusiAsema.paivitaAsema(&siirto);
 
 		// tämmönen ehkä toimii kuninkaanRuutu.getSarake() > 0
-		if (kuninkaanRuutu.getSarake() > 0 && _lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()] &&
-			((_siirtovuoro == 0 && _lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == VK) ||
-				(_siirtovuoro == 1 && _lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == MK)))
+		if (kuninkaanRuutu.getSarake() >= 0 && uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()] &&
+			((_siirtovuoro == 0 && uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == VK) ||
+				(_siirtovuoro == 1 && uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == MK)))
 		{
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
-					if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK)))
+					if (uusiAsema._lauta[i][j] && ((_siirtovuoro == 0 && uusiAsema._lauta[i][j]->getKoodi() == VK) || (uusiAsema._siirtovuoro == 1 && uusiAsema._lauta[i][j]->getKoodi() == MK)))
 						kuninkaanRuutu = Ruutu(i, j);
 		}
 		//mikäli siirto uhkaa kuningasta laitetaan se poistettavaksi
