@@ -308,7 +308,7 @@ double Asema::evaluoi()
 {
 	double evaluaatio = 0;
 	//kertoimet asetettu sen takia että niiden avulla asioiden painoarvoa voidaan säätää helposti yhdestä paikasta
-	double d = 9, t = 5, l = 3.25, r = 3, s = 1;
+	double k = 100000, d = 9, t = 5, l = 3.25, r = 3, s = 1;
 
 	Ruutu valkoinenK;
 	Ruutu mustaK;
@@ -335,6 +335,7 @@ double Asema::evaluoi()
 						evaluaatio += d;
 						// otetaan kuningas talteen
 					case VK:
+						evaluaatio += k;
 						valkoinenK = Ruutu(i, j);
 					}
 				}
@@ -354,6 +355,7 @@ double Asema::evaluoi()
 						evaluaatio -= d;
 						// otetaan kuningas talteen
 					case MK:
+						evaluaatio -= k;
 						mustaK = Ruutu(i, j);
 					}
 				}
@@ -604,14 +606,12 @@ MinMaxPaluu Asema::mini(int syvyys)
 bool Asema::onkoRuutuUhattu(Ruutu ruutu, int vastustajanVari)
 {
 	list<Siirto> siirrot;
-	Ruutu temp;
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
 			if (_lauta[i][j] && _lauta[i][j]->getVari() == vastustajanVari)
 			{
-				temp = Ruutu(i, j);
-				_lauta[i][j]->annaSiirrot(siirrot, &temp, this, vastustajanVari);
+				_lauta[i][j]->annaSiirrot(siirrot, &Ruutu(i, j), this, vastustajanVari);
 			}
 
 	for each (Siirto siirto in siirrot)
@@ -629,17 +629,15 @@ void Asema::huolehdiKuninkaanShakeista(list<Siirto>& lista, int vari)
 
 void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 	Ruutu kuninkaanRuutu;
-	Ruutu temp;
 	Asema uusiAsema;
-	Siirto poistettava;
+	list<Siirto> poistettava;
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
 		{
 			if (_lauta[i][j] && _lauta[i][j]->getVari() == _siirtovuoro)
 			{
-				temp = Ruutu(i, j);
-				_lauta[i][j]->annaSiirrot(lista, &temp, this, _siirtovuoro);
+				_lauta[i][j]->annaSiirrot(lista, &Ruutu(i, j), this, _siirtovuoro);
 			}
 
 			if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK)))
@@ -651,7 +649,8 @@ void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 		uusiAsema = *this;
 		uusiAsema.paivitaAsema(&siirto);
 
-		if (_lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()] &&
+		// tämmönen ehkä toimii kuninkaanRuutu.getSarake() > 0
+		if (kuninkaanRuutu.getSarake() > 0 && _lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()] &&
 			((_siirtovuoro == 0 && _lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == VK) ||
 				(_siirtovuoro == 1 && _lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == MK)))
 		{
@@ -661,10 +660,12 @@ void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 						kuninkaanRuutu = Ruutu(i, j);
 		}
 		//mikäli siirto uhkaa kuningasta laitetaan se poistettavaksi
-		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) poistettava = siirto;
+		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) poistettava.push_back(siirto);
 	}
-	// hmm ehkä vähän huono tapa mutta kun siirtoa ei ole alustettu niin sen rivit on jotai overflow kamaa 
-	if (poistettava.getAlkuruutu().getRivi() < 0)lista.remove(poistettava);
+	// käy läpi loopissa ja poistaa kaikki pää listasta 
+	if (poistettava.size() != 0)
+		for each (Siirto siirto in poistettava)
+			lista.remove(siirto);
 	//Tornitukset
 	if (_siirtovuoro == 0 && (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaDTliikkunut())) {
 		bool laiton = false;
