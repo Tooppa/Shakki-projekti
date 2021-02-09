@@ -123,6 +123,7 @@ void Asema::paivitaAsema(Siirto* siirto)
 		int loppuRivi = siirto->getLoppuruutu().getRivi();
 		int loppuSarake = siirto->getLoppuruutu().getSarake();
 
+		// jos laiton siirto niin vaihdetaan vuoroa
 		if (alkuRivi < 0 || alkuRivi > 7 || loppuRivi < 0 || loppuRivi > 7 || alkuSarake < 0 || alkuSarake > 7 || loppuSarake < 0 || loppuSarake > 7)
 		{
 			if (_siirtovuoro == 1) _siirtovuoro = 0;
@@ -164,55 +165,10 @@ void Asema::paivitaAsema(Siirto* siirto)
 
 		//// Katsotaan jos nappula on sotilas ja rivi on päätyrivi niin ei vaihdeta nappulaa 
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittymän laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
-		if (nappulanKoodi == MS)
+		if ((nappulanKoodi == MS && loppuRivi == 0) || (nappulanKoodi == VS && loppuRivi == 7))
 		{
-			if (loppuRivi == 0)
-			{
-				wcout << "Miksi korotetaan N/R/B/Q" << endl;
-				wchar_t input;
-				wcin >> input;
-				_lauta[alkuSarake][alkuRivi] = nullptr;
-				switch (input)
-				{
-				case 78:
-					_lauta[loppuSarake][loppuRivi] = mr;
-					break;
-				case 82:
-					_lauta[loppuSarake][loppuRivi] = mt;
-					break;
-				case 66:
-					_lauta[loppuSarake][loppuRivi] = ml;
-					break;
-				case 81:
-					_lauta[loppuSarake][loppuRivi] = md;
-					break;
-				}
-			}
-		}
-		else if (nappulanKoodi == VS)
-		{
-			if (loppuRivi == 7)
-			{
-				wcout << "Miksi korotetaan N/R/B/Q" << endl;
-				wchar_t input;
-				wcin >> input;
-				_lauta[alkuSarake][alkuRivi] = nullptr;
-				switch (input)
-				{
-				case 78:
-					_lauta[loppuSarake][loppuRivi] = vr;
-					break;
-				case 82:
-					_lauta[loppuSarake][loppuRivi] = vt;
-					break;
-				case 66:
-					_lauta[loppuSarake][loppuRivi] = vl;
-					break;
-				case 81:
-					_lauta[loppuSarake][loppuRivi] = vd;
-					break;
-				}
-			}
+			_lauta[alkuSarake][alkuSarake] = nullptr;
+			_lauta[loppuSarake][loppuRivi] = siirto->_miksikorotetaan;
 		}
 
 		//

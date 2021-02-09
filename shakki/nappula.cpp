@@ -2,6 +2,7 @@
 #include <string>
 #include "asema.h"
 #include "nappula.h"
+#include <iostream>
 using namespace std;
 
 
@@ -157,7 +158,12 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if (asema->_lauta[aloitusSarake][3] == nullptr)
 					lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, 3)));
 			}
-		}else if (asema->_lauta[aloitusSarake][aloitusRivi + 1] == nullptr)
+		}
+		else if (aloitusRivi + 1 == 7)
+		{
+			lisaaSotilaanKorotukset(Siirto(*ruutu, Ruutu(aloitusSarake, aloitusRivi + 1)), lista, asema);
+		}
+		else if (asema->_lauta[aloitusSarake][aloitusRivi + 1] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake,aloitusRivi + 1)));
 
 		if (aloitusSarake < 7) {
@@ -179,7 +185,12 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				if (asema->_lauta[aloitusSarake][4] == nullptr)
 					lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, 4)));
 			}
-		}else if (asema->_lauta[aloitusSarake][aloitusRivi - 1] == nullptr)
+		}
+		else if (aloitusRivi - 1 == 0)
+		{
+			lisaaSotilaanKorotukset(Siirto(*ruutu, Ruutu(aloitusSarake, aloitusRivi - 1)), lista, asema);
+		}
+		else if (asema->_lauta[aloitusSarake][aloitusRivi - 1] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, aloitusRivi - 1)));
 
 		if (aloitusSarake < 7) {
@@ -197,6 +208,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 }
 
 
-void Sotilas::lisaaSotilaanKorotukset(Siirto* siirto, std::list<Siirto>& lista, Asema* asema) {
-	
+void Sotilas::lisaaSotilaanKorotukset(Siirto siirto, std::list<Siirto>& lista, Asema* asema) 
+{
+
 }

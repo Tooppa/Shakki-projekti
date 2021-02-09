@@ -83,7 +83,7 @@ public:
 	Sotilas(std::wstring unicode, int vari, int koodi) : Nappula(unicode, vari, koodi) {}
 	void annaSiirrot(std::list<Siirto>& lista, Ruutu*, Asema*, int vari);
 private:
-	void lisaaSotilaanKorotukset(Siirto*, std::list<Siirto>& lista, Asema*);
+	void lisaaSotilaanKorotukset(Siirto, std::list<Siirto>& lista, Asema*);
 };
 
 

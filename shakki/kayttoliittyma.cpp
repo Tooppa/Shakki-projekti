@@ -106,8 +106,54 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 	{
 		siirto = Siirto(true, false);
 	}
-	return siirto;
+	else if (vastaus.length() == 7)
+	{
+		//korotus siirto;
+		int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[1]);
+		Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1] - 49);
 
+		int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[4]);
+		Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
+
+		siirto = Siirto(aloitusRuutu, lopetusRuutu);
+		// vastaus[4] - 49 on nolla jos musta on p‰‰tyriviss‰
+		if (vastaus[4] - 49 == 0) {
+			switch (vastaus[7])
+			{
+			case 78:
+				siirto._miksikorotetaan = Asema::mr;
+				break;
+			case 82:
+				siirto._miksikorotetaan = Asema::mt;
+				break;
+			case 66:
+				siirto._miksikorotetaan = Asema::ml;
+				break;
+			case 81:
+				siirto._miksikorotetaan = Asema::md;
+				break;
+			}
+		}
+		else
+		{
+			switch (vastaus[7])
+			{
+			case 78:
+				siirto._miksikorotetaan = Asema::vr;
+				break;
+			case 82:
+				siirto._miksikorotetaan = Asema::vt;
+				break;
+			case 66:
+				siirto._miksikorotetaan = Asema::vl;
+				break;
+			case 81:
+				siirto._miksikorotetaan = Asema::vd;
+				break;
+			}
+		}
+	}
+	return siirto;
 }
 
 int Kayttoliittyma::koordinaattiKirjainNumeroksi(char kirjain)
