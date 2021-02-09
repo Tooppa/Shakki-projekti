@@ -661,7 +661,7 @@ void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 						kuninkaanRuutu = Ruutu(i, j);
 		}
 		//mikäli siirto uhkaa kuningasta laitetaan se poistettavaksi
-		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, _siirtovuoro)) poistettava.push_back(siirto);
+		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) poistettava.push_back(siirto);
 	}
 	// käy läpi loopissa ja poistaa kaikki pää listasta 
 	if (poistettava.size() != 0)
