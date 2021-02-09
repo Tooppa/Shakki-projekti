@@ -652,16 +652,16 @@ void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 
 		// tämmönen ehkä toimii kuninkaanRuutu.getSarake() > 0
 		if (kuninkaanRuutu.getSarake() >= 0 && uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()] &&
-			((_siirtovuoro == 0 && uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == VK) ||
-				(_siirtovuoro == 1 && uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == MK)))
+			((uusiAsema._siirtovuoro == 0 && uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == VK) ||
+				(uusiAsema._siirtovuoro == 1 && uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == MK)))
 		{
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
-					if (uusiAsema._lauta[i][j] && ((_siirtovuoro == 0 && uusiAsema._lauta[i][j]->getKoodi() == VK) || (uusiAsema._siirtovuoro == 1 && uusiAsema._lauta[i][j]->getKoodi() == MK)))
+					if (uusiAsema._lauta[i][j] && ((uusiAsema._siirtovuoro == 0 && uusiAsema._lauta[i][j]->getKoodi() == VK) || (uusiAsema._siirtovuoro == 1 && uusiAsema._lauta[i][j]->getKoodi() == MK)))
 						kuninkaanRuutu = Ruutu(i, j);
 		}
 		//mikäli siirto uhkaa kuningasta laitetaan se poistettavaksi
-		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) poistettava.push_back(siirto);
+		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, _siirtovuoro)) poistettava.push_back(siirto);
 	}
 	// käy läpi loopissa ja poistaa kaikki pää listasta 
 	if (poistettava.size() != 0)
