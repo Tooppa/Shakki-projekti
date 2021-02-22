@@ -598,13 +598,12 @@ double Asema::linjat(int vari)
 //
 
 
-MinMaxPaluu Asema::maxi(int syvyys)
+MinMaxPaluu Asema::maxi(int alpha, int beta, int syvyys)
 {
 	list<Siirto> siirrot;
 	MinMaxPaluu paluu;
 	Ruutu kuninkaanRuutu;
 	annaLaillisetSiirrot(siirrot);
-	double korkeinArvo = -100000;
 	double ehdotettuArvo;
 	Asema uusiAsema;
 	Siirto parasSiirto;
@@ -629,35 +628,41 @@ MinMaxPaluu Asema::maxi(int syvyys)
 			return paluu;
 		}
 	}
-
 	if (syvyys == 0)
 	{
 		paluu._evaluointiArvo = evaluoi();
 		return paluu;
 	}
+
 	for each (Siirto siirto in siirrot)
 	{
 		uusiAsema = *this;
 		uusiAsema.paivitaAsema(&siirto);
-		ehdotettuArvo = uusiAsema.mini(syvyys - 1)._evaluointiArvo;
-		if (korkeinArvo < ehdotettuArvo) {
-			korkeinArvo = ehdotettuArvo;
+		ehdotettuArvo = uusiAsema.mini(alpha, beta, syvyys - 1)._evaluointiArvo;
+		if (ehdotettuArvo >= beta)
+		{
+			paluu._evaluointiArvo = beta;
+			paluu._parasSiirto = siirto;
+			return paluu;
+		}
+		if (ehdotettuArvo > alpha)
+		{
+			alpha = ehdotettuArvo;
 			parasSiirto = siirto;
 		}
 	}
-	paluu._evaluointiArvo = korkeinArvo;
+	paluu._evaluointiArvo = alpha;
 	paluu._parasSiirto = parasSiirto;
 	return paluu;
 }
 
 
-MinMaxPaluu Asema::mini(int syvyys)
+MinMaxPaluu Asema::mini(int alpha, int beta, int syvyys)
 {
 	list<Siirto> siirrot;
 	MinMaxPaluu paluu;
 	Ruutu kuninkaanRuutu;
 	annaLaillisetSiirrot(siirrot);
-	double matalinArvo = 100000;
 	double ehdotettuArvo;
 	Asema uusiAsema;
 	Siirto parasSiirto;
@@ -682,23 +687,30 @@ MinMaxPaluu Asema::mini(int syvyys)
 			return paluu;
 		}
 	}
-
 	if (syvyys == 0)
 	{
 		paluu._evaluointiArvo = evaluoi();
 		return paluu;
 	}
+
 	for each (Siirto siirto in siirrot)
 	{
 		uusiAsema = *this;
 		uusiAsema.paivitaAsema(&siirto);
-		ehdotettuArvo = uusiAsema.maxi(syvyys - 1)._evaluointiArvo;
-		if (matalinArvo > ehdotettuArvo) {
-			matalinArvo = ehdotettuArvo;
+		ehdotettuArvo = uusiAsema.maxi(alpha, beta, syvyys - 1)._evaluointiArvo;
+		if (ehdotettuArvo <= alpha)
+		{
+			paluu._evaluointiArvo = alpha;
+			paluu._parasSiirto = siirto;
+			return paluu;
+		}
+		if (ehdotettuArvo < beta)
+		{
+			beta = ehdotettuArvo;
 			parasSiirto = siirto;
 		}
 	}
-	paluu._evaluointiArvo = matalinArvo;
+	paluu._evaluointiArvo = beta;
 	paluu._parasSiirto = parasSiirto;
 	return paluu;
 }

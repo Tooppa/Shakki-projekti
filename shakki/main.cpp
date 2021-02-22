@@ -39,11 +39,12 @@ int main()
 		if (asema.getSiirtovuoro() == koneenVari) {
 			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
-				paluu = asema.maxi(3);
+				paluu = asema.maxi(INT_MIN, INT_MAX, 3);
 			}
 			else {
-				paluu = asema.mini(3);
+				paluu = asema.mini(INT_MIN, INT_MAX, 3);
 			}
+			wcout << "evaluaatio: " << paluu._evaluointiArvo << endl;
 			siirto = paluu._parasSiirto;
 		}
 		else {
