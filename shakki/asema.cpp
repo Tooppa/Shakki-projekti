@@ -763,8 +763,8 @@ void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 
 		// tämmönen ehkä toimii kuninkaanRuutu.getSarake() > 0
 		if (kuninkaanRuutu.getSarake() >= 0 && uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()] &&
-			((uusiAsema._siirtovuoro == 0 && uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == VK) ||
-				(uusiAsema._siirtovuoro == 1 && uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == MK)))
+			((uusiAsema._siirtovuoro == 0 && !uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == VK) ||
+				(uusiAsema._siirtovuoro == 1 && !uusiAsema._lauta[kuninkaanRuutu.getSarake()][kuninkaanRuutu.getRivi()]->getKoodi() == MK)))
 		{
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
