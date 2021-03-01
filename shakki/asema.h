@@ -33,18 +33,20 @@ public:
 
 
 	Asema();	
-	void paivitaAsema(Siirto*);								// P‰ivitt‰‰ aseman annetulla siirrolla.
-	double evaluoi();										// Aseman numeerinen arviointi.
-	MinMaxPaluu alphaBeta(int depth, double alpha = DBL_MIN, double beta = DBL_MAX);				// Minimax-algoritmi.
-	void annaLaillisetSiirrot(std::list<Siirto>& lista);	// Siirtogeneraattori.
-	int getSiirtovuoro();									// Palauttaa siirtovuoron.
-	void setSiirtovuoro(int);								// Asettaa siirtovuoron.
-	bool getOnkoValkeaKuningasLiikkunut();					// Linnoittuminen mahdollista?
-	bool getOnkoMustaKuningasLiikkunut();					// Linnoittuminen mahdollista?
-	bool getOnkoValkeaDTliikkunut();						// Linnoittuminen mahdollista?
-	bool getOnkoValkeaKTliikkunut();						// Linnoittuminen mahdollista?
-	bool getOnkoMustaDTliikkunut();							// Linnoittuminen mahdollista?
-	bool getOnkoMustaKTliikkunut();							// Linnoittuminen mahdollista?
+	void paivitaAsema(Siirto*);															// P‰ivitt‰‰ aseman annetulla siirrolla.
+	double evaluoi();																	// Aseman numeerinen arviointi.
+	MinMaxPaluu alphaBeta(int depth, double alpha = DBL_MIN, double beta = DBL_MAX);	// Minimax-algoritmi.
+	void annaLaillisetSiirrot(std::list<Siirto>& lista);								// Siirtogeneraattori.
+	void jarjestaLista(std::list<Siirto>& lista);
+	void lisaatornitukset(const Ruutu& kuninkaanRuutu, std::list<Siirto>& lista);
+	int getSiirtovuoro();																// Palauttaa siirtovuoron.
+	void setSiirtovuoro(int);															// Asettaa siirtovuoron.
+	bool getOnkoValkeaKuningasLiikkunut();												// Linnoittuminen mahdollista?
+	bool getOnkoMustaKuningasLiikkunut();												// Linnoittuminen mahdollista?
+	bool getOnkoValkeaDTliikkunut();													// Linnoittuminen mahdollista?
+	bool getOnkoValkeaKTliikkunut();													// Linnoittuminen mahdollista?
+	bool getOnkoMustaDTliikkunut();														// Linnoittuminen mahdollista?
+	bool getOnkoMustaKTliikkunut();														// Linnoittuminen mahdollista?
 	
 private:
 
@@ -62,7 +64,7 @@ private:
 	double nappuloitaKeskella(int);
 	double linjat(int);
 	bool onkoRuutuUhattu(Ruutu, int vastustajanVari);
-	void annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari);
+	void annaLinnoitusSiirrot(const Ruutu& kuninkaanRuutu, std::list<Siirto>& lista);
 
 	// Karsii siirrot, jotka j‰tt‰v‰t oman K:n shakkiin.
 	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari); 

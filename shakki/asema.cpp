@@ -551,30 +551,6 @@ double Asema::linjat(int vari)
 	//mustat
 
 }
-
-
-// https://chessprogramming.wikispaces.com/Minimax MinMax-algoritmin pseudokoodi (lisäsin parametrina aseman)
-//int maxi(int depth, asema a) 
-//	if (depth == 0) return evaluate();
-//	int max = -oo;
-//	for (all moves ) {
-//		score = mini(depth - 1, seuraaja);
-//		if (score > max)
-//			max = score;
-//	}
-//	return max;
-//}
-
-//int mini(int depth, asema a) {
-//	if (depth == 0) return -evaluate();
-//	int min = +oo;
-//	for (all moves) {
-//		score = maxi(depth - 1);
-//		if (score < min)
-//			min = score;
-//	}
-//	return min;
-//}
 MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 {
 	MinMaxPaluu paluu;
@@ -582,6 +558,10 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 	Ruutu kuninkaanRuutu;
 	// Kantatapaukset 1 ja 2 : matti tai patti?
 	this->annaLaillisetSiirrot(lista);
+
+	//// mikäli jää aikaa nii hyvä tapa optimoida on järjestää nopeesti lista
+	//this->jarjestaLista(lista);
+
 	if (lista.size() == 0)
 	{
 		int vihu = _siirtovuoro == 0 ? 1 : 0;
@@ -644,6 +624,15 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 	return paluu;
 }
 
+// jotai optimointia
+void Asema::jarjestaLista(std::list<Siirto>& lista)
+{
+	for each (Siirto siirto in lista)
+	{
+
+	}
+}
+
 bool Asema::onkoRuutuUhattu(Ruutu ruutu, int vastustajanVari)
 {
 	list<Siirto> siirrot;
@@ -651,9 +640,7 @@ bool Asema::onkoRuutuUhattu(Ruutu ruutu, int vastustajanVari)
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
 			if (_lauta[i][j] && _lauta[i][j]->getVari() == vastustajanVari)
-			{
 				_lauta[i][j]->annaSiirrot(siirrot, &Ruutu(i, j), this, vastustajanVari);
-			}
 
 	for each (Siirto siirto in siirrot)
 		if (siirto.getLoppuruutu() == ruutu)
@@ -707,7 +694,15 @@ void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 	if (poistettava.size() != 0)
 		for each (Siirto siirto in poistettava)
 			lista.remove(siirto);
+
+
 	//Tornitukset
+	annaLinnoitusSiirrot(kuninkaanRuutu, lista);
+}
+
+
+void Asema::annaLinnoitusSiirrot(const Ruutu& kuninkaanRuutu, std::list<Siirto>& lista)
+{
 	if (_siirtovuoro == 0 && (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaDTliikkunut())) {
 		bool laiton = false;
 		Ruutu ruutu1 = Ruutu(2, 0);
