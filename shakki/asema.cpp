@@ -575,143 +575,72 @@ double Asema::linjat(int vari)
 //	}
 //	return min;
 //}
-//MinMaxPaluu Asema::minimax(int syvyys)
-//{
-//	MinMaxPaluu paluuarvo;
-//
-//
-//	// Generoidaan aseman lailliset siirrot.
-//	std::list<Siirto> siirrot;
-//	annaLaillisetSiirrot(siirrot);
-//	// Rekursion kantatapaus 1: peli on loppu
-//	if (siirrot.size() == 0) {
-//		return paluuarvo;
-//	}
-//	// Rekursion kantatapaus 2: katkaisusyvyydessä
-//	else if (getSiirtovuoro() == 0) paluuarvo = maxi(syvyys, *this);
-//	else if (getSiirtovuoro() == 1) paluuarvo = mini(syvyys, *this);
-//	// Rekursioaskel: kokeillaan jokaista laillista siirtoa s
-//	// (alustetaan paluuarvo huonoimmaksi mahdolliseksi).
-//
-//	return paluuarvo;
-//}
-//
-
-
-MinMaxPaluu Asema::maxi(int alpha, int beta, int syvyys)
+MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 {
-	list<Siirto> siirrot;
 	MinMaxPaluu paluu;
+	std::list<Siirto> lista;
 	Ruutu kuninkaanRuutu;
-	annaLaillisetSiirrot(siirrot);
-	double ehdotettuArvo;
-	Asema uusiAsema;
-	Siirto parasSiirto;
-
-	if (siirrot.size() == 0)
+	// Kantatapaukset 1 ja 2 : matti tai patti?
+	this->annaLaillisetSiirrot(lista);
+	if (lista.size() == 0)
 	{
+		int vihu = _siirtovuoro == 0 ? 1 : 0;
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++)
-				if (_lauta[i][j] && _lauta[i][j]->getKoodi() == VK)
-				{
-					kuninkaanRuutu.setSarake(i);
-					kuninkaanRuutu.setRivi(j);
-				}
-		if (onkoRuutuUhattu(kuninkaanRuutu, 1))
+				if (_lauta[i][j] && ( _lauta[i][j]->getKoodi() == VK ||  _lauta[i][j]->getKoodi() == MK))
+					kuninkaanRuutu = Ruutu(i, j);
+		if (this->onkoRuutuUhattu(kuninkaanRuutu, vihu))
 		{
-			paluu._evaluointiArvo = -100000;
-			return paluu;
+			paluu._evaluointiArvo = _siirtovuoro == 0 ? DBL_MIN : DBL_MAX;
 		}
-		if (!onkoRuutuUhattu(kuninkaanRuutu, 1))
+		else
 		{
 			paluu._evaluointiArvo = 0;
-			return paluu;
 		}
-	}
-	if (syvyys == 0)
-	{
-		paluu._evaluointiArvo = evaluoi();
 		return paluu;
 	}
-
-	for each (Siirto siirto in siirrot)
+	// Kantatapaus 3: katkaisusyvyys
+	if (depth == 0)
 	{
-		uusiAsema = *this;
-		uusiAsema.paivitaAsema(&siirto);
-		ehdotettuArvo = uusiAsema.mini(alpha, beta, syvyys - 1)._evaluointiArvo;
-		if (ehdotettuArvo >= beta)
-		{
-			paluu._evaluointiArvo = beta;
-			paluu._parasSiirto = siirto;
-			return paluu;
-		}
-		if (ehdotettuArvo > alpha)
-		{
-			alpha = ehdotettuArvo;
-			parasSiirto = siirto;
-		}
-	}
-	paluu._evaluointiArvo = alpha;
-	paluu._parasSiirto = parasSiirto;
-	return paluu;
-}
-
-
-MinMaxPaluu Asema::mini(int alpha, int beta, int syvyys)
-{
-	list<Siirto> siirrot;
-	MinMaxPaluu paluu;
-	Ruutu kuninkaanRuutu;
-	annaLaillisetSiirrot(siirrot);
-	double ehdotettuArvo;
-	Asema uusiAsema;
-	Siirto parasSiirto;
-
-	if (siirrot.size() == 0)
-	{
-		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 8; j++)
-				if (_lauta[i][j] && _lauta[i][j]->getKoodi() == MK)
-				{
-					kuninkaanRuutu.setSarake(i);
-					kuninkaanRuutu.setRivi(j);
-				}
-		if (onkoRuutuUhattu(kuninkaanRuutu, 1))
-		{
-			paluu._evaluointiArvo = 100000;
-			return paluu;
-		}
-		if (!onkoRuutuUhattu(kuninkaanRuutu, 1))
-		{
-			paluu._evaluointiArvo = 0;
-			return paluu;
-		}
-	}
-	if (syvyys == 0)
-	{
-		paluu._evaluointiArvo = evaluoi();
+		paluu._evaluointiArvo = this->evaluoi();
 		return paluu;
 	}
-
-	for each (Siirto siirto in siirrot)
+	if (_siirtovuoro == 0)
 	{
-		uusiAsema = *this;
-		uusiAsema.paivitaAsema(&siirto);
-		ehdotettuArvo = uusiAsema.maxi(alpha, beta, syvyys - 1)._evaluointiArvo;
-		if (ehdotettuArvo <= alpha)
+		paluu._evaluointiArvo = DBL_MIN;
+		for each (Siirto siirto in lista)
 		{
-			paluu._evaluointiArvo = alpha;
-			paluu._parasSiirto = siirto;
-			return paluu;
-		}
-		if (ehdotettuArvo < beta)
-		{
-			beta = ehdotettuArvo;
-			parasSiirto = siirto;
+			Asema uusiAsema = *this;
+			uusiAsema.paivitaAsema(&siirto);
+			double arvo = uusiAsema.alphaBeta(depth - 1, alpha, beta)._evaluointiArvo;
+			if (arvo > paluu._evaluointiArvo)
+			{
+				paluu._evaluointiArvo = arvo;
+				paluu._parasSiirto = siirto;
+			}
+			alpha = std::max(alpha, paluu._evaluointiArvo);
+			if (alpha >= beta)
+				break;
 		}
 	}
-	paluu._evaluointiArvo = beta;
-	paluu._parasSiirto = parasSiirto;
+	else
+	{
+		paluu._evaluointiArvo = DBL_MAX;
+		for each (Siirto siirto in lista)
+		{
+			Asema uusiAsema = *this;
+			uusiAsema.paivitaAsema(&siirto);
+			double arvo = uusiAsema.alphaBeta(depth - 1, alpha, beta)._evaluointiArvo;
+			if (arvo < paluu._evaluointiArvo)
+			{
+				paluu._evaluointiArvo = arvo;
+				paluu._parasSiirto = siirto;
+			}
+			beta = std::min(beta, paluu._evaluointiArvo);
+			if (beta <= alpha)
+				break;
+		}
+	}
 	return paluu;
 }
 

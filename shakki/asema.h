@@ -4,6 +4,7 @@
 #include <string>
 #include "minmaxpaluu.h"
 #include "siirto.h"
+#include <cfloat>
 
 
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitell‰ Nappula-osoittimia ilman,
@@ -34,9 +35,7 @@ public:
 	Asema();	
 	void paivitaAsema(Siirto*);								// P‰ivitt‰‰ aseman annetulla siirrolla.
 	double evaluoi();										// Aseman numeerinen arviointi.
-	MinMaxPaluu maxi(int alpha, int beta, int syvyys);							// Minimax (max:n siirtovuoro).
-	MinMaxPaluu mini(int alpha, int beta, int syvyys);							// Minimax (min:n siirtovuoro).
-	//MinMaxPaluu minimax(int syvyys);						// Minimax-algoritmi.
+	MinMaxPaluu alphaBeta(int depth, double alpha = DBL_MIN, double beta = DBL_MAX);				// Minimax-algoritmi.
 	void annaLaillisetSiirrot(std::list<Siirto>& lista);	// Siirtogeneraattori.
 	int getSiirtovuoro();									// Palauttaa siirtovuoron.
 	void setSiirtovuoro(int);								// Asettaa siirtovuoron.
