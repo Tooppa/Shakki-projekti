@@ -182,13 +182,17 @@ void Asema::paivitaAsema(Siirto* siirto)
 		case VT:
 			if (alkuRivi == 0 && alkuSarake == 7) _onkoValkeaKTliikkunut = true;
 			else if (nappulanKoodi == 0 && alkuRivi == 0 && alkuSarake == 0) _onkoValkeaDTliikkunut = true;
+			break;
 		case VK:
 			if (!_onkoValkeaKuningasLiikkunut)_onkoValkeaKuningasLiikkunut = true;
+			break;
 		case MT:
 			if (alkuRivi == 7 && alkuSarake == 7) _onkoMustaKTliikkunut = true;
 			else if (alkuRivi == 7 && alkuSarake == 0) _onkoMustaDTliikkunut = true;
+			break;
 		case MK:
 			if (!_onkoMustaKuningasLiikkunut)_onkoMustaKuningasLiikkunut = true;
+			break;
 		}
 		//päivitetään _siirtovuoro
 
@@ -572,7 +576,7 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 					kuninkaanRuutu = Ruutu(i, j);
 		if (this->onkoRuutuUhattu(kuninkaanRuutu, vihu))
 		{
-			paluu._evaluointiArvo = _siirtovuoro == 0 ? DBL_MIN : DBL_MAX;
+			paluu._evaluointiArvo = _siirtovuoro == 0 ? -DBL_MAX : DBL_MAX;
 		}
 		else
 		{
@@ -588,7 +592,7 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 	}
 	if (_siirtovuoro == 0)
 	{
-		paluu._evaluointiArvo = -10;
+		paluu._evaluointiArvo = -DBL_MAX;
 		for each (Siirto siirto in lista)
 		{
 			Asema uusiAsema = *this;

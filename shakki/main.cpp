@@ -23,8 +23,12 @@ int main()
 	list<Siirto> lista;
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
+	// alphabetan alku syvyys
+	int syvyys = 3;
+	int kierros = 0;
 
 	while (lopetus != 0) {
+		kierros++;
 		lista.clear();
 		Kayttoliittyma::getInstance()->piirraLauta();
 		wcout << "\n";
@@ -38,7 +42,9 @@ int main()
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
 			MinMaxPaluu paluu;
-			paluu = asema.alphaBeta(3);
+			// kierroksen 10 jälkeen vähän tarkempi alpha beta
+			if (kierros > 20) syvyys = 4;
+			paluu = asema.alphaBeta(syvyys);
 			siirto = paluu._parasSiirto;
 			wcout << "evaluaatio: " << paluu._evaluointiArvo << endl;
 		}

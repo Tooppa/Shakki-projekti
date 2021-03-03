@@ -35,7 +35,7 @@ public:
 	Asema();	
 	void paivitaAsema(Siirto*);															// P�ivitt�� aseman annetulla siirrolla.
 	double evaluoi();																	// Aseman numeerinen arviointi.
-	MinMaxPaluu alphaBeta(int depth, double alpha = DBL_MIN, double beta = DBL_MAX);	// Minimax-algoritmi.
+	MinMaxPaluu alphaBeta(int depth, double alpha = -DBL_MAX, double beta = DBL_MAX);	// Minimax-algoritmi.
 	void annaLaillisetSiirrot(std::list<Siirto>& lista);								// Siirtogeneraattori.
 	void jarjestaLista(std::list<Siirto>& lista);
 	void lisaatornitukset(const Ruutu& kuninkaanRuutu, std::list<Siirto>& lista);
