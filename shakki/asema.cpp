@@ -593,7 +593,7 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			double arvo = uusiAsema.alphaBeta(depth - 1, alpha, beta)._evaluointiArvo;
-			if (arvo > paluu._evaluointiArvo)
+			if (arvo >= paluu._evaluointiArvo)
 			{
 				paluu._evaluointiArvo = arvo;
 				paluu._parasSiirto = siirto;
@@ -611,7 +611,7 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			double arvo = uusiAsema.alphaBeta(depth - 1, alpha, beta)._evaluointiArvo;
-			if (arvo < paluu._evaluointiArvo)
+			if (arvo <= paluu._evaluointiArvo)
 			{
 				paluu._evaluointiArvo = arvo;
 				paluu._parasSiirto = siirto;
