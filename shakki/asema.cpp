@@ -559,8 +559,8 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 	// Kantatapaukset 1 ja 2 : matti tai patti?
 	this->annaLaillisetSiirrot(lista);
 
-	//// mikäli jää aikaa nii hyvä tapa optimoida on järjestää nopeesti lista
-	//this->jarjestaLista(lista);
+	// mikäli jää aikaa nii hyvä tapa optimoida on järjestää nopeesti lista
+	this->jarjestaLista(lista);
 
 	if (lista.size() == 0)
 	{
@@ -627,10 +627,27 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 // jotai optimointia
 void Asema::jarjestaLista(std::list<Siirto>& lista)
 {
+	list<Siirto> siirrettava;
+	Nappula* alku;
+	Nappula* loppu;
 	for each (Siirto siirto in lista)
 	{
+		// jos tornitus. yleensä ihan hyvä siirto
+		if (siirto.onkoLyhytLinna() || siirto.onkoPitkalinna())
+			siirrettava.push_back(siirto);
+		else
+		{
+			alku = _lauta[siirto.getAlkuruutu().getSarake()][siirto.getAlkuruutu().getRivi()];
+			loppu = _lauta[siirto.getLoppuruutu().getSarake()][siirto.getLoppuruutu().getRivi()];
 
+			//jos syödään
+			if(loppu && loppu->getVari() != _siirtovuoro)
+				siirrettava.push_back(siirto);
+		}
 	}
+	if (siirrettava.size() != 0)
+		for each (Siirto siirto in siirrettava)
+			lista.push_front(siirto);
 }
 
 bool Asema::onkoRuutuUhattu(Ruutu ruutu, int vastustajanVari)
