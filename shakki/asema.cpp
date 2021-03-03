@@ -450,6 +450,8 @@ double Asema::evaluoi()
 	// evaluaatioon lisätään 0.25 jos kuningas on tornittanut ja/tai liikkunut pois keskeltä
 	// lisäksi mikäli kuninkaan edessä ja ainakin toisessa viistoruudussa on oma nappula lisätään 0.75
 	// numeroita varmasti pitää viilata
+
+
 	if (vkRivi == 0)
 		if (vkSarake <= 7 || vkSarake >= 6 || vkSarake <= 2 || vkSarake >= 0)
 		{
@@ -468,6 +470,7 @@ double Asema::evaluoi()
 					(mkSarake + 1 <= 7 && _lauta[mkSarake + 1][6] && _lauta[mkSarake + 1][6]->getVari() == 0)))
 				evaluaatio -= 0.75;
 		}
+
 
 	/*
 	* float tyhjaArvostusTaulu[8][8] =
