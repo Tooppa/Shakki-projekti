@@ -6,11 +6,12 @@
 using namespace std;
 
 
-Nappula::Nappula(wstring unicode, int vari, int koodi)
+Nappula::Nappula(wstring unicode, int vari, int koodi, int arvo)
 {
 	_unicode = unicode;
 	_vari = vari;
 	_koodi = koodi;
+	_arvo = arvo;
 }
 
 

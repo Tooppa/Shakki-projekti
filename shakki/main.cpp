@@ -24,7 +24,7 @@ int main()
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
 	// alphabetan alku syvyys
-	int syvyys = 3;
+	int syvyys = 4;
 	int kierros = 0;
 
 	while (lopetus != 0) {
@@ -42,8 +42,8 @@ int main()
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
 			MinMaxPaluu paluu;
-			// kierroksen 10 jälkeen vähän tarkempi alpha beta
-			if (kierros > 20) syvyys = 4;
+			// kierroksen 20 jälkeen vähän tarkempi alpha beta
+			if (kierros > 20) syvyys = 5;
 			paluu = asema.alphaBeta(syvyys);
 			siirto = paluu._parasSiirto;
 			wcout << "evaluaatio: " << paluu._evaluointiArvo << endl;

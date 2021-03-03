@@ -3,21 +3,20 @@
 #include "minMaxPaluu.h"
 #include "nappula.h"
 #include "ruutu.h"
-using namespace std;
 
-Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK);
-Nappula* Asema::vd = new Daami(L"\u2655", 0, VD);
-Nappula* Asema::vt = new Torni(L"\u2656", 0, VT);
-Nappula* Asema::vl = new Lahetti(L"\u2657", 0, VL);
-Nappula* Asema::vr = new Ratsu(L"\u2658", 0, VR);
-Nappula* Asema::vs = new Sotilas(L"\u2659", 0, VS);
+Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK, 0);
+Nappula* Asema::vd = new Daami(L"\u2655", 0, VD, 9);
+Nappula* Asema::vt = new Torni(L"\u2656", 0, VT, 5);
+Nappula* Asema::vl = new Lahetti(L"\u2657", 0, VL, 3.25);
+Nappula* Asema::vr = new Ratsu(L"\u2658", 0, VR, 3);
+Nappula* Asema::vs = new Sotilas(L"\u2659", 0, VS, 1);
 
-Nappula* Asema::mk = new Kuningas(L"\u265A", 1, MK);
-Nappula* Asema::md = new Daami(L"\u265B", 1, MD);
-Nappula* Asema::mt = new Torni(L"\u265C", 1, MT);
-Nappula* Asema::ml = new Lahetti(L"\u265D", 1, ML);
-Nappula* Asema::mr = new Ratsu(L"\u265E", 1, MR);
-Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
+Nappula* Asema::mk = new Kuningas(L"\u265A", 1, MK, 0);
+Nappula* Asema::md = new Daami(L"\u265B", 1, MD, 9);
+Nappula* Asema::mt = new Torni(L"\u265C", 1, MT, 5);
+Nappula* Asema::ml = new Lahetti(L"\u265D", 1, ML, 3.25);
+Nappula* Asema::mr = new Ratsu(L"\u265E", 1, MR, 3);
+Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS, 1);
 
 
 Asema::Asema()
@@ -632,7 +631,7 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 // jotai optimointia
 void Asema::jarjestaLista(std::list<Siirto>& lista)
 {
-	list<Siirto> siirrettava;
+	std::list<Siirto> siirrettava;
 	Nappula* alku;
 	Nappula* loppu;
 	for each (Siirto siirto in lista)
@@ -647,7 +646,8 @@ void Asema::jarjestaLista(std::list<Siirto>& lista)
 
 			//jos syödään
 			if (loppu && loppu->getVari() != _siirtovuoro)
-				siirrettava.push_back(siirto);
+				if(alku->getArvo() >= loppu->getArvo())
+					siirrettava.push_back(siirto);
 		}
 	}
 	if (siirrettava.size() != 0)
@@ -657,7 +657,7 @@ void Asema::jarjestaLista(std::list<Siirto>& lista)
 
 bool Asema::onkoRuutuUhattu(Ruutu ruutu, int vastustajanVari)
 {
-	list<Siirto> siirrot;
+	std::list<Siirto> siirrot;
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
@@ -671,16 +671,16 @@ bool Asema::onkoRuutuUhattu(Ruutu ruutu, int vastustajanVari)
 }
 
 
-void Asema::huolehdiKuninkaanShakeista(list<Siirto>& lista, int vari)
+void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 {
 
 }
 
 
-void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
+void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 	Ruutu kuninkaanRuutu;
 	Asema uusiAsema;
-	list<Siirto> poistettava;
+	std::list<Siirto> poistettava;
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
