@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <iostream>
 #include <string>
+#include <chrono>
 #include "kayttoliittyma.h"
 #include "Siirto.h"
 #include "asema.h"
@@ -42,12 +43,20 @@ int main()
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
 			Kayttoliittyma::getInstance()->_counter = 0;
+			chrono::steady_clock::time_point begin = chrono::steady_clock::now();
 			MinMaxPaluu paluu;
 			// kierroksen 20 jälkeen vähän tarkempi alpha beta
 			if (kierros > 20) syvyys = 5;
 			paluu = asema.alphaBeta(syvyys);
 			siirto = paluu._parasSiirto;
-			wcout << "evaluaatio: " << paluu._evaluointiArvo << ", " << Kayttoliittyma::getInstance()->_counter << " testattua siirtoa." << endl;
+			chrono::steady_clock::time_point end = chrono::steady_clock::now();
+
+			wcout
+				<< "evaluaatio: " << paluu._evaluointiArvo 
+				<< " ja " << Kayttoliittyma::getInstance()->_counter 
+				<< " testattua siirtoa.\naika: " 
+				<< chrono::duration_cast<chrono::microseconds>(end - begin).count() / 1000000.0
+				<< "/s" << endl << endl;
 		}
 		else {
 			siirto = Kayttoliittyma::getInstance()->

@@ -654,7 +654,10 @@ void Asema::jarjestaLista(std::list<Siirto>& lista)
 	}
 	if (siirrettava.size() != 0)
 		for each (Siirto siirto in siirrettava)
+		{
+			lista.remove(siirto);
 			lista.push_front(siirto);
+		}
 }
 
 bool Asema::onkoRuutuUhattu(Ruutu ruutu, int vastustajanVari)
