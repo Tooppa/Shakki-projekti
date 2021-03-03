@@ -38,13 +38,9 @@ int main()
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
 			MinMaxPaluu paluu;
-			if (koneenVari == 0) {
-				paluu = asema.maxi(3);
-			}
-			else {
-				paluu = asema.mini(3);
-			}
+			paluu = asema.alphaBeta(3);
 			siirto = paluu._parasSiirto;
+			wcout << "evaluaatio: " << paluu._evaluointiArvo << endl;
 		}
 		else {
 			siirto = Kayttoliittyma::getInstance()->

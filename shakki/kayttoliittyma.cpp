@@ -170,5 +170,8 @@ int Kayttoliittyma::koordinaattiKirjainNumeroksi(char kirjain)
 
 int Kayttoliittyma::kysyVastustajanVari()
 {
-	return 0;
+	wstring vastaus; vastaus;
+	wcout << "Valitse puoli 0=valkoinen/1=musta: ";
+	wcin >> vastaus;
+	return vastaus[0] - 48;
 }
