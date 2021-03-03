@@ -7,33 +7,33 @@
 #include <cfloat>
 
 
-// Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellä Nappula-osoittimia ilman,
-// että nappula.h -tiedostoa täytyy includoida.
+// Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellï¿½ Nappula-osoittimia ilman,
+// ettï¿½ nappula.h -tiedostoa tï¿½ytyy includoida.
 class Nappula;
 
 
-// Asema sisältää kaiken tarvittavan informaation pelitilanteen kuvaamiseksi
+// Asema sisï¿½ltï¿½ï¿½ kaiken tarvittavan informaation pelitilanteen kuvaamiseksi
 // (nappuloiden sijainti, siirtovuoro, linnoitusoikeudet jne.).
 class Asema
 {
 
 public:
-	// Pelilauta sisältää osoittimet kunkin ruudun nappula-olioon (nullptr/NULL/0 jos ruutu on tyhjä).
-	// Public-määreellä, koska tätä käytetään paljon muualla.
+	// Pelilauta sisï¿½ltï¿½ï¿½ osoittimet kunkin ruudun nappula-olioon (nullptr/NULL/0 jos ruutu on tyhjï¿½).
+	// Public-mï¿½ï¿½reellï¿½, koska tï¿½tï¿½ kï¿½ytetï¿½ï¿½n paljon muualla.
 	Nappula* _lauta[8][8];
 
-	// Nappula-oliot. Huomaa, että samaa nappulaa voidaan käyttää useissa eri ruuduissa.
-	// Määritelty static-määreellä, joten nappulat ovat kaikkien lauta-olioiden "yhteiskäytössä"
+	// Nappula-oliot. Huomaa, ettï¿½ samaa nappulaa voidaan kï¿½yttï¿½ï¿½ useissa eri ruuduissa.
+	// Mï¿½ï¿½ritelty static-mï¿½ï¿½reellï¿½, joten nappulat ovat kaikkien lauta-olioiden "yhteiskï¿½ytï¿½ssï¿½"
 	// (suorituskyvyn vuoksi).
 	static Nappula *vk, *vd, *vt, *vl, *vr, *vs;	// Valkeat nappulat.
 	static Nappula *mk, *md, *mt, *ml, *mr, *ms;	// Mustat nappulat.
 
-	// Ohestalyöntiä varten (-1 = sotilaan kaksoisaskelta ei tapahtunut edellisellä siirrolla).
+	// Ohestalyï¿½ntiï¿½ varten (-1 = sotilaan kaksoisaskelta ei tapahtunut edellisellï¿½ siirrolla).
 	int kaksoisaskelSarakkeella = -1;
 
 
 	Asema();	
-	void paivitaAsema(Siirto*);															// Päivittää aseman annetulla siirrolla.
+	void paivitaAsema(Siirto*);															// Pï¿½ivittï¿½ï¿½ aseman annetulla siirrolla.
 	double evaluoi();																	// Aseman numeerinen arviointi.
 	MinMaxPaluu alphaBeta(int depth, double alpha = DBL_MIN, double beta = DBL_MAX);	// Minimax-algoritmi.
 	void annaLaillisetSiirrot(std::list<Siirto>& lista);								// Siirtogeneraattori.
@@ -50,7 +50,7 @@ public:
 	
 private:
 
-	// Lisäinformaatio pelitilanteesta.
+	// Lisï¿½informaatio pelitilanteesta.
 	int _siirtovuoro;					// 0 = valkea, 1 = musta.
 	bool _onkoValkeaKuningasLiikkunut;	// Linnoitus ei ole sallittu, jos kuningas on liikkunut.
 	bool _onkoMustaKuningasLiikkunut;	// Linnoitus ei ole sallittu, jos kuningas on liikkunut.
@@ -66,6 +66,6 @@ private:
 	bool onkoRuutuUhattu(Ruutu, int vastustajanVari);
 	void annaLinnoitusSiirrot(const Ruutu& kuninkaanRuutu, std::list<Siirto>& lista);
 
-	// Karsii siirrot, jotka jättävät oman K:n shakkiin.
+	// Karsii siirrot, jotka jï¿½ttï¿½vï¿½t oman K:n shakkiin.
 	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari); 
 };
