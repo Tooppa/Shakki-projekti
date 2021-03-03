@@ -271,96 +271,6 @@ double Asema::evaluoi()
 	Ruutu mustaK;
 
 	//1. Nappuloiden arvo
-	for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 8; j++)
-		{
-			if (_lauta[i][j])
-			{
-				if (_lauta[i][j]->getVari() == 0)
-				{
-					switch (_lauta[i][j]->getKoodi())
-					{
-					case VS:
-						evaluaatio += s;
-					case VT:
-						evaluaatio += t;
-					case VR:
-						evaluaatio += r;
-					case VL:
-						evaluaatio += l;
-					case VD:
-						evaluaatio += d;
-						// otetaan kuningas talteen
-					case VK:
-						evaluaatio += k;
-						valkoinenK = Ruutu(i, j);
-					}
-				}
-				else
-				{
-					switch (_lauta[i][j]->getKoodi())
-					{
-					case MS:
-						evaluaatio -= s;
-					case MT:
-						evaluaatio -= t;
-					case MR:
-						evaluaatio -= r;
-					case ML:
-						evaluaatio -= l;
-					case MD:
-						evaluaatio -= d;
-						// otetaan kuningas talteen
-					case MK:
-						evaluaatio -= k;
-						mustaK = Ruutu(i, j);
-					}
-				}
-			}
-		}
-
-	int vkSarake = valkoinenK.getSarake();
-	int vkRivi = valkoinenK.getRivi();
-
-	int mkSarake = mustaK.getSarake();
-	int mkRivi = mustaK.getRivi();
-
-	// 2. kuninkaan turvallisuus
-	// evaluaatioon lisätään 0.25 jos kuningas on tornittanut ja/tai liikkunut pois keskeltä
-	// lisäksi mikäli kuninkaan edessä ja ainakin toisessa viistoruudussa on oma nappula lisätään 0.75
-	// numeroita varmasti pitää viilata
-	if (vkRivi == 0)
-		if (vkSarake <= 7 || vkSarake >= 6 || vkSarake <= 2 || vkSarake >= 0)
-		{
-			evaluaatio += 0.25;
-			if ((_lauta[vkSarake][1] && _lauta[vkSarake][1]->getVari() == 0) &&
-				((vkSarake - 1 >= 0 && _lauta[vkSarake - 1][1] && _lauta[vkSarake - 1][1]->getVari() == 0) ||
-					(vkSarake + 1 <= 7 && _lauta[vkSarake + 1][1] && _lauta[vkSarake + 1][1]->getVari() == 0)))
-				evaluaatio += 0.75;
-		}
-	if (mkRivi == 7)
-		if (mkSarake <= 7 || mkSarake >= 6 || mkSarake <= 2 || mkSarake >= 0)
-		{
-			evaluaatio -= 0.25;
-			if ((_lauta[mkSarake][6] && _lauta[mkSarake][6]->getVari() == 1) &&
-				((mkSarake - 1 >= 0 && _lauta[mkSarake - 1][6] && _lauta[mkSarake - 1][6]->getVari() == 0) ||
-					(mkSarake + 1 <= 7 && _lauta[mkSarake + 1][6] && _lauta[mkSarake + 1][6]->getVari() == 0)))
-				evaluaatio -= 0.75;
-		}
-
-	/*
-	* float tyhjaArvostusTaulu[8][8] =
-	{ {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0} };
-
-	*/
-	// 3. Arvosta nappuloiden sijainteja
 	float arvostusTaulukkoMS[8][8] =
 	{ {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 	{0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4},
@@ -461,6 +371,7 @@ double Asema::evaluoi()
 		{0.1, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.1},
 		{-0.1, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1, -0.1} };
 
+
 	int valkoisiaNappuloita = 0;
 	int mustiaNappuloita = 0;
 	for (int i = 0; i < 8; i++)
@@ -470,29 +381,108 @@ double Asema::evaluoi()
 					valkoisiaNappuloita++;
 				else mustiaNappuloita++;
 
+	//1. Nappuloiden arvo
 	for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 8; j++) {
-			if (_lauta[i][j] && _lauta[i][j]->getKoodi() == MS)
-				evaluaatio -= arvostusTaulukkoMS[i][j];
-			else if (_lauta[i][j] && _lauta[i][j]->getKoodi() == VS)
-				evaluaatio += arvostusTaulukkoVS[i][j];
-			else if (_lauta[i][j] && _lauta[i][j]->getKoodi() == MR)
-				evaluaatio -= arvostusTaulukkoMR[i][j];
-			else if (_lauta[i][j] && _lauta[i][j]->getKoodi() == VR)
-				evaluaatio += arvostusTaulukkoVR[i][j];
-			else if (_lauta[i][j] && _lauta[i][j]->getKoodi() == MT)
-				evaluaatio -= arvostusTaulukkoMT[i][j];
-			else if (_lauta[i][j] && _lauta[i][j]->getKoodi() == VT)
-				evaluaatio += arvostusTaulukkoVT[i][j];
-			else if (_lauta[i][j] && _lauta[i][j]->getKoodi() == ML)
-				evaluaatio -= arvostusTaulukkoML[i][j];
-			else if (_lauta[i][j] && _lauta[i][j]->getKoodi() == VL)
-				evaluaatio += arvostusTaulukkoVL[i][j];
-			else if (_lauta[i][j] && _lauta[i][j]->getKoodi() == MD)
-				evaluaatio -= arvostusTaulukkoMD[i][j];
-			else if (_lauta[i][j] && _lauta[i][j]->getKoodi() == VD)
-				evaluaatio += arvostusTaulukkoVD[i][j];
+		for (int j = 0; j < 8; j++)
+		{
+			if (_lauta[i][j])
+			{
+				if (_lauta[i][j]->getVari() == 0)
+				{
+					switch (_lauta[i][j]->getKoodi())
+					{
+					case VS:
+						evaluaatio += s;
+						evaluaatio += arvostusTaulukkoVS[i][j];
+					case VT:
+						evaluaatio += t;
+						evaluaatio += arvostusTaulukkoVT[i][j];
+					case VR:
+						evaluaatio += r;
+						evaluaatio += arvostusTaulukkoVR[i][j];
+					case VL:
+						evaluaatio += l;
+						evaluaatio += arvostusTaulukkoVL[i][j];
+					case VD:
+						evaluaatio += d;
+						evaluaatio += arvostusTaulukkoVD[i][j];
+						// otetaan kuningas talteen
+					case VK:
+						evaluaatio += k;
+						valkoinenK = Ruutu(i, j);
+					}
+				}
+				else
+				{
+					switch (_lauta[i][j]->getKoodi())
+					{
+					case MS:
+						evaluaatio -= s;
+						evaluaatio -= arvostusTaulukkoMS[i][j];
+					case MT:
+						evaluaatio -= t;
+						evaluaatio -= arvostusTaulukkoMT[i][j];
+					case MR:
+						evaluaatio -= r;
+						evaluaatio -= arvostusTaulukkoMR[i][j];
+					case ML:
+						evaluaatio -= l;
+						evaluaatio -= arvostusTaulukkoML[i][j];
+					case MD:
+						evaluaatio -= d;
+						evaluaatio -= arvostusTaulukkoMD[i][j];
+						// otetaan kuningas talteen
+					case MK:
+						evaluaatio -= k;
+						mustaK = Ruutu(i, j);
+					}
+				}
+			}
 		}
+
+	int vkSarake = valkoinenK.getSarake();
+	int vkRivi = valkoinenK.getRivi();
+
+	int mkSarake = mustaK.getSarake();
+	int mkRivi = mustaK.getRivi();
+
+	// 2. kuninkaan turvallisuus
+	// evaluaatioon lisätään 0.25 jos kuningas on tornittanut ja/tai liikkunut pois keskeltä
+	// lisäksi mikäli kuninkaan edessä ja ainakin toisessa viistoruudussa on oma nappula lisätään 0.75
+	// numeroita varmasti pitää viilata
+	if (vkRivi == 0)
+		if (vkSarake <= 7 || vkSarake >= 6 || vkSarake <= 2 || vkSarake >= 0)
+		{
+			evaluaatio += 0.25;
+			if ((_lauta[vkSarake][1] && _lauta[vkSarake][1]->getVari() == 0) &&
+				((vkSarake - 1 >= 0 && _lauta[vkSarake - 1][1] && _lauta[vkSarake - 1][1]->getVari() == 0) ||
+					(vkSarake + 1 <= 7 && _lauta[vkSarake + 1][1] && _lauta[vkSarake + 1][1]->getVari() == 0)))
+				evaluaatio += 0.75;
+		}
+	if (mkRivi == 7)
+		if (mkSarake <= 7 || mkSarake >= 6 || mkSarake <= 2 || mkSarake >= 0)
+		{
+			evaluaatio -= 0.25;
+			if ((_lauta[mkSarake][6] && _lauta[mkSarake][6]->getVari() == 1) &&
+				((mkSarake - 1 >= 0 && _lauta[mkSarake - 1][6] && _lauta[mkSarake - 1][6]->getVari() == 0) ||
+					(mkSarake + 1 <= 7 && _lauta[mkSarake + 1][6] && _lauta[mkSarake + 1][6]->getVari() == 0)))
+				evaluaatio -= 0.75;
+		}
+
+	/*
+	* float tyhjaArvostusTaulu[8][8] =
+	{ {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0} };
+
+	*/
+	// 3. Arvosta nappuloiden sijainteja
+
 
 	// 4. Arvosta linjoja
 	return evaluaatio;
