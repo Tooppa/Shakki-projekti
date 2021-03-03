@@ -265,13 +265,13 @@ double Asema::evaluoi()
 {
 	double evaluaatio = 0;
 	//kertoimet asetettu sen takia että niiden avulla asioiden painoarvoa voidaan säätää helposti yhdestä paikasta
-	double k = 100000, d = 9, t = 5, l = 3.25, r = 3, s = 1;
+	double d = 9, t = 5, l = 3.25, r = 3, s = 1;
 
 	Ruutu valkoinenK;
 	Ruutu mustaK;
 
 	//1. Nappuloiden arvo
-	float arvostusTaulukkoMS[8][8] =
+	double arvostusTaulukkoMS[8][8] =
 	{ {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 	{0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4},
 	{0.0, 0.0, 0.0, 0.3, 0.3, 0.0, 0.0, 0.0},
@@ -281,7 +281,7 @@ double Asema::evaluoi()
 	{0.05, 0.1, 0.1, -0.2, -0.2, 0.1, 0.1, 0.05},
 	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0} };
 
-	float arvostusTaulukkoVS[8][8] =
+	double arvostusTaulukkoVS[8][8] =
 	{ {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 	{0.05, 0.1, 0.1, -0.2, -0.2, 0.1, 0.1, 0.05},
 	{0.1, 0.0, 0.0, 0.2, 0.2, 0.0, 0.0, 0.1},
@@ -291,7 +291,7 @@ double Asema::evaluoi()
 	{0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4},
 	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0} };
 
-	float arvostusTaulukkoMR[8][8] =
+	double arvostusTaulukkoMR[8][8] =
 	{ {-0.3, -0.2, -0.1, 0.0, 0.0, -0.1, -0.2, -0.3},
 	{0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0},
 	{0.0, 0.2, 0.3, 0.3, 0.3, 0.3, 0.2, 0.0},
@@ -301,7 +301,7 @@ double Asema::evaluoi()
 	{0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0},
 	{-0.3, -0.2, -0.1, 0.0, 0.0, -0.1, -0.2, -0.3} };
 
-	float arvostusTaulukkoVR[8][8] =
+	double arvostusTaulukkoVR[8][8] =
 	{ {-0.3, -0.2, -0.1, 0.0, 0.0, -0.1, 0.2, -0.3},
 	{0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0},
 	{0.0, 0.2, 0.3, 0.3, 0.3, 0.3, 0.2, 0.0},
@@ -311,7 +311,7 @@ double Asema::evaluoi()
 	{0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0},
 	{-0.3, -0.2, -0.1, 0.0, 0.0, -0.1, -0.2, -0.3} };
 
-	float arvostusTaulukkoMT[8][8] =
+	double arvostusTaulukkoMT[8][8] =
 	{ {0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2},
 	{0.3, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.3},
 	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
@@ -321,7 +321,7 @@ double Asema::evaluoi()
 	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
 	{0.0, 0.0, 0.1, 0.2, 0.2, 0.1, 0.0, 0.0} };
 
-	float arvostusTaulukkoVT[8][8] =
+	double arvostusTaulukkoVT[8][8] =
 	{ {0.0, 0.0, 0.1, 0.2, 0.2, 0.1, 0.0, 0.0},
 	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
 	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
@@ -331,7 +331,7 @@ double Asema::evaluoi()
 	{0.3, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.3},
 	{0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2} };
 
-	float arvostusTaulukkoML[8][8] =
+	double arvostusTaulukkoML[8][8] =
 	{ {-0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, -0.1},
 	{0.1, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.1},
 	{0.1, 0.2, 0.0, 0.3, 0.3, 0.0, 0.2, 0.1},
@@ -341,7 +341,7 @@ double Asema::evaluoi()
 	{0.1, 0.0, 0.2, 0.2, 0.2, 0.2, 0.0, 0.1},
 	{0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2} };
 
-	float arvostusTaulukkoVL[8][8] =
+	double arvostusTaulukkoVL[8][8] =
 	{ {0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2 },
 	{ 0.1, 0.0, 0.2, 0.2, 0.2, 0.2, 0.0, 0.1 },
 	{ 0.1, 0.0, 0.3, 0.3, 0.3, 0.3, 0.0, 0.1 },
@@ -351,7 +351,7 @@ double Asema::evaluoi()
 	{ 0.1, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.1 },
 	{ -0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, -0.1} };
 
-	float arvostusTaulukkoMD[8][8] =
+	double arvostusTaulukkoMD[8][8] =
 	{ {-0.1, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1, -0.1},
 		{0.1, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.1},
 		{0.1, 0.3, 0.4, 0.4, 0.4, 0.4, 0.3, 0.1},
@@ -361,7 +361,7 @@ double Asema::evaluoi()
 		{0.1, 0.2, 0.4, 0.4, 0.4, 0.3, 0.3, 0.1},
 		{-0.2, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1, -0.2} };
 
-	float arvostusTaulukkoVD[8][8] =
+	double arvostusTaulukkoVD[8][8] =
 	{ {-0.2, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1, -0.2},
 		{0.1, 0.2, 0.4, 0.4, 0.4, 0.3, 0.3, 0.1},
 		{0.1, 0.4, 0.4, 0.4, 0.4, 0.4, 0.3, 0.1},
@@ -394,22 +394,26 @@ double Asema::evaluoi()
 					case VS:
 						evaluaatio += s;
 						evaluaatio += arvostusTaulukkoVS[i][j];
+						break;
 					case VT:
 						evaluaatio += t;
 						evaluaatio += arvostusTaulukkoVT[i][j];
+						break;
 					case VR:
 						evaluaatio += r;
 						evaluaatio += arvostusTaulukkoVR[i][j];
+						break;
 					case VL:
 						evaluaatio += l;
 						evaluaatio += arvostusTaulukkoVL[i][j];
+						break;
 					case VD:
 						evaluaatio += d;
 						evaluaatio += arvostusTaulukkoVD[i][j];
+						break;
 						// otetaan kuningas talteen
-					case VK:
-						evaluaatio += k;
-						valkoinenK = Ruutu(i, j);
+					default:
+						break;
 					}
 				}
 				else
@@ -419,22 +423,26 @@ double Asema::evaluoi()
 					case MS:
 						evaluaatio -= s;
 						evaluaatio -= arvostusTaulukkoMS[i][j];
+						break;
 					case MT:
 						evaluaatio -= t;
 						evaluaatio -= arvostusTaulukkoMT[i][j];
+						break;
 					case MR:
 						evaluaatio -= r;
 						evaluaatio -= arvostusTaulukkoMR[i][j];
+						break;
 					case ML:
 						evaluaatio -= l;
 						evaluaatio -= arvostusTaulukkoML[i][j];
+						break;
 					case MD:
 						evaluaatio -= d;
 						evaluaatio -= arvostusTaulukkoMD[i][j];
+						break;
 						// otetaan kuningas talteen
-					case MK:
-						evaluaatio -= k;
-						mustaK = Ruutu(i, j);
+					default:
+						break;
 					}
 				}
 			}
@@ -450,24 +458,7 @@ double Asema::evaluoi()
 	// evaluaatioon lisätään 0.25 jos kuningas on tornittanut ja/tai liikkunut pois keskeltä
 	// lisäksi mikäli kuninkaan edessä ja ainakin toisessa viistoruudussa on oma nappula lisätään 0.75
 	// numeroita varmasti pitää viilata
-	if (vkRivi == 0)
-		if (vkSarake <= 7 || vkSarake >= 6 || vkSarake <= 2 || vkSarake >= 0)
-		{
-			evaluaatio += 0.25;
-			if ((_lauta[vkSarake][1] && _lauta[vkSarake][1]->getVari() == 0) &&
-				((vkSarake - 1 >= 0 && _lauta[vkSarake - 1][1] && _lauta[vkSarake - 1][1]->getVari() == 0) ||
-					(vkSarake + 1 <= 7 && _lauta[vkSarake + 1][1] && _lauta[vkSarake + 1][1]->getVari() == 0)))
-				evaluaatio += 0.75;
-		}
-	if (mkRivi == 7)
-		if (mkSarake <= 7 || mkSarake >= 6 || mkSarake <= 2 || mkSarake >= 0)
-		{
-			evaluaatio -= 0.25;
-			if ((_lauta[mkSarake][6] && _lauta[mkSarake][6]->getVari() == 1) &&
-				((mkSarake - 1 >= 0 && _lauta[mkSarake - 1][6] && _lauta[mkSarake - 1][6]->getVari() == 0) ||
-					(mkSarake + 1 <= 7 && _lauta[mkSarake + 1][6] && _lauta[mkSarake + 1][6]->getVari() == 0)))
-				evaluaatio -= 0.75;
-		}
+
 
 	/*
 	* float tyhjaArvostusTaulu[8][8] =
@@ -557,7 +548,7 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 		int vihu = _siirtovuoro == 0 ? 1 : 0;
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++)
-				if (_lauta[i][j] && ( _lauta[i][j]->getKoodi() == VK ||  _lauta[i][j]->getKoodi() == MK))
+				if (_lauta[i][j] && (_lauta[i][j]->getKoodi() == VK || _lauta[i][j]->getKoodi() == MK))
 					kuninkaanRuutu = Ruutu(i, j);
 		if (this->onkoRuutuUhattu(kuninkaanRuutu, vihu))
 		{
@@ -572,12 +563,12 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 	// Kantatapaus 3: katkaisusyvyys
 	if (depth == 0)
 	{
-		paluu._evaluointiArvo = this->evaluoi();
+		paluu._evaluointiArvo = evaluoi();
 		return paluu;
 	}
 	if (_siirtovuoro == 0)
 	{
-		paluu._evaluointiArvo = DBL_MIN;
+		paluu._evaluointiArvo = -10;
 		for each (Siirto siirto in lista)
 		{
 			Asema uusiAsema = *this;
@@ -631,7 +622,7 @@ void Asema::jarjestaLista(std::list<Siirto>& lista)
 			loppu = _lauta[siirto.getLoppuruutu().getSarake()][siirto.getLoppuruutu().getRivi()];
 
 			//jos syödään
-			if(loppu && loppu->getVari() != _siirtovuoro)
+			if (loppu && loppu->getVari() != _siirtovuoro)
 				siirrettava.push_back(siirto);
 		}
 	}
@@ -682,12 +673,12 @@ void Asema::annaLaillisetSiirrot(list<Siirto>& lista) {
 		uusiAsema.paivitaAsema(&siirto);
 
 		// tämmönen ehkä toimii kuninkaanRuutu.getSarake() > 0
-		
+
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++)
 				if (uusiAsema._lauta[i][j] && ((uusiAsema._siirtovuoro == 1 && uusiAsema._lauta[i][j]->getKoodi() == VK) || (uusiAsema._siirtovuoro == 0 && uusiAsema._lauta[i][j]->getKoodi() == MK)))
 					kuninkaanRuutu = Ruutu(i, j);
-		
+
 		//mikäli siirto uhkaa kuningasta laitetaan se poistettavaksi
 		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) poistettava.push_back(siirto);
 	}
