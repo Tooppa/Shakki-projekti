@@ -41,12 +41,13 @@ int main()
 		}
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
+			Kayttoliittyma::getInstance()->_counter = 0;
 			MinMaxPaluu paluu;
 			// kierroksen 20 jälkeen vähän tarkempi alpha beta
 			if (kierros > 20) syvyys = 5;
 			paluu = asema.alphaBeta(syvyys);
 			siirto = paluu._parasSiirto;
-			wcout << "evaluaatio: " << paluu._evaluointiArvo << endl;
+			wcout << "evaluaatio: " << paluu._evaluointiArvo << ", " << Kayttoliittyma::getInstance()->_counter << " testattua siirtoa." << endl;
 		}
 		else {
 			siirto = Kayttoliittyma::getInstance()->

@@ -3,6 +3,7 @@
 #include "minMaxPaluu.h"
 #include "nappula.h"
 #include "ruutu.h"
+#include "kayttoliittyma.h"
 
 Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK, 0);
 Nappula* Asema::vd = new Daami(L"\u2655", 0, VD, 9);
@@ -557,6 +558,7 @@ double Asema::linjat(int vari)
 }
 MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 {
+	Kayttoliittyma::getInstance()->_counter++;
 	MinMaxPaluu paluu;
 	std::list<Siirto> lista;
 	Ruutu kuninkaanRuutu;

@@ -19,6 +19,7 @@ public:
 
 	static Kayttoliittyma* getInstance();
 
+	long int _counter;
 private:
 
 	Asema* _asema;
