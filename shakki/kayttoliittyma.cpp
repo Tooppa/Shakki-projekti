@@ -173,5 +173,5 @@ int Kayttoliittyma::kysyVastustajanVari()
 	wstring vastaus; vastaus;
 	wcout << "Valitse puoli 0=valkoinen/1=musta: ";
 	wcin >> vastaus;
-	return vastaus[0] - 49;
+	return vastaus[0] - 48;
 }
