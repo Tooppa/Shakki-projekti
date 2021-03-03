@@ -460,6 +460,26 @@ double Asema::evaluoi()
 	// numeroita varmasti pitää viilata
 
 
+	if (vkRivi == 0)
+		if (vkSarake <= 7 || vkSarake >= 6 || vkSarake <= 2 || vkSarake >= 0)
+		{
+			evaluaatio += 0.25;
+			if ((_lauta[vkSarake][1] && _lauta[vkSarake][1]->getVari() == 0) &&
+				((vkSarake - 1 >= 0 && _lauta[vkSarake - 1][1] && _lauta[vkSarake - 1][1]->getVari() == 0) ||
+					(vkSarake + 1 <= 7 && _lauta[vkSarake + 1][1] && _lauta[vkSarake + 1][1]->getVari() == 0)))
+				evaluaatio += 0.75;
+		}
+	if (mkRivi == 7)
+		if (mkSarake <= 7 || mkSarake >= 6 || mkSarake <= 2 || mkSarake >= 0)
+		{
+			evaluaatio -= 0.25;
+			if ((_lauta[mkSarake][6] && _lauta[mkSarake][6]->getVari() == 1) &&
+				((mkSarake - 1 >= 0 && _lauta[mkSarake - 1][6] && _lauta[mkSarake - 1][6]->getVari() == 0) ||
+					(mkSarake + 1 <= 7 && _lauta[mkSarake + 1][6] && _lauta[mkSarake + 1][6]->getVari() == 0)))
+				evaluaatio -= 0.75;
+		}
+
+
 	/*
 	* float tyhjaArvostusTaulu[8][8] =
 	{ {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
