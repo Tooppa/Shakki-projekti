@@ -270,7 +270,7 @@ double Asema::evaluoi()
 {
 	double evaluaatio = 0;
 	//kertoimet asetettu sen takia että niiden avulla asioiden painoarvoa voidaan säätää helposti yhdestä paikasta
-	double d = 9, t = 5, l = 3.25, r = 3, s = 1;
+	double k = 1000, d = 9, t = 5, l = 3.25, r = 3, s = 1;
 
 	Ruutu valkoinenK;
 	Ruutu mustaK;
@@ -376,6 +376,26 @@ double Asema::evaluoi()
 		{1, 3, 3, 3, 3, 3, 3, 1},
 		{-1, 1, 1, 2, 2, 1, 1, -1} };
 
+	double arvostusTaulukkoVK[8][8] =
+	{ {0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, -2, -2, 0, 0, 0},
+		{0, -1, -1, -2, -2, -1, -1, 0},
+		{0, 0, 0, 0, 0, 0, 0, 2},
+		{2, 3, 3, -1, -1, 0, 4, 3} };
+
+	double arvostusTaulukkoMK[8][8] =
+	{ {2, 3, 3, -1, -1, 0, 4, 3},
+		{0, 0, 0, 0, 0, 0, 0, 2},
+		{0, -1, -1, -2, -2, -1, -1, 0},
+		{0, 0, 0, -2, -2, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0} };
+
 
 	double valkoisiaNappuloita = 0;
 	double mustiaNappuloita = 0;
@@ -419,7 +439,10 @@ double Asema::evaluoi()
 						evaluaatio += d;
 						evaluaatio += arvostusTaulukkoVD[i][j] * valkoinenKerroin;
 						break;
-						// otetaan kuningas talteen
+					case VK:
+						evaluaatio += k;
+						evaluaatio += arvostusTaulukkoVK[i][j] * valkoinenKerroin;
+						break;
 					default:
 						break;
 					}
@@ -448,7 +471,10 @@ double Asema::evaluoi()
 						evaluaatio -= d;
 						evaluaatio -= arvostusTaulukkoMD[i][j] * mustaKerroin;
 						break;
-						// otetaan kuningas talteen
+					case MK:
+						evaluaatio -= k;
+						evaluaatio -= arvostusTaulukkoMK[i][j] * mustaKerroin;
+						break;
 					default:
 						break;
 					}
@@ -467,25 +493,6 @@ double Asema::evaluoi()
 	// lisäksi mikäli kuninkaan edessä ja ainakin toisessa viistoruudussa on oma nappula lisätään 0.75
 	// numeroita varmasti pitää viilata
 
-
-	if (vkRivi == 0)
-		if (vkSarake <= 7 || vkSarake >= 6 || vkSarake <= 2 || vkSarake >= 0)
-		{
-			evaluaatio += 0.25;
-			if ((_lauta[vkSarake][1] && _lauta[vkSarake][1]->getVari() == 0) &&
-				((vkSarake - 1 >= 0 && _lauta[vkSarake - 1][1] && _lauta[vkSarake - 1][1]->getVari() == 0) ||
-					(vkSarake + 1 <= 7 && _lauta[vkSarake + 1][1] && _lauta[vkSarake + 1][1]->getVari() == 0)))
-				evaluaatio += 0.75;
-		}
-	if (mkRivi == 7)
-		if (mkSarake <= 7 || mkSarake >= 6 || mkSarake <= 2 || mkSarake >= 0)
-		{
-			evaluaatio -= 0.25;
-			if ((_lauta[mkSarake][6] && _lauta[mkSarake][6]->getVari() == 1) &&
-				((mkSarake - 1 >= 0 && _lauta[mkSarake - 1][6] && _lauta[mkSarake - 1][6]->getVari() == 0) ||
-					(mkSarake + 1 <= 7 && _lauta[mkSarake + 1][6] && _lauta[mkSarake + 1][6]->getVari() == 0)))
-				evaluaatio -= 0.75;
-		}
 
 
 	/*
