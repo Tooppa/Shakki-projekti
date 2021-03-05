@@ -25,6 +25,10 @@ int main()
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
 
+	// alphabetan alku syvyys ja max aika. tämä menee käytännössä aina yli noin 20 sek omalla koneella
+	int maxAika = 5;
+	int alkuSyvyys;
+
 	while (lopetus != 0) {
 		lista.clear();
 		Kayttoliittyma::getInstance()->piirraLauta();
@@ -41,10 +45,8 @@ int main()
 			Kayttoliittyma::getInstance()->_counter = 0;
 			chrono::steady_clock::time_point begin = chrono::steady_clock::now();
 			MinMaxPaluu paluu;
-
-			// alphabetan alku syvyys
-			int maxAika = 3.0;
-			int alkuSyvyys = 1;
+			
+			alkuSyvyys = 1;
 			while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika))
 			{
 				paluu = asema.alphaBeta(alkuSyvyys);
@@ -58,7 +60,7 @@ int main()
 				<< " ja " << Kayttoliittyma::getInstance()->_counter 
 				<< " testattua siirtoa.\naika: " 
 				<< chrono::duration_cast<chrono::microseconds>(end - begin).count() / 1000000.0
-				<< "/s" << endl << endl;
+				<< "/s syvyydessä " << alkuSyvyys << endl << endl;
 		}
 		else {
 			siirto = Kayttoliittyma::getInstance()->
