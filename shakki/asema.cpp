@@ -586,7 +586,10 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		HashData item = k->_transpositiot.Get(laudanHash);
 		if (item._syvyys >= syvyys)
 		{
-			return item._parasSiirto;
+			if (item._parasSiirto._evaluointiArvo < alpha)
+				alpha = item._parasSiirto._evaluointiArvo;
+			if (item._parasSiirto._evaluointiArvo > beta)
+				beta = item._parasSiirto._evaluointiArvo;
 		}
 	}
 	std::list<Siirto> lista;
