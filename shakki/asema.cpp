@@ -4,6 +4,7 @@
 #include "nappula.h"
 #include "ruutu.h"
 #include "kayttoliittyma.h"
+#include "zobrist.h"
 
 Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK, 0);
 Nappula* Asema::vd = new Daami(L"\u2655", 0, VD, 9);
@@ -503,6 +504,7 @@ double Asema::evaluoi()
 	return evaluaatio;
 }
 
+
 // laskee nappuloiden arvot ja ottaa kuninkaat talteen
 double Asema::laskeNappuloidenArvo(int i)
 {
@@ -556,10 +558,37 @@ double Asema::linjat(int vari)
 	//mustat
 
 }
-MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
+
+uint64_t Asema::GetHash()
 {
-	Kayttoliittyma::getInstance()->_counter++;
+	ZobristHash hashGenerator;
+
+	bool castlingData[4];
+	castlingData[0] = getSiirtovuoro() == 0 && !getOnkoValkeaKTliikkunut() && !getOnkoValkeaKuningasLiikkunut();
+	castlingData[1] = getSiirtovuoro() == 0 && !getOnkoValkeaDTliikkunut() && !getOnkoValkeaKuningasLiikkunut();
+	castlingData[2] = getSiirtovuoro() == 1 && !getOnkoMustaKTliikkunut() && !getOnkoMustaKuningasLiikkunut();
+	castlingData[3] = getSiirtovuoro() == 1 && !getOnkoMustaDTliikkunut() && !getOnkoMustaKuningasLiikkunut();
+
+	return hashGenerator.GetHash(_lauta, castlingData);
+}
+
+MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
+{
+	Kayttoliittyma *k = Kayttoliittyma::getInstance();
+	k->_counter++;
 	MinMaxPaluu paluu;
+
+	uint64_t laudanHash = Asema::GetHash();
+
+	// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
+	if (k->_transpositiot.Exist(laudanHash))
+	{
+		HashData item = k->_transpositiot.Get(laudanHash);
+		if (item._syvyys >= syvyys)
+		{
+			return item._parasSiirto;
+		}
+	}
 	std::list<Siirto> lista;
 	Ruutu kuninkaanRuutu;
 	// Kantatapaukset 1 ja 2 : matti tai patti?
@@ -586,7 +615,7 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 		return paluu;
 	}
 	// Kantatapaus 3: katkaisusyvyys
-	if (depth == 0)
+	if (syvyys == 0)
 	{
 		paluu._evaluointiArvo = evaluoi();
 		return paluu;
@@ -598,7 +627,7 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 		{
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
-			double arvo = uusiAsema.alphaBeta(depth - 1, alpha, beta)._evaluointiArvo;
+			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
 			if (arvo >= paluu._evaluointiArvo)
 			{
 				paluu._evaluointiArvo = arvo;
@@ -616,7 +645,7 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 		{
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
-			double arvo = uusiAsema.alphaBeta(depth - 1, alpha, beta)._evaluointiArvo;
+			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
 			if (arvo <= paluu._evaluointiArvo)
 			{
 				paluu._evaluointiArvo = arvo;
@@ -627,6 +656,11 @@ MinMaxPaluu Asema::alphaBeta(int depth, double alpha, double beta)
 				break;
 		}
 	}
+
+	// kommentteihin nämä kaksi riviä taulukko systeemin poistamiseksi
+	HashData item(syvyys, paluu);
+	k->_transpositiot.Add(laudanHash, item);
+
 	return paluu;
 }
 

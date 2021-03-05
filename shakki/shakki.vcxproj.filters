@@ -39,6 +39,15 @@
     <ClCompile Include="asema.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="zobrist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hashData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hashTaulukko.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kayttoliittyma.h">
@@ -63,6 +72,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="minmaxpaluu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zobrist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hashData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hashTaulukko.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

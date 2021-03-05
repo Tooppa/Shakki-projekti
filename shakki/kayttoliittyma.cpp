@@ -11,7 +11,6 @@ using namespace std;
 
 Kayttoliittyma* Kayttoliittyma::instance = 0;
 
-
 Kayttoliittyma* Kayttoliittyma::getInstance()
 {
 	if (instance == 0)

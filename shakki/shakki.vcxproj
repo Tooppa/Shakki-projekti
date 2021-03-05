@@ -78,6 +78,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="asema.cpp" />
+    <ClCompile Include="hashData.cpp" />
+    <ClCompile Include="hashTaulukko.cpp" />
     <ClCompile Include="kayttoliittyma.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="nappula.cpp" />
@@ -85,9 +87,12 @@
     <ClCompile Include="ruutu.cpp" />
     <ClCompile Include="siirto.cpp" />
     <ClCompile Include="vastustaja.cpp" />
+    <ClCompile Include="zobrist.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asema.h" />
+    <ClInclude Include="hashData.h" />
+    <ClInclude Include="hashTaulukko.h" />
     <ClInclude Include="kayttoliittyma.h" />
     <ClInclude Include="minmaxpaluu.h" />
     <ClInclude Include="nappula.h" />
@@ -95,6 +100,7 @@
     <ClInclude Include="ruutu.h" />
     <ClInclude Include="siirto.h" />
     <ClInclude Include="vastustaja.h" />
+    <ClInclude Include="zobrist.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

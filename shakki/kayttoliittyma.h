@@ -3,6 +3,7 @@
 #include "nappula.h"
 #include "peli.h"
 #include "siirto.h"
+#include "hashTaulukko.h"
 
 
 // Shakkiohjelman käyttöliittymä, joka osaa visualisoida nykyisen aseman
@@ -18,8 +19,8 @@ public:
 	int koordinaattiKirjainNumeroksi(char kirjain);
 
 	static Kayttoliittyma* getInstance();
-
-	long int _counter;
+	uint64_t _counter;
+	HashTaulukko _transpositiot;
 private:
 
 	Asema* _asema;

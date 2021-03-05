@@ -35,9 +35,10 @@ public:
 	Asema();	
 	void paivitaAsema(Siirto*);															// P�ivitt�� aseman annetulla siirrolla.
 	double evaluoi();																	// Aseman numeerinen arviointi.
+	uint64_t Asema::GetHash();															// ottaa laudan hashin.
 	MinMaxPaluu alphaBeta(int depth, double alpha = -DBL_MAX, double beta = DBL_MAX);	// Minimax-algoritmi.
 	void annaLaillisetSiirrot(std::list<Siirto>& lista);								// Siirtogeneraattori.
-	void jarjestaLista(std::list<Siirto>& lista);
+	void jarjestaLista(std::list<Siirto>& lista);										// järjestää siirrot paremmin alphabetaa varten
 	int getSiirtovuoro();																// Palauttaa siirtovuoron.
 	void setSiirtovuoro(int);															// Asettaa siirtovuoron.
 	bool getOnkoValkeaKuningasLiikkunut();												// Linnoittuminen mahdollista?
