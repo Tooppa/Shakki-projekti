@@ -12,9 +12,9 @@ class Kayttoliittyma
 {
 public:
 
-	void aseta_asema(Asema* asema) { this->_asema = asema;  }
+	void aseta_asema(Asema* asema) { this->_asema = asema; }
 	void piirraLauta();
-	Siirto annaVastustajanSiirto();
+	Siirto annaVastustajanSiirto(Asema asema);
 	int kysyVastustajanVari();
 	int koordinaattiKirjainNumeroksi(char kirjain);
 

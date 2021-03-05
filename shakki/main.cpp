@@ -44,7 +44,7 @@ int main()
 			Kayttoliittyma::getInstance()->_counter = 0;
 			chrono::steady_clock::time_point begin = chrono::steady_clock::now();
 			MinMaxPaluu paluu;
-			
+
 			alkuSyvyys = 1;
 			while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika))
 			{
@@ -55,15 +55,15 @@ int main()
 			chrono::steady_clock::time_point end = chrono::steady_clock::now();
 
 			wcout
-				<< "evaluaatio: " << paluu._evaluointiArvo 
-				<< " ja " << Kayttoliittyma::getInstance()->_counter 
-				<< " testattua siirtoa.\naika: " 
+				<< "evaluaatio: " << paluu._evaluointiArvo
+				<< " ja " << Kayttoliittyma::getInstance()->_counter
+				<< " testattua siirtoa.\naika: "
 				<< chrono::duration_cast<chrono::microseconds>(end - begin).count() / 1000000.0
 				<< "/s syvyydessä " << alkuSyvyys << endl << endl;
 		}
 		else {
 			siirto = Kayttoliittyma::getInstance()->
-				annaVastustajanSiirto();
+				annaVastustajanSiirto(asema);
 		}
 		asema.paivitaAsema(&siirto);
 	}

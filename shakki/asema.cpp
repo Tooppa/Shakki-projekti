@@ -166,7 +166,7 @@ void Asema::paivitaAsema(Siirto* siirto)
 
 		//// Katsotaan jos nappula on sotilas ja rivi on päätyrivi niin ei vaihdeta nappulaa 
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittymän laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
-		if ((nappulanKoodi == MS || nappulanKoodi == VS) && (loppuRivi == 0 ||  loppuRivi == 7))
+		if ((nappulanKoodi == MS || nappulanKoodi == VS) && (loppuRivi == 0 || loppuRivi == 7))
 		{
 			_lauta[alkuSarake][alkuSarake] = nullptr;
 			_lauta[loppuSarake][loppuRivi] = siirto->_miksikorotetaan;
@@ -278,113 +278,116 @@ double Asema::evaluoi()
 	//1. Nappuloiden arvo
 	double arvostusTaulukkoMS[8][8] =
 	{ {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-	{0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4},
-	{0.0, 0.0, 0.0, 0.3, 0.3, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 0.3, 0.3, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 0.3, 0.3, 0.0, 0.0, 0.0},
-	{0.1, 0.0, 0.0, 0.2, 0.2, 0.0, 0.0, 0.1},
-	{0.05, 0.1, 0.1, -0.2, -0.2, 0.1, 0.1, 0.05},
+	{4, 4, 4, 4, 4, 4, 4, 4},
+	{0.0, 0.0, 0.0, 3, 3, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 3, 3, 0.0, 0.0, 0.0},
+	{0.0, 0.0, 0.0, 4, 4, 0.0, 0.0, 0.0},
+	{0.5, 0.0, 0.0, 3, 3, 0.0, 0.0, 0.5},
+	{0.5, 1, 1, -2, -2, 1, 1, 0.5},
 	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0} };
 
 	double arvostusTaulukkoVS[8][8] =
-	{ {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-	{0.05, 0.1, 0.1, -0.2, -0.2, 0.1, 0.1, 0.05},
-	{0.1, 0.0, 0.0, 0.2, 0.2, 0.0, 0.0, 0.1},
-	{0.0, 0.0, 0.0, 0.3, 0.3, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 0.3, 0.3, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 0.3, 0.3, 0.0, 0.0, 0.0},
-	{0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4},
-	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0} };
+	{ {0, 0, 0, 0, 0, 0, 0, 0},
+	{0.5, 1, 1, -2, -2, 1, 1, 0.5},
+	{1, 0.0, 0.0, 2, 2, 0, 0, 1},
+	{0, 0, 0.0, 3, 3, 0, 0, 0},
+	{0, 0, 0.0, 0.3, 3, 0, 0, 0},
+	{0, 0, 0.0, 3, 3, 0, 0, 0},
+	{4, 4, 4, 4, 4, 4, 4, 4},
+	{0, 0, 0, 0, 0, 0, 0, 0} };
 
 	double arvostusTaulukkoMR[8][8] =
-	{ {-0.3, -0.2, -0.1, 0.0, 0.0, -0.1, -0.2, -0.3},
-	{0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0},
-	{0.0, 0.2, 0.3, 0.3, 0.3, 0.3, 0.2, 0.0},
-	{0.0, 0.2, 0.3, 0.4, 0.4, 0.3, 0.2, 0.0},
-	{0.0, 0.2, 0.3, 0.4, 0.4, 0.3, 0.2, 0.0},
-	{0.0, 0.2, 0.3, 0.3, 0.3, 0.3, 0.2, 0.0},
-	{0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0},
-	{-0.3, -0.2, -0.1, 0.0, 0.0, -0.1, -0.2, -0.3} };
+	{ {-3, -2, -1, 0, 0, -1, -2, -3},
+	{0, 1, 2, 2, 2, 2, 1, 0},
+	{0, 2, 3, 3, 3, 3, 2, 0},
+	{0, 2, 3, 4, 4, 3, 2, 0},
+	{0, 2, 3, 4, 4, 3, 2, 0},
+	{0, 2, 2, 3, 3, 2, 2, 0},
+	{0, 1, 2, 2, 2, 2, 1, 0},
+	{-3, -2, -1, 0, 0, -1, -2, -3} };
 
 	double arvostusTaulukkoVR[8][8] =
-	{ {-0.3, -0.2, -0.1, 0.0, 0.0, -0.1, 0.2, -0.3},
-	{0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0},
-	{0.0, 0.2, 0.3, 0.3, 0.3, 0.3, 0.2, 0.0},
-	{0.0, 0.2, 0.3, 0.4, 0.4, 0.3, 0.2, 0.0},
-	{0.0, 0.2, 0.3, 0.4, 0.4, 0.3, 0.2, 0.0},
-	{0.0, 0.2, 0.3, 0.3, 0.3, 0.3, 0.2, 0.0},
-	{0.0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.1, 0.0},
-	{-0.3, -0.2, -0.1, 0.0, 0.0, -0.1, -0.2, -0.3} };
+	{ {-3, -2, -1, 0, 0, -1, 2, -3},
+	{0, 0, 0, 0, 0, 2, 1, 0},
+	{0, 2, 2, 3, 3, 2, 2, 0},
+	{0, 2, 3, 4, 4, 3, 2, 0},
+	{0, 2, 3, 4, 4, 3, 2, 0},
+	{0, 2, 3, 3, 3, 3, 2, 0},
+	{0, 1, 2, 2, 2, 0.2, 0.1, 0},
+	{-3, -2, -1, 0, 0, -1, -2, -3} };
 
 	double arvostusTaulukkoMT[8][8] =
-	{ {0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2},
-	{0.3, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.3},
-	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
-	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
-	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
-	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
-	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
-	{0.0, 0.0, 0.1, 0.2, 0.2, 0.1, 0.0, 0.0} };
+	{ {2, 2, 2, 2, 2, 2, 2, 2},
+	{3, 4, 4, 4, 4, 4, 4, 3},
+	{-1, 0, 0, 0, 0, 0, 0, -1},
+	{-1, 0, 0, 0, 0, 0, 0, -1},
+	{-1, 0, 0, 0, 0, 0, 0, -1},
+	{-1, 0, 0, 0, 0, 0, 0, -1},
+	{-1, 0, 0, 0, 0, 0, 0, -1},
+	{0, 0, 1, 2, 2, 1, 0, 0} };
 
 	double arvostusTaulukkoVT[8][8] =
-	{ {0.0, 0.0, 0.1, 0.2, 0.2, 0.1, 0.0, 0.0},
-	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
-	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
-	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
-	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
-	{-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1},
-	{0.3, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.3},
-	{0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2} };
+	{ {0, 0, 1, 2, 2, 1, 0, 0},
+	{-1, 0, 0, 0, 0, 0, 0, -1},
+	{-1, 0, 0, 0, 0, 0, 0, -1},
+	{-1, 0, 0, 0, 0, 0, 0, -1},
+	{-1, 0, 0, 0, 0, 0, 0, -0},
+	{-1, 0, 0, 0, 0, 0, 0, -1},
+	{3, 4, 4, 4, 4, 4, 4, 3},
+	{2, 2, 2, 2, 2, 2, 2, 2} };
 
 	double arvostusTaulukkoML[8][8] =
-	{ {-0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, -0.1},
-	{0.1, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.1},
-	{0.1, 0.2, 0.0, 0.3, 0.3, 0.0, 0.2, 0.1},
-	{0.1, 0.25, 0.0, 0.3, 0.3, 0.0, 0.25, 0.1},
-	{0.1, 0.2, 0.4, 0.3, 0.3, 0.4, 0.2, 0.1},
-	{0.1, 0.0, 0.3, 0.3, 0.3, 0.3, 0.0, 0.1},
-	{0.1, 0.0, 0.2, 0.2, 0.2, 0.2, 0.0, 0.1},
-	{0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2} };
+	{ {-1, 1, 1, 1, 1, 1, 1, -1},
+	{1, 2, 2, 2, 2, 2, 2, 1},
+	{1, 2, 0, 3, 3, 0, 2, 1},
+	{1, 2, 0, 3, 3, 0, 2, 1},
+	{1, 2, 4, 3, 3, 4, 2, 1},
+	{1, 0, 3, 3, 3, 3, 0, 1},
+	{1, 0, 2, 2, 2, 2, 0, 1},
+	{2, 0, 0, 0, 0, 0, 0, 2} };
 
 	double arvostusTaulukkoVL[8][8] =
-	{ {0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2 },
-	{ 0.1, 0.0, 0.2, 0.2, 0.2, 0.2, 0.0, 0.1 },
-	{ 0.1, 0.0, 0.3, 0.3, 0.3, 0.3, 0.0, 0.1 },
-	{ 0.1, 0.2, 0.4, 0.3, 0.3, 0.4, 0.2, 0.1 },
-	{ 0.1, 0.25, 0.0, 0.3, 0.3, 0.0, 0.25, 0.1},
-	{ 0.1, 0.2, 0.0, 0.3, 0.3, 0.0, 0.2, 0.1 },
-	{ 0.1, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.1 },
-	{ -0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, -0.1} };
+	{ {2, 0, 0, 0, 0, 0, 0, 2 },
+	{ 1, 0, 2, 2, 2, 2, 0, 1 },
+	{ 1, 0, 3, 3, 3, 3, 0, 1 },
+	{ 1, 1, 4, 3, 3, 4, 2, 1 },
+	{ 1, 2, 0, 3, 3, 3, 2, 1},
+	{ 1, 2, 0, 3, 3, 0, 2, 1 },
+	{ 1, 2, 2, 2, 2, 2, 2, 1 },
+	{ -1, 1, 1, 1, 1, 1, 1, -1} };
 
 	double arvostusTaulukkoMD[8][8] =
-	{ {-0.1, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1, -0.1},
-		{0.1, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.1},
-		{0.1, 0.3, 0.4, 0.4, 0.4, 0.4, 0.3, 0.1},
-		{0.2, 0.3, 0.4, 0.4, 0.4, 0.4, 0.3, 0.1},
-		{0.3, 0.3, 0.4, 0.4, 0.4, 0.4, 0.3, 0.2},
-		{0.1, 0.4, 0.4, 0.4, 0.4, 0.4, 0.3, 0.1},
-		{0.1, 0.2, 0.4, 0.4, 0.4, 0.3, 0.3, 0.1},
-		{-0.2, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1, -0.2} };
+	{ {-1, 1, 1, 2, 2, 1, 1, -1},
+		{1, 3, 3, 3, 3, 3, 3, 1},
+		{1, 3, 4, 4, 4, 4, 3, 1},
+		{1, 3, 4, 4, 4, 4, 3, 1},
+		{3, 3, 4, 4, 4, 4, 3, 2},
+		{1, 4, 4, 4, 4, 4, 3, 1},
+		{1, 2, 4, 4, 4, 3, 3, 1},
+		{-2, 1, 1, 2, 2, 1, 1, -2} };
 
 	double arvostusTaulukkoVD[8][8] =
-	{ {-0.2, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1, -0.2},
-		{0.1, 0.2, 0.4, 0.4, 0.4, 0.3, 0.3, 0.1},
-		{0.1, 0.4, 0.4, 0.4, 0.4, 0.4, 0.3, 0.1},
-		{0.2, 0.3, 0.4, 0.4, 0.4, 0.4, 0.3, 0.3},
-		{0.1, 0.3, 0.4, 0.4, 0.4, 0.4, 0.3, 0.2},
-		{0.1, 0.3, 0.4, 0.4, 0.4, 0.4, 0.3, 0.2},
-		{0.1, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.1},
-		{-0.1, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1, -0.1} };
+	{ {-2, 1, 1, 2, 2, 1, 1, -2},
+		{1, 2, 4, 4, 4, 3, 3, 1},
+		{1, 4, 4, 4, 4, 4, 3, 1},
+		{2, 3, 4, 4, 4, 4, 3, 3},
+		{1, 3, 4, 4, 4, 4, 4, 2},
+		{1, 3, 4, 4, 4, 4, 3, 2},
+		{1, 3, 3, 3, 3, 3, 3, 1},
+		{-1, 1, 1, 2, 2, 1, 1, -1} };
 
 
-	int valkoisiaNappuloita = 0;
-	int mustiaNappuloita = 0;
+	double valkoisiaNappuloita = 0;
+	double mustiaNappuloita = 0;
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
 			if (_lauta[i][j])
 				if (_lauta[i][j]->getVari() == 0)
 					valkoisiaNappuloita++;
 				else mustiaNappuloita++;
+
+	double mustaKerroin = mustiaNappuloita / 10;
+	double valkoinenKerroin = valkoisiaNappuloita / 10;
 
 	//1. Nappuloiden arvo
 	for (int i = 0; i < 8; i++)
@@ -398,23 +401,23 @@ double Asema::evaluoi()
 					{
 					case VS:
 						evaluaatio += s;
-						evaluaatio += arvostusTaulukkoVS[i][j];
+						evaluaatio += arvostusTaulukkoVS[i][j] * valkoinenKerroin;
 						break;
 					case VT:
 						evaluaatio += t;
-						evaluaatio += arvostusTaulukkoVT[i][j];
+						evaluaatio += arvostusTaulukkoVT[i][j] * valkoinenKerroin;
 						break;
 					case VR:
 						evaluaatio += r;
-						evaluaatio += arvostusTaulukkoVR[i][j];
+						evaluaatio += arvostusTaulukkoVR[i][j] * valkoinenKerroin;
 						break;
 					case VL:
 						evaluaatio += l;
-						evaluaatio += arvostusTaulukkoVL[i][j];
+						evaluaatio += arvostusTaulukkoVL[i][j] * valkoinenKerroin;
 						break;
 					case VD:
 						evaluaatio += d;
-						evaluaatio += arvostusTaulukkoVD[i][j];
+						evaluaatio += arvostusTaulukkoVD[i][j] * valkoinenKerroin;
 						break;
 						// otetaan kuningas talteen
 					default:
@@ -427,23 +430,23 @@ double Asema::evaluoi()
 					{
 					case MS:
 						evaluaatio -= s;
-						evaluaatio -= arvostusTaulukkoMS[i][j];
+						evaluaatio -= arvostusTaulukkoMS[i][j] * mustaKerroin;
 						break;
 					case MT:
 						evaluaatio -= t;
-						evaluaatio -= arvostusTaulukkoMT[i][j];
+						evaluaatio -= arvostusTaulukkoMT[i][j] * mustaKerroin;
 						break;
 					case MR:
 						evaluaatio -= r;
-						evaluaatio -= arvostusTaulukkoMR[i][j];
+						evaluaatio -= arvostusTaulukkoMR[i][j] * mustaKerroin;
 						break;
 					case ML:
 						evaluaatio -= l;
-						evaluaatio -= arvostusTaulukkoML[i][j];
+						evaluaatio -= arvostusTaulukkoML[i][j] * mustaKerroin;
 						break;
 					case MD:
 						evaluaatio -= d;
-						evaluaatio -= arvostusTaulukkoMD[i][j];
+						evaluaatio -= arvostusTaulukkoMD[i][j] * mustaKerroin;
 						break;
 						// otetaan kuningas talteen
 					default:
@@ -574,7 +577,7 @@ uint64_t Asema::GetHash()
 
 MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 {
-	Kayttoliittyma *k = Kayttoliittyma::getInstance();
+	Kayttoliittyma* k = Kayttoliittyma::getInstance();
 	k->_counter++;
 	MinMaxPaluu paluu;
 
@@ -643,13 +646,13 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
-			if (arvo >= paluu._evaluointiArvo)
+			if (arvo > paluu._evaluointiArvo)
 			{
 				paluu._evaluointiArvo = arvo;
 				paluu._parasSiirto = siirto;
 			}
 			alpha = std::max(alpha, paluu._evaluointiArvo);
-			if (alpha >= beta)
+			if (beta <= alpha)
 				break;
 		}
 	}
@@ -661,7 +664,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
-			if (arvo <= paluu._evaluointiArvo)
+			if (arvo < paluu._evaluointiArvo)
 			{
 				paluu._evaluointiArvo = arvo;
 				paluu._parasSiirto = siirto;
@@ -669,6 +672,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			beta = std::min(beta, paluu._evaluointiArvo);
 			if (beta <= alpha)
 				break;
+
 		}
 	}
 
@@ -703,7 +707,7 @@ void Asema::jarjestaLista(std::list<Siirto>& lista)
 
 			//jos syödään
 			if (loppu && loppu->getVari() != _siirtovuoro)
-				if(alku->getArvo() >= loppu->getArvo())
+				if (alku->getArvo() >= loppu->getArvo())
 					siirrettava.push_back(siirto);
 		}
 	}

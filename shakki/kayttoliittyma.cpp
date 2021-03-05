@@ -63,24 +63,57 @@ void Kayttoliittyma::piirraLauta()
 	muodollisesti korrekti (ei tarkista aseman laillisuutta)
 	Ottaa irti myˆs nappulan kirjaimen (K/D/L/R/T), tarkistaa ett‰ kirjain korrekti
 */
-Siirto Kayttoliittyma::annaVastustajanSiirto()
+Siirto Kayttoliittyma::annaVastustajanSiirto(Asema asema)
 {
 	Siirto siirto;
-	wstring vastaus;
-	wcin >> vastaus;
-	
-	if (vastaus.length() == 5) {
-		// pitk‰ linna
-		//0 unikodessa numero 48
-		if (vastaus[0] == 48)
-		{
-			siirto = Siirto(false, true);
+	bool laillinenSiirto = false;
+
+	while (!laillinenSiirto) {
+
+
+		wstring vastaus;
+		wcin >> vastaus;
+
+
+		if (vastaus.length() == 5) {
+			// pitk‰ linna
+			//0 unikodessa numero 48
+			if (vastaus[0] == 48)
+			{
+				siirto = Siirto(false, true);
+			}
+			else
+			{
+				//sotilas input
+					// 0 unikodessa numero 48, eli 49 miinustetaan vastauksesta ja 
+					// saadaan int muotoinen numero. "Purkkaa" t. menneisyyden Miika.
+				int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
+				Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1] - 49);
+
+				int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
+				Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
+
+				siirto = Siirto(aloitusRuutu, lopetusRuutu);
+			}
+
 		}
-		else
+		else if (vastaus.length() == 6) {
+			//joku nappula siirto;
+			int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[1]);
+			Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[2] - 49);
+
+			int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[4]);
+			Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[5] - 49);
+
+			siirto = Siirto(aloitusRuutu, lopetusRuutu);
+		}
+		else if (vastaus.length() == 3)
 		{
-			//sotilas input
-				// 0 unikodessa numero 48, eli 49 miinustetaan vastauksesta ja 
-				// saadaan int muotoinen numero. "Purkkaa" t. menneisyyden Miika.
+			siirto = Siirto(true, false);
+		}
+		else if (vastaus.length() == 7)
+		{
+			//korotus siirto;
 			int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
 			Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1] - 49);
 
@@ -88,79 +121,63 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 			Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
 
 			siirto = Siirto(aloitusRuutu, lopetusRuutu);
-		}
+			// vastaus[4] - 49 on nolla jos musta on p‰‰tyriviss‰
 
-	}
-	else if (vastaus.length() == 6) {
-		//joku nappula siirto;
-		int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[1]);
-		Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[2] - 49);
-
-		int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[4]);
-		Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[5] - 49);
-
-		siirto = Siirto(aloitusRuutu, lopetusRuutu);
-	}
-	else if (vastaus.length() == 3)
-	{
-		siirto = Siirto(true, false);
-	}
-	else if (vastaus.length() == 7)
-	{
-		//korotus siirto;
-		int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
-		Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1] - 49);
-
-		int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
-		Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
-
-		siirto = Siirto(aloitusRuutu, lopetusRuutu);
-		// vastaus[4] - 49 on nolla jos musta on p‰‰tyriviss‰
-
-		// defaulttina kuningatar 78 = N, 82 = R, 66 = B, 81 = Q
-		if (vastaus[4] - 49 == 0) {
-			switch (vastaus[6])
+			// defaulttina kuningatar 78 = N, 82 = R, 66 = B, 81 = Q
+			if (vastaus[4] - 49 == 0) {
+				switch (vastaus[6])
+				{
+				case 78:
+					siirto._miksikorotetaan = Asema::mr;
+					break;
+				case 82:
+					siirto._miksikorotetaan = Asema::mt;
+					break;
+				case 66:
+					siirto._miksikorotetaan = Asema::ml;
+					break;
+				case 81:
+					siirto._miksikorotetaan = Asema::md;
+					break;
+				default:
+					siirto._miksikorotetaan = Asema::md;
+					break;
+				}
+			}
+			else
 			{
-			case 78:
-				siirto._miksikorotetaan = Asema::mr;
-				break;
-			case 82:
-				siirto._miksikorotetaan = Asema::mt;
-				break;
-			case 66:
-				siirto._miksikorotetaan = Asema::ml;
-				break;
-			case 81:
-				siirto._miksikorotetaan = Asema::md;
-				break;
-			default:
-				siirto._miksikorotetaan = Asema::md;
-				break;
+				switch (vastaus[6])
+				{
+				case 78:
+					siirto._miksikorotetaan = Asema::vr;
+					break;
+				case 82:
+					siirto._miksikorotetaan = Asema::vt;
+					break;
+				case 66:
+					siirto._miksikorotetaan = Asema::vl;
+					break;
+				case 81:
+					siirto._miksikorotetaan = Asema::vd;
+					break;
+				default:
+					siirto._miksikorotetaan = Asema::vd;
+					break;
+				}
 			}
 		}
-		else
-		{
-			switch (vastaus[6])
-			{
-			case 78:
-				siirto._miksikorotetaan = Asema::vr;
-				break;
-			case 82:
-				siirto._miksikorotetaan = Asema::vt;
-				break;
-			case 66:
-				siirto._miksikorotetaan = Asema::vl;
-				break;
-			case 81:
-				siirto._miksikorotetaan = Asema::vd;
-				break;
-			default:
-				siirto._miksikorotetaan = Asema::vd;
-				break;
+		list<Siirto> lista;
+		asema.annaLaillisetSiirrot(lista);
+		for (const Siirto& indeksiSiirto : lista) {
+			if (indeksiSiirto == siirto) {
+				laillinenSiirto = true;
+				return siirto;
 			}
 		}
+		wcout << "\nLaiton siirto/huono formatointi!\nAnna siirrot muodossa:\nSotilas siirrot: g2-g3 \nMuut siirrot:ra1-a2 \nKorotukset: g2-g1=R (muista isot kirjaimet lopussa)\n";
+
 	}
-	return siirto;
+
 }
 
 int Kayttoliittyma::koordinaattiKirjainNumeroksi(char kirjain)
