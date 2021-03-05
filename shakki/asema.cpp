@@ -166,7 +166,7 @@ void Asema::paivitaAsema(Siirto* siirto)
 
 		//// Katsotaan jos nappula on sotilas ja rivi on päätyrivi niin ei vaihdeta nappulaa 
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittymän laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
-		if ((nappulanKoodi == MS && loppuRivi == 0) || (nappulanKoodi == VS && loppuRivi == 7))
+		if ((nappulanKoodi == MS || nappulanKoodi == VS) && (loppuRivi == 0 ||  loppuRivi == 7))
 		{
 			_lauta[alkuSarake][alkuSarake] = nullptr;
 			_lauta[loppuSarake][loppuRivi] = siirto->_miksikorotetaan;
@@ -579,17 +579,29 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	MinMaxPaluu paluu;
 
 	uint64_t laudanHash = Asema::GetHash();
-
+	int originalAlpha = alpha;
 	// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
 	if (k->_transpositiot.Exist(laudanHash))
 	{
 		HashData item = k->_transpositiot.Get(laudanHash);
 		if (item._syvyys >= syvyys)
 		{
-			if (item._parasSiirto._evaluointiArvo < alpha)
-				alpha = item._parasSiirto._evaluointiArvo;
-			if (item._parasSiirto._evaluointiArvo > beta)
-				beta = item._parasSiirto._evaluointiArvo;
+			if (item._tyyppi == 2)
+				return item._parasSiirto;
+			else if (item._tyyppi == 1)
+			{
+				if (item._parasSiirto._evaluointiArvo > alpha)
+					alpha = item._parasSiirto._evaluointiArvo;
+			}
+			else if (item._tyyppi == 3)
+			{
+				if (item._parasSiirto._evaluointiArvo < beta)
+					beta = item._parasSiirto._evaluointiArvo;
+			}
+
+			// jos alpha on saavuttanut tai ylittänyt betan
+			if (alpha >= beta)
+				return item._parasSiirto;
 		}
 	}
 	std::list<Siirto> lista;
@@ -661,7 +673,13 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	}
 
 	// kommentteihin nämä kaksi riviä taulukko systeemin poistamiseksi
-	HashData item(syvyys, paluu);
+	HashData item(syvyys, paluu, -1); // -1 tyyppi on ns null
+	if (paluu._evaluointiArvo <= originalAlpha)
+		item._tyyppi = 3; // 3 arvonen tyyppi on ylä arvo
+	else if (paluu._evaluointiArvo >= beta)
+		item._tyyppi = 1; // 1 arvonen on ala arvo
+	else
+		item._tyyppi = 2; // 2 on keskiarvo
 	k->_transpositiot.Add(laudanHash, item);
 
 	return paluu;

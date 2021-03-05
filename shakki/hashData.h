@@ -8,9 +8,10 @@ class HashData
 {
 public:
 	HashData();
-	HashData( int syvyys, MinMaxPaluu parasSiirto);
+	HashData( int syvyys, MinMaxPaluu parasSiirto, int tyyppi);
 	~HashData();
 
 	int _syvyys;
 	MinMaxPaluu _parasSiirto;
+	int _tyyppi;
 };

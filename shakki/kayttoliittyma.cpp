@@ -68,7 +68,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 	Siirto siirto;
 	wstring vastaus;
 	wcin >> vastaus;
-
+	
 	if (vastaus.length() == 5) {
 		// pitk‰ linna
 		//0 unikodessa numero 48
@@ -108,16 +108,18 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 	else if (vastaus.length() == 7)
 	{
 		//korotus siirto;
-		int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[1]);
+		int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
 		Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1] - 49);
 
-		int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[4]);
+		int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
 		Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
 
 		siirto = Siirto(aloitusRuutu, lopetusRuutu);
 		// vastaus[4] - 49 on nolla jos musta on p‰‰tyriviss‰
+
+		// defaulttina kuningatar 78 = N, 82 = R, 66 = B, 81 = Q
 		if (vastaus[4] - 49 == 0) {
-			switch (vastaus[7])
+			switch (vastaus[6])
 			{
 			case 78:
 				siirto._miksikorotetaan = Asema::mr;
@@ -131,11 +133,14 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 			case 81:
 				siirto._miksikorotetaan = Asema::md;
 				break;
+			default:
+				siirto._miksikorotetaan = Asema::md;
+				break;
 			}
 		}
 		else
 		{
-			switch (vastaus[7])
+			switch (vastaus[6])
 			{
 			case 78:
 				siirto._miksikorotetaan = Asema::vr;
@@ -147,6 +152,9 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 				siirto._miksikorotetaan = Asema::vl;
 				break;
 			case 81:
+				siirto._miksikorotetaan = Asema::vd;
+				break;
+			default:
 				siirto._miksikorotetaan = Asema::vd;
 				break;
 			}

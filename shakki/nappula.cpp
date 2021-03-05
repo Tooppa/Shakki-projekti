@@ -161,7 +161,18 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		}
 		else if (aloitusRivi + 1 == 7)
 		{
-			lisaaSotilaanKorotukset(Siirto(*ruutu, Ruutu(aloitusSarake, aloitusRivi + 1)), lista, asema);
+			if (asema->_lauta[aloitusSarake][aloitusRivi + 1] == nullptr)
+			{
+				lisaaSotilaanKorotukset(Siirto(*ruutu, Ruutu(aloitusSarake, aloitusRivi + 1)), lista, vari);
+			}
+			if (aloitusSarake - 1 >= 0 && asema->_lauta[aloitusSarake - 1][aloitusRivi + 1])
+			{
+				lisaaSotilaanKorotukset(Siirto(*ruutu, Ruutu(aloitusSarake - 1, aloitusRivi + 1)), lista, vari);
+			}
+			if (aloitusSarake + 1 <= 7 && asema->_lauta[aloitusSarake + 1][aloitusRivi + 1])
+			{
+				lisaaSotilaanKorotukset(Siirto(*ruutu, Ruutu(aloitusSarake + 1, aloitusRivi + 1)), lista, vari);
+			}
 		}
 		else if (asema->_lauta[aloitusSarake][aloitusRivi + 1] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake,aloitusRivi + 1)));
@@ -188,7 +199,18 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		}
 		else if (aloitusRivi - 1 == 0)
 		{
-			lisaaSotilaanKorotukset(Siirto(*ruutu, Ruutu(aloitusSarake, aloitusRivi - 1)), lista, asema);
+			if (asema->_lauta[aloitusSarake][aloitusRivi + 1] == nullptr)
+			{
+				lisaaSotilaanKorotukset(Siirto(*ruutu, Ruutu(aloitusSarake, aloitusRivi - 1)), lista, vari);
+			}
+			if (aloitusSarake - 1 >= 0 && asema->_lauta[aloitusSarake - 1][aloitusRivi - 1])
+			{
+				lisaaSotilaanKorotukset(Siirto(*ruutu, Ruutu(aloitusSarake - 1, aloitusRivi - 1)), lista, vari);
+			}
+			if (aloitusSarake + 1 <= 7 && asema->_lauta[aloitusSarake + 1][aloitusRivi - 1])
+			{
+				lisaaSotilaanKorotukset(Siirto(*ruutu, Ruutu(aloitusSarake + 1, aloitusRivi - 1)), lista, vari);
+			}
 		}
 		else if (asema->_lauta[aloitusSarake][aloitusRivi - 1] == nullptr)
 			lista.push_back(Siirto(*ruutu, Ruutu(aloitusSarake, aloitusRivi - 1)));
@@ -208,7 +230,28 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 }
 
 
-void Sotilas::lisaaSotilaanKorotukset(Siirto siirto, std::list<Siirto>& lista, Asema* asema) 
+void Sotilas::lisaaSotilaanKorotukset(Siirto siirto, std::list<Siirto>& lista, int vari) 
 {
-
+	if (vari == (int)0) 
+	{
+		siirto._miksikorotetaan = Asema::vt;
+		lista.push_back(siirto);
+		siirto._miksikorotetaan = Asema::vr;
+		lista.push_back(siirto);
+		siirto._miksikorotetaan = Asema::vl;
+		lista.push_back(siirto);
+		siirto._miksikorotetaan = Asema::vd;
+		lista.push_back(siirto);
+	}
+	else 
+	{
+		siirto._miksikorotetaan = Asema::mt;
+		lista.push_back(siirto);
+		siirto._miksikorotetaan = Asema::mr;
+		lista.push_back(siirto);
+		siirto._miksikorotetaan = Asema::ml;
+		lista.push_back(siirto);
+		siirto._miksikorotetaan = Asema::md;
+		lista.push_back(siirto);
+	}
 }

@@ -13,8 +13,7 @@ using namespace std;
 
 int main()
 {
-	wcout << "HeippariShakki\n";
-	wcout << "Tervetuloa pelaamaan!\n";
+	wcout << "Tervetuloa pelaamaan! \nSiirrot muodossa g2-g3, ra1-a2 ja korotukset \ng2-g1=R (muista isot kirjaimet lopussa)\n\n";
 	int lopetus = 100;
 	Asema asema;
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
@@ -26,7 +25,7 @@ int main()
 	int koneenVari = peli.getKoneenVari();
 
 	// alphabetan alku syvyys ja max aika. tämä menee käytännössä aina yli noin 20 sek omalla koneella
-	int maxAika = 5;
+	int maxAika = 3;
 	int alkuSyvyys;
 
 	while (lopetus != 0) {
