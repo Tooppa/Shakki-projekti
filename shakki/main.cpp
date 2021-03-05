@@ -24,12 +24,8 @@ int main()
 	list<Siirto> lista;
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
-	// alphabetan alku syvyys
-	int syvyys = 4;
-	int kierros = 0;
 
 	while (lopetus != 0) {
-		kierros++;
 		lista.clear();
 		Kayttoliittyma::getInstance()->piirraLauta();
 		wcout << "\n";
@@ -45,9 +41,15 @@ int main()
 			Kayttoliittyma::getInstance()->_counter = 0;
 			chrono::steady_clock::time_point begin = chrono::steady_clock::now();
 			MinMaxPaluu paluu;
-			// kierroksen 20 jälkeen vähän tarkempi alpha beta
-			if (kierros > 20) syvyys = 5;
-			paluu = asema.alphaBeta(syvyys);
+
+			// alphabetan alku syvyys
+			int maxAika = 3.0;
+			int alkuSyvyys = 1;
+			while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika))
+			{
+				paluu = asema.alphaBeta(alkuSyvyys);
+				alkuSyvyys++;
+			}
 			siirto = paluu._parasSiirto;
 			chrono::steady_clock::time_point end = chrono::steady_clock::now();
 
