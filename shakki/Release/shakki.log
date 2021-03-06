@@ -1,9 +1,11 @@
-﻿  main.cpp
+﻿  asema.cpp
+E:\Shakki-projekti\shakki\asema.cpp(12,52): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+E:\Shakki-projekti\shakki\asema.cpp(19,52): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+E:\Shakki-projekti\shakki\asema.cpp(164,42): warning C4553: '==': result of expression not used; did you intend '='?
+E:\Shakki-projekti\shakki\asema.cpp(169,42): warning C4553: '==': result of expression not used; did you intend '='?
   Generating code
-C:\Users\tomva\Documents\GitHub\Shakki-projekti\shakki\kayttoliittyma.cpp(192): warning C4715: 'Kayttoliittyma::koordinaattiKirjainNumeroksi': not all control paths return a value
-C:\Users\tomva\Documents\GitHub\Shakki-projekti\shakki\kayttoliittyma.cpp(181): warning C4715: 'Kayttoliittyma::annaVastustajanSiirto': not all control paths return a value
-  68 of 495 functions (13.7%) were compiled, the rest were copied from previous compilation.
+  1 of 543 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    22 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  shakki.vcxproj -> C:\Users\tomva\Documents\GitHub\Shakki-projekti\Release\shakki.exe
+  shakki.vcxproj -> E:\Shakki-projekti\Release\shakki.exe
