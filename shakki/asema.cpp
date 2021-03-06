@@ -608,6 +608,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	chrono::steady_clock::time_point start = k->_aika; // tallennetaan startti aika käyttöliittymästä
 	MinMaxPaluu paluu;
 
+	bool kesken = false;
 	uint64_t laudanHash = Asema::GetHash();
 	double originalAlpha = alpha;
 	double originalBeta = beta;
@@ -671,7 +672,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		paluu._evaluointiArvo = -DBL_MAX;
 		for each (Siirto siirto in lista)
 		{
-			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) break; // lähdetään pois mikäli aika on loppu
+			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) { kesken = true; break; }  // lähdetään pois mikäli aika on loppu
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
@@ -690,7 +691,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		paluu._evaluointiArvo = DBL_MAX;
 		for each (Siirto siirto in lista)
 		{
-			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) break; // lähdetään pois mikäli aika on loppu
+			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) { kesken = true; break; }  // lähdetään pois mikäli aika on loppu
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
@@ -705,17 +706,17 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 
 		}
 	}
-
-	// kommentteihin nämä kaksi riviä taulukko systeemin poistamiseksi
-	HashData item(syvyys, paluu, -1); // -1 tyyppi on ns null
-	if (paluu._evaluointiArvo <= originalAlpha)
-		item._tyyppi = 3; // 3 mikäli on pienempi kun alussa otettu alpha
-	else if (paluu._evaluointiArvo >= originalBeta)
-		item._tyyppi = 1; // 1 mikäli on suurempi kun alussa otettu beta
-	else
-		item._tyyppi = 2; // 2 jos arvo on alphan ja betan keskellä
-	k->_transpositiot.Add(laudanHash, item);// tallennetaan tietokantaan
-
+	if (!kesken) {
+		// kommentteihin nämä kaksi riviä taulukko systeemin poistamiseksi
+		HashData item(syvyys, paluu, -1); // -1 tyyppi on ns null
+		if (paluu._evaluointiArvo <= originalAlpha)
+			item._tyyppi = 3; // 3 mikäli on pienempi kun alussa otettu alpha
+		else if (paluu._evaluointiArvo >= originalBeta)
+			item._tyyppi = 1; // 1 mikäli on suurempi kun alussa otettu beta
+		else
+			item._tyyppi = 2; // 2 jos arvo on alphan ja betan keskellä
+		k->_transpositiot.Add(laudanHash, item);// tallennetaan tietokantaan
+	}
 	return paluu;
 }
 
