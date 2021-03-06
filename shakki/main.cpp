@@ -13,24 +13,25 @@ using namespace std;
 
 int main()
 {
-	wcout << "Tervetuloa pelaamaan! \nSiirrot muodossa g2-g3, ra1-a2 ja korotukset \ng2-g1=R (muista isot kirjaimet lopussa)\n\n";
+	Kayttoliittyma* k = Kayttoliittyma::getInstance();
 	int lopetus = 100;
 	Asema asema;
-	Kayttoliittyma::getInstance()->aseta_asema(&asema);
-
-	Peli peli(Kayttoliittyma::getInstance()->
-		kysyVastustajanVari());
 	list<Siirto> lista;
 	system("cls");
-	int koneenVari = peli.getKoneenVari();
 
 	// alphabetan alku syvyys ja max aika. tämä menee käytännössä aina yli noin 20 sek omalla koneella
-	int maxAika = 3;
+	int maxAika = 10;
 	int alkuSyvyys;
+
+	k->_maxAika = maxAika;
+	k->aseta_asema(&asema);
+	wcout << "Tervetuloa pelaamaan! \nSiirrot muodossa g2-g3, ra1-a2 ja korotukset \ng2-g1=R (muista isot kirjaimet lopussa)\n\n";
+	Peli peli(k->kysyVastustajanVari());
+	int koneenVari = peli.getKoneenVari();
 
 	while (lopetus != 0) {
 		lista.clear();
-		Kayttoliittyma::getInstance()->piirraLauta();
+		k->piirraLauta();
 		wcout << "\n";
 		// Tarkasta onko peli loppu?
 		asema.annaLaillisetSiirrot(lista);
@@ -41,25 +42,29 @@ int main()
 		}
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari) {
-			Kayttoliittyma::getInstance()->_counter = 0;
-			chrono::steady_clock::time_point begin = chrono::steady_clock::now();
-			MinMaxPaluu paluu;
-
 			alkuSyvyys = 1;
-			while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika))
+
+			k->_counter = 0; // asetetaan siirtojen lasku nollaan
+			chrono::steady_clock::time_point begin = chrono::steady_clock::now();
+			k->_aika = begin; // asetetaan asemaan haun alku aika
+			std::list<MinMaxPaluu> paluu;
+			// testaillaan yksi syvyys kerralla kunnes aika loppuu
+			// sama on alphabeta kaavassa. se kaava ottaa alku ja max ajan käyttöliittymästä instancin avulla
+			while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika)) 
 			{
-				paluu = asema.alphaBeta(alkuSyvyys);
+				paluu.push_back(asema.alphaBeta(alkuSyvyys));
 				alkuSyvyys++;
 			}
-			siirto = paluu._parasSiirto;
+			paluu.pop_back(); // poistetaan viiminen keskeneräinen siirto
+			siirto = paluu.back()._parasSiirto; 
 			chrono::steady_clock::time_point end = chrono::steady_clock::now();
 
 			wcout
-				<< "evaluaatio: " << paluu._evaluointiArvo
+				<< "evaluaatio: " << paluu.back()._evaluointiArvo
 				<< " ja " << Kayttoliittyma::getInstance()->_counter
 				<< " testattua siirtoa.\naika: "
-				<< chrono::duration_cast<chrono::microseconds>(end - begin).count() / 1000000.0
-				<< "/s syvyydessä " << alkuSyvyys << endl << endl;
+				<< chrono::duration_cast<chrono::milliseconds>(end - begin).count() / 1000.0
+				<< "/s syvyydessä " << alkuSyvyys - 1 << endl << endl; // alkusyvyys -1 koska vika oli keskeneräinen
 		}
 		else {
 			siirto = Kayttoliittyma::getInstance()->

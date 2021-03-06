@@ -13,5 +13,5 @@ public:
 
 	int _syvyys;
 	MinMaxPaluu _parasSiirto;
-	int _tyyppi;
+	int _vari;
 };

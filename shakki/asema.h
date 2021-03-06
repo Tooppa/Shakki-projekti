@@ -5,6 +5,7 @@
 #include "minmaxpaluu.h"
 #include "siirto.h"
 #include <cfloat>
+#include <chrono>
 
 
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitell� Nappula-osoittimia ilman,

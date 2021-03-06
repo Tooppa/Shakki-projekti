@@ -91,12 +91,16 @@ void Asema::paivitaAsema(Siirto* siirto)
 			_lauta[7][0] = nullptr;
 			_lauta[5][0] = vt;
 			_lauta[6][0] = vk;
+			_onkoValkeaKTliikkunut = true;
+			_onkoValkeaKuningasLiikkunut = true;
 		}
 		if (getSiirtovuoro() == 1 && !getOnkoMustaKTliikkunut() && !getOnkoMustaKuningasLiikkunut()) {
 			_lauta[4][7] = nullptr;
 			_lauta[7][7] = nullptr;
 			_lauta[5][7] = mt;
 			_lauta[6][7] = mk;
+			_onkoMustaKTliikkunut = true;
+			_onkoMustaKuningasLiikkunut = true;
 		}
 	}
 	// onko pitkä linna
@@ -107,12 +111,16 @@ void Asema::paivitaAsema(Siirto* siirto)
 			_lauta[0][0] = nullptr;
 			_lauta[3][0] = vt;
 			_lauta[2][0] = vk;
+			_onkoValkeaDTliikkunut = true;
+			_onkoValkeaKuningasLiikkunut = true;
 		}
 		if (getSiirtovuoro() == 1 && !getOnkoMustaDTliikkunut() && !getOnkoMustaKuningasLiikkunut()) {
 			_lauta[4][7] = nullptr;
 			_lauta[0][7] = nullptr;
 			_lauta[3][7] = mt;
 			_lauta[2][7] = mk;
+			_onkoMustaDTliikkunut = true;
+			_onkoMustaKuningasLiikkunut = true;
 		}
 	}
 	// Kaikki muut siirrot
@@ -586,10 +594,12 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 {
 	Kayttoliittyma* k = Kayttoliittyma::getInstance();
 	k->_counter++;
+	chrono::steady_clock::time_point start = k->_aika; // tallennetaan startti aika käyttöliittymästä
 	MinMaxPaluu paluu;
 
 	uint64_t laudanHash = Asema::GetHash();
-	int originalAlpha = alpha;
+	double originalAlpha = alpha;
+	double originalBeta = beta;
 	// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
 	if (k->_transpositiot.Exist(laudanHash))
 	{
@@ -650,6 +660,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		paluu._evaluointiArvo = -DBL_MAX;
 		for each (Siirto siirto in lista)
 		{
+			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) break; // lähdetään pois mikäli aika on loppu
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
@@ -668,6 +679,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		paluu._evaluointiArvo = DBL_MAX;
 		for each (Siirto siirto in lista)
 		{
+			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) break; // lähdetään pois mikäli aika on loppu
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
@@ -686,12 +698,12 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	// kommentteihin nämä kaksi riviä taulukko systeemin poistamiseksi
 	HashData item(syvyys, paluu, -1); // -1 tyyppi on ns null
 	if (paluu._evaluointiArvo <= originalAlpha)
-		item._tyyppi = 3; // 3 arvonen tyyppi on ylä arvo
-	else if (paluu._evaluointiArvo >= beta)
-		item._tyyppi = 1; // 1 arvonen on ala arvo
+		item._tyyppi = 3; // 3 mikäli on pienempi kun alussa otettu alpha
+	else if (paluu._evaluointiArvo >= originalBeta)
+		item._tyyppi = 1; // 1 mikäli on suurempi kun alussa otettu beta
 	else
-		item._tyyppi = 2; // 2 on keskiarvo
-	k->_transpositiot.Add(laudanHash, item);
+		item._tyyppi = 2; // 2 jos arvo on alphan ja betan keskellä
+	k->_transpositiot.Add(laudanHash, item);// tallennetaan tietokantaan
 
 	return paluu;
 }
@@ -714,7 +726,7 @@ void Asema::jarjestaLista(std::list<Siirto>& lista)
 
 			//jos syödään
 			if (loppu && loppu->getVari() != _siirtovuoro)
-				if (alku->getArvo() >= loppu->getArvo())
+				if (alku->getArvo() <= loppu->getArvo())
 					siirrettava.push_back(siirto);
 		}
 	}

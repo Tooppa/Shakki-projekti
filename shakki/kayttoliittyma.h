@@ -4,6 +4,7 @@
 #include "peli.h"
 #include "siirto.h"
 #include "hashTaulukko.h"
+#include <chrono>
 
 
 // Shakkiohjelman käyttöliittymä, joka osaa visualisoida nykyisen aseman
@@ -21,6 +22,8 @@ public:
 	static Kayttoliittyma* getInstance();
 	uint64_t _counter;
 	HashTaulukko _transpositiot;
+	chrono::steady_clock::time_point _aika;
+	int _maxAika;
 private:
 
 	Asema* _asema;
