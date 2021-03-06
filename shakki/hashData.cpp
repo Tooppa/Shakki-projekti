@@ -9,7 +9,7 @@ HashData::HashData(int syvyys, MinMaxPaluu parasSiirto, int tyyppi)
 {
 	_syvyys = syvyys;
 	_parasSiirto = parasSiirto;
-	_vari = tyyppi;
+	_tyyppi = tyyppi;
 }
 
 HashData::~HashData()
