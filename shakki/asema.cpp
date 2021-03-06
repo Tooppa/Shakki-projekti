@@ -37,32 +37,30 @@ Asema::Asema()
 	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
 
 	// mustat sotilaat
-	for (int i = 0; i < 8; i++)
-		_lauta[i][6] = ms;
+	//for (int i = 0; i < 8; i++)
+	//	_lauta[i][6] = ms;
 	//muut mustat nappulat
 	_lauta[7][7] = mt;
-	_lauta[6][7] = mr;
-	_lauta[5][7] = ml;
+	//_lauta[6][7] = mr;
+	//_lauta[5][7] = ml;
 	_lauta[4][7] = mk;
-	_lauta[3][7] = md;
-	_lauta[2][7] = ml;
-	_lauta[1][7] = mr;
+	//_lauta[3][7] = md;
+	//_lauta[2][7] = ml;
+	//_lauta[1][7] = mr;
 	_lauta[0][7] = mt;
 
 	// valkoiset sotilaat
-	for (int i = 0; i < 8; i++)
-	{
-		_lauta[i][1] = vs;
-	}
+	//for (int i = 0; i < 8; i++)
+	//	_lauta[i][1] = vs;
 	//muut valkoiset nappulat
-	_lauta[7][0] = vt;
-	_lauta[6][0] = vr;
-	_lauta[5][0] = vl;
+	//_lauta[7][0] = vt;
+	//_lauta[6][0] = vr;
+	//_lauta[5][0] = vl;
 	_lauta[4][0] = vk;
-	_lauta[3][0] = vd;
-	_lauta[2][0] = vl;
-	_lauta[1][0] = vr;
-	_lauta[0][0] = vt;
+	//_lauta[3][0] = vd;
+	//_lauta[2][0] = vl;
+	//_lauta[1][0] = vr;
+	//_lauta[0][0] = vt;
 
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
 
@@ -404,6 +402,17 @@ double Asema::evaluoi()
 		{0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0} };
 
+	double arvostusTaulukkoKLoppupeli[8][8] =
+	{ {5, 4, 3, 1, 1, 3, 4, 5},
+		{4, 3, 1, 0, 1, 1, 3, 4},
+		{3, 1, 0, 0, 0, 0, 1, 3},
+		{1, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 1},
+		{3, 1, 0, 0, 0, 0, 1, 3},
+		{4, 3, 1, 0, 1, 1, 3, 4},
+		{5, 4, 3, 1, 1, 3, 4, 5} };
+
+
 
 	double valkoisiaNappuloita = 0;
 	double mustiaNappuloita = 0;
@@ -450,6 +459,7 @@ double Asema::evaluoi()
 					case VK:
 						evaluaatio += k;
 						evaluaatio += arvostusTaulukkoVK[i][j] * valkoinenKerroin;
+						evaluaatio -= arvostusTaulukkoKLoppupeli[i][j] * (3 / valkoisiaNappuloita);
 						break;
 					default:
 						break;
@@ -482,6 +492,7 @@ double Asema::evaluoi()
 					case MK:
 						evaluaatio -= k;
 						evaluaatio -= arvostusTaulukkoMK[i][j] * mustaKerroin;
+						evaluaatio += arvostusTaulukkoKLoppupeli[i][j] * (3 / mustiaNappuloita);
 						break;
 					default:
 						break;
