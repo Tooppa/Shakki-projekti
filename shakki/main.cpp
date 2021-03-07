@@ -20,7 +20,7 @@ int main()
 	system("cls");
 
 	// alphabetan alku syvyys ja max aika. tämä menee käytännössä aina yli noin 20 sek omalla koneella
-	int maxAika = 10;
+	int maxAika = 3;
 	int alkuSyvyys;
 
 	k->_maxAika = maxAika;
@@ -55,7 +55,7 @@ int main()
 			paluu.push_back(asema.alphaBeta(alkuSyvyys));
 			alkuSyvyys++;
 		}
-		if(paluu.back()._matissa == false)
+		if (paluu.back()._matissa == false)
 			paluu.pop_back(); // poistetaan viiminen keskeneräinen siirto
 		siirto = paluu.back()._parasSiirto;
 		chrono::steady_clock::time_point end = chrono::steady_clock::now();

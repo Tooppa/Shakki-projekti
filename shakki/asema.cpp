@@ -5,6 +5,7 @@
 #include "ruutu.h"
 #include "kayttoliittyma.h"
 #include "zobrist.h"
+#include "math.h"
 
 Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK, 0);
 Nappula* Asema::vd = new Daami(L"\u2655", 0, VD, 9);
@@ -40,7 +41,7 @@ Asema::Asema()
 	//for (int i = 0; i < 8; i++)
 	//	_lauta[i][6] = ms;
 	//muut mustat nappulat
-	_lauta[2][7] = mt;
+	_lauta[2][4] = mt;
 	//_lauta[6][7] = mr;
 	//_lauta[5][7] = ml;
 	_lauta[4][7] = mk;
@@ -413,6 +414,8 @@ double Asema::evaluoi()
 		{5, 4, 3, 1, 1, 3, 4, 5} };
 
 	Ruutu kuninkaanRuutu;
+	Ruutu VKuninkaanRuutu;
+	Ruutu MKuninkaanRuutu;
 	int vihu = _siirtovuoro == 0 ? 1 : 0;
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
@@ -432,6 +435,8 @@ double Asema::evaluoi()
 
 	double mustaKerroin = mustiaNappuloita / 10;
 	double valkoinenKerroin = valkoisiaNappuloita / 10;
+
+
 
 	//1. Nappuloiden arvo
 	for (int i = 0; i < 8; i++)
@@ -467,6 +472,7 @@ double Asema::evaluoi()
 						evaluaatio += k;
 						evaluaatio += arvostusTaulukkoVK[i][j] * valkoinenKerroin;
 						evaluaatio -= arvostusTaulukkoKLoppupeli[i][j] * (3 / valkoisiaNappuloita);
+						VKuninkaanRuutu = Ruutu(i, j);
 						break;
 					default:
 						break;
@@ -500,12 +506,16 @@ double Asema::evaluoi()
 						evaluaatio -= k;
 						evaluaatio -= arvostusTaulukkoMK[i][j] * mustaKerroin;
 						evaluaatio += arvostusTaulukkoKLoppupeli[i][j] * (3 / mustiaNappuloita);
+						MKuninkaanRuutu = Ruutu(i, j);
 						break;
 					default:
 						break;
 					}
 				}
+
 			}
+			evaluaatio += sqrt((double)VKuninkaanRuutu.getRivi() * (double)MKuninkaanRuutu.getRivi() + (double)VKuninkaanRuutu.getSarake() * (double)MKuninkaanRuutu.getSarake())
+				* (15 / (valkoisiaNappuloita - mustiaNappuloita));
 		}
 
 	int vkSarake = valkoinenK.getSarake();
@@ -620,7 +630,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	double originalAlpha = alpha;
 	double originalBeta = beta;
 	// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
-	/*
+
 	if (k->_transpositiot.Exist(laudanHash))
 	{
 		HashData item = k->_transpositiot.Get(laudanHash);
@@ -643,7 +653,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			if (alpha >= beta)
 				return item._parasSiirto;
 		}
-	}*/
+	}
 	std::list<Siirto> lista;
 
 	Ruutu kuninkaanRuutu;
@@ -716,7 +726,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 				break;
 
 		}
-	}/*
+	}
 	if (!kesken) {
 		// kommentteihin nämä kaksi riviä taulukko systeemin poistamiseksi
 		HashData item(syvyys, paluu, -1); // -1 tyyppi on ns null
@@ -727,7 +737,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		else
 			item._tyyppi = 2; // 2 jos arvo on alphan ja betan keskellä
 		k->_transpositiot.Add(laudanHash, item);// tallennetaan tietokantaan
-	}*/
+	}
 	return paluu;
 }
 
