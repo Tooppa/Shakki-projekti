@@ -630,7 +630,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	double originalAlpha = alpha;
 	double originalBeta = beta;
 	// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
-
+	/*
 	if (k->_transpositiot.Exist(laudanHash))
 	{
 		HashData item = k->_transpositiot.Get(laudanHash);
@@ -653,7 +653,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			if (alpha >= beta)
 				return item._parasSiirto;
 		}
-	}
+	}*/
 	std::list<Siirto> lista;
 
 	Ruutu kuninkaanRuutu;
@@ -697,7 +697,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, alpha, beta);
-			if (tempPaluu._evaluointiArvo > paluu._evaluointiArvo)
+			if (tempPaluu._evaluointiArvo > paluu._evaluointiArvo || tempPaluu._matissa == true)
 			{
 				paluu = tempPaluu;
 				paluu._parasSiirto = siirto;
@@ -716,7 +716,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, alpha, beta);
-			if (tempPaluu._evaluointiArvo < paluu._evaluointiArvo)
+			if (tempPaluu._evaluointiArvo < paluu._evaluointiArvo || tempPaluu._matissa == true)
 			{
 				paluu = tempPaluu;
 				paluu._parasSiirto = siirto;
