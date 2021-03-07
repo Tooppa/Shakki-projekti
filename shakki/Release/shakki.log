@@ -1,11 +1,7 @@
-﻿  asema.cpp
-E:\Shakki-projekti\shakki\asema.cpp(13,52): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-E:\Shakki-projekti\shakki\asema.cpp(20,52): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-E:\Shakki-projekti\shakki\asema.cpp(165,42): warning C4553: '==': result of expression not used; did you intend '='?
-E:\Shakki-projekti\shakki\asema.cpp(170,42): warning C4553: '==': result of expression not used; did you intend '='?
+﻿  main.cpp
   Generating code
-  3 of 530 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  3 of 533 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
+    2 functions were new in current compilation
+    5 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   shakki.vcxproj -> E:\Shakki-projekti\Release\shakki.exe

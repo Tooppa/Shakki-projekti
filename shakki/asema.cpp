@@ -139,6 +139,8 @@ void Asema::paivitaAsema(Siirto* siirto)
 			return;
 		}
 		//Ottaa siirron alkuruudussa olleen nappulan talteen 
+
+
 		Nappula* nappula = _lauta[alkuSarake][alkuRivi];
 
 		//Alustus
@@ -162,12 +164,12 @@ void Asema::paivitaAsema(Siirto* siirto)
 			if (nappulanKoodi == MS && alkuRivi == 3)
 				if (alkuSarake != loppuSarake)
 					if (_lauta[loppuSarake][loppuRivi] == nullptr)
-						_lauta[loppuSarake][loppuRivi + 1] == nullptr;
+						_lauta[loppuSarake][loppuRivi + 1] = nullptr;
 
 			if (nappulanKoodi == VS && alkuRivi == 4)
 				if (alkuSarake != loppuSarake)
 					if (_lauta[loppuSarake][loppuRivi] == nullptr)
-						_lauta[loppuSarake][loppuRivi - 1] == nullptr;
+						_lauta[loppuSarake][loppuRivi - 1] = nullptr;
 		}
 
 
@@ -516,8 +518,8 @@ double Asema::evaluoi()
 			}
 
 		}
-	evaluaatio += sqrt((double)VKuninkaanRuutu.getRivi() * (double)MKuninkaanRuutu.getRivi() + (double)VKuninkaanRuutu.getSarake() * (double)MKuninkaanRuutu.getSarake())
-		* (15 / (valkoisiaNappuloita - mustiaNappuloita));
+	evaluaatio -= sqrt(pow(((double)VKuninkaanRuutu.getRivi() + (double)MKuninkaanRuutu.getRivi()), 2) + pow(((double)VKuninkaanRuutu.getSarake() + (double)MKuninkaanRuutu.getSarake()), 2))
+		* (valkoisiaNappuloita - mustiaNappuloita);
 
 	int vkSarake = valkoinenK.getSarake();
 	int vkRivi = valkoinenK.getRivi();

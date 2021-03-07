@@ -22,7 +22,7 @@ private:
 	std::wstring	_unicode;	// nappulaa vastaava unicode-merkki
 	int				_vari;		// valkea = 0, musta = 1
 	int				_koodi;		// VT, VR, MT tms.
-	int				_arvo;
+	double			_arvo;
 
 public:
 	Nappula(std::wstring, int, int, int);
@@ -37,7 +37,7 @@ public:
 	void setVari(int vari) { _vari = vari; }
 	int getVari() { return _vari; }
 	int getKoodi() { return _koodi; }
-	int getArvo() { return _arvo; }
+	double getArvo() { return _arvo; }
 	void setKoodi(int koodi) { _koodi = koodi; }
 };
 
