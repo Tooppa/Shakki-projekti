@@ -52,6 +52,7 @@ int main()
 		// sama on alphabeta kaavassa. se kaava ottaa alku ja max ajan käyttöliittymästä instancin avulla
 		while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika))
 		{
+			wcout << "syvyydessä: " << alkuSyvyys;
 			paluu.push_back(asema.alphaBeta(alkuSyvyys));
 			alkuSyvyys++;
 		}
@@ -65,6 +66,7 @@ int main()
 			<< " testattua siirtoa.\naika: "
 			<< chrono::duration_cast<chrono::milliseconds>(end - begin).count() / 1000.0
 			<< "/s syvyydessä " << alkuSyvyys - 1 << endl << endl; // alkusyvyys -1 koska vika oli keskeneräinen
+		paluu.clear();
 	/*}
 	else {
 		siirto = Kayttoliittyma::getInstance()->
