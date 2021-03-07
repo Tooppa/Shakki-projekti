@@ -38,30 +38,30 @@ Asema::Asema()
 	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
 
 	// mustat sotilaat
-	//for (int i = 0; i < 8; i++)
-	//	_lauta[i][6] = ms;
+	for (int i = 0; i < 8; i++)
+		_lauta[i][6] = ms;
 	//muut mustat nappulat
-	//_lauta[2][4] = mt;
-	//_lauta[6][7] = mr;
-	//_lauta[5][7] = ml;
+	_lauta[7][7] = mt;
+	_lauta[6][7] = mr;
+	_lauta[5][7] = ml;
 	_lauta[4][7] = mk;
-	//_lauta[3][7] = md;
-	//_lauta[2][7] = ml;
-	//_lauta[1][7] = mr;
+	_lauta[3][7] = md;
+	_lauta[2][7] = ml;
+	_lauta[1][7] = mr;
 	_lauta[0][7] = mt;
 
 	// valkoiset sotilaat
-	//for (int i = 0; i < 8; i++)
-	//	_lauta[i][1] = vs;
+	for (int i = 0; i < 8; i++)
+		_lauta[i][1] = vs;
 	//muut valkoiset nappulat
-	//_lauta[7][0] = vt;
-	//_lauta[6][0] = vr;
-	//_lauta[5][0] = vl;
-	_lauta[4][4] = vk;
-	//_lauta[3][0] = vd;
-	//_lauta[2][0] = vl;
-	//_lauta[1][0] = vr;
-	//_lauta[0][0] = vt;
+	_lauta[7][0] = vt;
+	_lauta[6][0] = vr;
+	_lauta[5][0] = vl;
+	_lauta[4][0] = vk;
+	_lauta[3][0] = vd;
+	_lauta[2][0] = vl;
+	_lauta[1][0] = vr;
+	_lauta[0][0] = vt;
 
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
 
@@ -162,12 +162,12 @@ void Asema::paivitaAsema(Siirto* siirto)
 			if (nappulanKoodi == MS && alkuRivi == 3)
 				if (alkuSarake != loppuSarake)
 					if (_lauta[loppuSarake][loppuRivi] == nullptr)
-						_lauta[loppuSarake][loppuRivi + 1] == nullptr;
+						_lauta[loppuSarake][loppuRivi + 1] = nullptr;
 
 			if (nappulanKoodi == VS && alkuRivi == 4)
 				if (alkuSarake != loppuSarake)
 					if (_lauta[loppuSarake][loppuRivi] == nullptr)
-						_lauta[loppuSarake][loppuRivi - 1] == nullptr;
+						_lauta[loppuSarake][loppuRivi - 1] = nullptr;
 		}
 
 
@@ -791,7 +791,7 @@ bool Asema::onkoRuutuUhattu(Ruutu ruutu, int vastustajanVari)
 				_lauta[i][j]->annaSiirrot(siirrot, &Ruutu(i, j), this, vastustajanVari);
 
 	for each (Siirto siirto in siirrot)
-		if (siirto.getLoppuruutu() == ruutu)
+		if (&siirto.getLoppuruutu() == &ruutu)
 			return true;
 	return false;
 }

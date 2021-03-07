@@ -169,7 +169,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(Asema asema)
 		list<Siirto> lista;
 		asema.annaLaillisetSiirrot(lista);
 		for (const Siirto& indeksiSiirto : lista) {
-			if (indeksiSiirto == siirto) {
+			if (&indeksiSiirto == &siirto) {
 				laillinenSiirto = true;
 				return siirto;
 			}

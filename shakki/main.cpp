@@ -20,7 +20,7 @@ int main()
 	system("cls");
 
 	// alphabetan alku syvyys ja max aika. tämä menee käytännössä aina yli noin 20 sek omalla koneella
-	int maxAika = 3;
+	int maxAika = 5;
 	int alkuSyvyys;
 
 	k->_maxAika = maxAika;
