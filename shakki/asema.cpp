@@ -24,11 +24,11 @@ Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS, 1);
 Asema::Asema()
 {
 	_siirtovuoro = 0;
-	_onkoValkeaKuningasLiikkunut = false;;
-	_onkoMustaKuningasLiikkunut = false;
-	_onkoValkeaDTliikkunut = false;
-	_onkoValkeaKTliikkunut = false;
-	_onkoMustaDTliikkunut = false;
+	_onkoValkeaKuningasLiikkunut = true;;
+	_onkoMustaKuningasLiikkunut = true;
+	_onkoValkeaDTliikkunut = true;
+	_onkoValkeaKTliikkunut = true;
+	_onkoMustaDTliikkunut = true;
 	_onkoMustaKTliikkunut = false;
 
 	for (int i = 0; i < 8; i++)
@@ -412,8 +412,14 @@ double Asema::evaluoi()
 		{4, 3, 1, 0, 1, 1, 3, 4},
 		{5, 4, 3, 1, 1, 3, 4, 5} };
 
-	list<Siirto> lista;
-	annaLaillisetSiirrot(lista);
+	Ruutu kuninkaanRuutu;
+	int vihu = _siirtovuoro == 0 ? 1 : 0;
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++)
+			if (_lauta[i][j] && _lauta[i][j]->getVari() == vihu && (_lauta[i][j]->getKoodi() == VK || _lauta[i][j]->getKoodi() == MK))
+				kuninkaanRuutu = Ruutu(i, j);
+	if (this->onkoRuutuUhattu(kuninkaanRuutu, _siirtovuoro))
+		evaluaatio = _siirtovuoro == 0 ? DBL_MAX : -DBL_MAX;
 
 	double valkoisiaNappuloita = 0;
 	double mustiaNappuloita = 0;
@@ -614,6 +620,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	double originalAlpha = alpha;
 	double originalBeta = beta;
 	// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
+	/*
 	if (k->_transpositiot.Exist(laudanHash))
 	{
 		HashData item = k->_transpositiot.Get(laudanHash);
@@ -636,7 +643,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			if (alpha >= beta)
 				return item._parasSiirto;
 		}
-	}
+	}*/
 	std::list<Siirto> lista;
 	Ruutu kuninkaanRuutu;
 	// Kantatapaukset 1 ja 2 : matti tai patti?
@@ -653,8 +660,10 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			for (int j = 0; j < 8; j++)
 				if (_lauta[i][j] && _lauta[i][j]->getVari() == _siirtovuoro && (_lauta[i][j]->getKoodi() == VK || _lauta[i][j]->getKoodi() == MK)) {
 					kuninkaanRuutu = Ruutu(i, j);
-					if (this->onkoRuutuUhattu(kuninkaanRuutu, vihu))
+					if (this->onkoRuutuUhattu(kuninkaanRuutu, vihu)) {
 						paluu._evaluointiArvo = _siirtovuoro == 0 ? -DBL_MAX : DBL_MAX;
+						paluu._matissa = true;
+					}
 				}
 		return paluu;
 	}
@@ -673,7 +682,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
-			if (arvo > paluu._evaluointiArvo)
+			if (arvo > paluu._evaluointiArvo || arvo == DBL_MAX)
 			{
 				paluu._evaluointiArvo = arvo;
 				paluu._parasSiirto = siirto;
@@ -692,7 +701,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
 			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
-			if (arvo < paluu._evaluointiArvo)
+			if (arvo < paluu._evaluointiArvo || arvo == -DBL_MAX)
 			{
 				paluu._evaluointiArvo = arvo;
 				paluu._parasSiirto = siirto;
@@ -702,7 +711,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 				break;
 
 		}
-	}
+	}/*
 	if (!kesken) {
 		// kommentteihin nämä kaksi riviä taulukko systeemin poistamiseksi
 		HashData item(syvyys, paluu, -1); // -1 tyyppi on ns null
@@ -713,7 +722,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		else
 			item._tyyppi = 2; // 2 jos arvo on alphan ja betan keskellä
 		k->_transpositiot.Add(laudanHash, item);// tallennetaan tietokantaan
-	}
+	}*/
 	return paluu;
 }
 

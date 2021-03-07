@@ -1,11 +1,12 @@
 #include "ruutu.h"
 
 
-Ruutu::Ruutu(int sarake,int rivi)
+Ruutu::Ruutu(int sarake, int rivi)
 {
 	_rivi = rivi;
 	_sarake = sarake;
 }
+
 
 
 int Ruutu::getRivi()
@@ -20,13 +21,13 @@ int Ruutu::getSarake()
 }
 
 
-void Ruutu::setRivi(int rivi) 
+void Ruutu::setRivi(int rivi)
 {
 	_rivi = rivi;
 }
 
 
-void Ruutu::setSarake(int sarake) 
+void Ruutu::setSarake(int sarake)
 {
 	_sarake = sarake;
 }

@@ -41,35 +41,35 @@ int main()
 			continue;
 		}
 		Siirto siirto;
-		if (asema.getSiirtovuoro() == koneenVari) {
-			alkuSyvyys = 1;
+		//if (asema.getSiirtovuoro() == koneenVari) {
+		alkuSyvyys = 1;
 
-			k->_counter = 0; // asetetaan siirtojen lasku nollaan
-			chrono::steady_clock::time_point begin = chrono::steady_clock::now();
-			k->_aika = begin; // asetetaan asemaan haun alku aika
-			std::list<MinMaxPaluu> paluu;
-			// testaillaan yksi syvyys kerralla kunnes aika loppuu
-			// sama on alphabeta kaavassa. se kaava ottaa alku ja max ajan käyttöliittymästä instancin avulla
-			while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika)) 
-			{
-				paluu.push_back(asema.alphaBeta(alkuSyvyys));
-				alkuSyvyys++;
-			}
-			paluu.pop_back(); // poistetaan viiminen keskeneräinen siirto
-			siirto = paluu.back()._parasSiirto; 
-			chrono::steady_clock::time_point end = chrono::steady_clock::now();
+		k->_counter = 0; // asetetaan siirtojen lasku nollaan
+		chrono::steady_clock::time_point begin = chrono::steady_clock::now();
+		k->_aika = begin; // asetetaan asemaan haun alku aika
+		std::list<MinMaxPaluu> paluu;
+		// testaillaan yksi syvyys kerralla kunnes aika loppuu
+		// sama on alphabeta kaavassa. se kaava ottaa alku ja max ajan käyttöliittymästä instancin avulla
+		while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika) && paluu.back()._matissa == false)
+		{
+			paluu.push_back(asema.alphaBeta(alkuSyvyys));
+			alkuSyvyys++;
+		}
+		paluu.pop_back(); // poistetaan viiminen keskeneräinen siirto
+		siirto = paluu.back()._parasSiirto;
+		chrono::steady_clock::time_point end = chrono::steady_clock::now();
 
-			wcout
-				<< "evaluaatio: " << paluu.back()._evaluointiArvo
-				<< " ja " << Kayttoliittyma::getInstance()->_counter
-				<< " testattua siirtoa.\naika: "
-				<< chrono::duration_cast<chrono::milliseconds>(end - begin).count() / 1000.0
-				<< "/s syvyydessä " << alkuSyvyys - 1 << endl << endl; // alkusyvyys -1 koska vika oli keskeneräinen
-		}
-		else {
-			siirto = Kayttoliittyma::getInstance()->
-				annaVastustajanSiirto(asema);
-		}
+		wcout
+			<< "evaluaatio: " << paluu.back()._evaluointiArvo
+			<< " ja " << Kayttoliittyma::getInstance()->_counter
+			<< " testattua siirtoa.\naika: "
+			<< chrono::duration_cast<chrono::milliseconds>(end - begin).count() / 1000.0
+			<< "/s syvyydessä " << alkuSyvyys - 1 << endl << endl; // alkusyvyys -1 koska vika oli keskeneräinen
+	/*}
+	else {
+		siirto = Kayttoliittyma::getInstance()->
+			annaVastustajanSiirto(asema);
+	}*/
 		asema.paivitaAsema(&siirto);
 	}
 

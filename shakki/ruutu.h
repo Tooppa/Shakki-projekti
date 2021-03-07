@@ -2,10 +2,12 @@
 
 
 // Shakkilaudan ruutu tietyssä (rivi, sarake) -koordinaatissa.
-class Ruutu{
+class Ruutu {
 public:
 	Ruutu(int, int);
-	Ruutu() {}
+	Ruutu() {
+		_sarake = -1; _rivi = -1;
+	}
 	bool operator == (const Ruutu& r) const { return _sarake == r._sarake && _rivi == r._rivi; }
 	bool operator != (const Ruutu& r) const { return !operator==(r); }
 	int getRivi();
