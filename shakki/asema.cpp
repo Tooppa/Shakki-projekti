@@ -417,6 +417,11 @@ double Asema::evaluoi()
 	Ruutu VKuninkaanRuutu;
 	Ruutu MKuninkaanRuutu;
 
+	//int vihu = _siirtovuoro == 0 ? 1 : 0;
+	//if (onkoShakki(_siirtovuoro)) {
+	//	evaluaatio = _siirtovuoro == 0 ? -DBL_MAX : DBL_MAX;
+	//}else if(onkoShakki(vihu))
+	//	evaluaatio = _siirtovuoro == 0 ? DBL_MAX : -DBL_MAX;
 
 	double valkoisiaNappuloita = 0;
 	double mustiaNappuloita = 0;
@@ -651,25 +656,30 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		}
 	}
 	MinMaxPaluu paluu;
-	if (onkoMatti(this->_siirtovuoro))
+	std::list<Siirto> lista;
+	annaLaillisetSiirrot(lista);
+
+	if (lista.size() == 0)
 	{
-		paluu._evaluointiArvo = this->_siirtovuoro == 0 ? -DBL_MAX : DBL_MAX;
-		return paluu;
+		if (onkoMatti(this->_siirtovuoro))
+		{
+			paluu._evaluointiArvo = -DBL_MAX;
+			return paluu;
+		}
+		else
+		{
+			paluu._evaluointiArvo = 0;
+		    return paluu;
+		}
 	}
 
 	if (syvyys <= 0)
 	{
 		paluu._evaluointiArvo = evaluoi();
-		/*if (paluu._evaluointiArvo == DBL_MAX || paluu._evaluointiArvo == -DBL_MAX)
-			paluu._matissa = true;*/
 		return paluu;
 	}
-
-	std::list<Siirto> lista;
-	annaLaillisetSiirrot(lista);
 	jarjestaLista(lista);
 
-	paluu._parasSiirto = lista.front();
 	paluu._evaluointiArvo = -DBL_MAX;
 	for (auto siirto : lista)
 	{
@@ -709,6 +719,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	}
 	return paluu;
 }
+
 
 bool Asema::onkoMatti(int vari)
 {
