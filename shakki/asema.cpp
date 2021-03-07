@@ -512,6 +512,8 @@ double Asema::evaluoi()
 		}
 	evaluaatio += sqrt((double)VKuninkaanRuutu.getRivi() * (double)MKuninkaanRuutu.getRivi() + (double)VKuninkaanRuutu.getSarake() * (double)MKuninkaanRuutu.getSarake())
 		* (15 / (valkoisiaNappuloita - mustiaNappuloita));
+	evaluaatio -= sqrt((double)VKuninkaanRuutu.getRivi() * (double)MKuninkaanRuutu.getRivi() + (double)VKuninkaanRuutu.getSarake() * (double)MKuninkaanRuutu.getSarake())
+		* 2 * (valkoisiaNappuloita - mustiaNappuloita);
 
 	int vkSarake = valkoinenK.getSarake();
 	int vkRivi = valkoinenK.getRivi();
@@ -670,6 +672,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	annaLaillisetSiirrot(lista);
 	jarjestaLista(lista);
 
+	paluu._parasSiirto = lista.front();
 	paluu._evaluointiArvo = -DBL_MAX;
 	for (auto siirto : lista)
 	{
