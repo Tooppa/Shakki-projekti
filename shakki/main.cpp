@@ -50,13 +50,12 @@ int main()
 		std::list<MinMaxPaluu> paluu;
 		// testaillaan yksi syvyys kerralla kunnes aika loppuu
 		// sama on alphabeta kaavassa. se kaava ottaa alku ja max ajan käyttöliittymästä instancin avulla
-		while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika) && paluu.back()._matissa == false)
+		while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika))
 		{
 			paluu.push_back(asema.alphaBeta(alkuSyvyys));
 			alkuSyvyys++;
 		}
-		if (paluu.back()._matissa == false)
-			paluu.pop_back(); // poistetaan viiminen keskeneräinen siirto
+		paluu.pop_back(); // poistetaan viiminen keskeneräinen siirto
 		siirto = paluu.back()._parasSiirto;
 		chrono::steady_clock::time_point end = chrono::steady_clock::now();
 

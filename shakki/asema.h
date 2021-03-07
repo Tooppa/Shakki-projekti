@@ -38,6 +38,8 @@ public:
 	double evaluoi();																	// Aseman numeerinen arviointi.
 	uint64_t Asema::GetHash();															// ottaa laudan hashin.
 	MinMaxPaluu alphaBeta(int depth, double alpha = -DBL_MAX, double beta = DBL_MAX);	// Minimax-algoritmi.
+	bool onkoMatti(int vari);
+	bool onkoShakki(int vari);
 	void annaLaillisetSiirrot(std::list<Siirto>& lista);								// Siirtogeneraattori.
 	void jarjestaLista(std::list<Siirto>& lista);										// järjestää siirrot paremmin alphabetaa varten
 	int getSiirtovuoro();																// Palauttaa siirtovuoron.

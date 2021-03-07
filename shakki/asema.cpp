@@ -416,13 +416,7 @@ double Asema::evaluoi()
 	Ruutu kuninkaanRuutu;
 	Ruutu VKuninkaanRuutu;
 	Ruutu MKuninkaanRuutu;
-	int vihu = _siirtovuoro == 0 ? 1 : 0;
-	for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 8; j++)
-			if (_lauta[i][j] && _lauta[i][j]->getVari() == vihu && (_lauta[i][j]->getKoodi() == VK || _lauta[i][j]->getKoodi() == MK))
-				kuninkaanRuutu = Ruutu(i, j);
-	if (this->onkoRuutuUhattu(kuninkaanRuutu, _siirtovuoro))
-		evaluaatio = _siirtovuoro == 0 ? DBL_MAX : -DBL_MAX;
+
 
 	double valkoisiaNappuloita = 0;
 	double mustiaNappuloita = 0;
@@ -621,16 +615,16 @@ uint64_t Asema::GetHash()
 
 MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 {
+	int vihu = _siirtovuoro == 0 ? 1 : 0;
+	int kerroin = _siirtovuoro == 0 ? 1 : -1;
+
 	Kayttoliittyma* k = Kayttoliittyma::getInstance();
 	k->_counter++;
 	chrono::steady_clock::time_point start = k->_aika; // tallennetaan startti aika käyttöliittymästä
-	MinMaxPaluu paluu;
 
 	bool kesken = false;
 	uint64_t laudanHash = Asema::GetHash();
 	double originalAlpha = alpha;
-	double originalBeta = beta;
-	// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
 
 	if (k->_transpositiot.Exist(laudanHash))
 	{
@@ -650,82 +644,56 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 					beta = item._parasSiirto._evaluointiArvo;
 			}
 
-			// jos alpha on saavuttanut tai ylittänyt betan
 			if (alpha >= beta)
 				return item._parasSiirto;
 		}
 	}
+	MinMaxPaluu paluu;
+	if (onkoMatti(_siirtovuoro))
+	{
+		if (_siirtovuoro == 0)
+			paluu._evaluointiArvo = kerroin * -DBL_MAX;
+		else
+			paluu._evaluointiArvo = kerroin * DBL_MAX;
+		return paluu;
+	}
+
+	if (syvyys <= 0)
+	{
+		paluu._evaluointiArvo = kerroin * evaluoi();
+		/*if (paluu._evaluointiArvo == DBL_MAX || paluu._evaluointiArvo == -DBL_MAX)
+			paluu._matissa = true;*/
+		return paluu;
+	}
+
 	std::list<Siirto> lista;
+	annaLaillisetSiirrot(lista);
+	jarjestaLista(lista);
 
-	Ruutu kuninkaanRuutu;
-	// Kantatapaukset 1 ja 2 : matti tai patti?
-	this->annaLaillisetSiirrot(lista);
+	paluu._evaluointiArvo = -DBL_MAX;
+	for (auto siirto : lista)
+	{
+		if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) { kesken = true; break; }  // lähdetään pois mikäli aika on loppu
+		Asema uusiAsema = *this;
+		uusiAsema.paivitaAsema(&siirto);
 
-	// mikäli jää aikaa nii hyvä tapa optimoida on järjestää nopeesti lista
-	this->jarjestaLista(lista);
+		if (uusiAsema.onkoShakki(_siirtovuoro))
+			continue;
 
-	if (lista.size() == 0)
-	{
-		paluu._evaluointiArvo = 0;
-		int vihu = _siirtovuoro == 0 ? 1 : 0;
-		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 8; j++)
-				if (_lauta[i][j] && _lauta[i][j]->getVari() == _siirtovuoro && (_lauta[i][j]->getKoodi() == VK || _lauta[i][j]->getKoodi() == MK)) {
-					kuninkaanRuutu = Ruutu(i, j);
-					if (this->onkoRuutuUhattu(kuninkaanRuutu, vihu)) {
-						paluu._evaluointiArvo = _siirtovuoro == 0 ? -DBL_MAX : DBL_MAX;
-						paluu._matissa = true;
-					}
-				}
-		return paluu;
-	}
-	if (paluu._parasSiirto == Siirto())
-		paluu._parasSiirto = lista.back();
-	// Kantatapaus 3: katkaisusyvyys
-	if (syvyys == 0)
-	{
-		paluu._evaluointiArvo = evaluoi();
-		if (paluu._evaluointiArvo == DBL_MAX || paluu._evaluointiArvo == -DBL_MAX)
-			paluu._matissa = true;
-		return paluu;
-	}
-	if (_siirtovuoro == 0)
-	{
-		paluu._evaluointiArvo = -DBL_MAX;
-		for each (Siirto siirto in lista)
+		MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, -beta, -alpha);
+
+		tempPaluu._evaluointiArvo = -tempPaluu._evaluointiArvo;
+		tempPaluu._parasSiirto = siirto;
+
+		if (tempPaluu._evaluointiArvo > paluu._evaluointiArvo)
+			paluu = tempPaluu;
+
+		if (tempPaluu._evaluointiArvo > alpha)
+			alpha = tempPaluu._evaluointiArvo;
+
+		if (alpha >= beta)
 		{
-			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) { kesken = true; break; }  // lähdetään pois mikäli aika on loppu
-			Asema uusiAsema = *this;
-			uusiAsema.paivitaAsema(&siirto);
-			MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, alpha, beta);
-			if (tempPaluu._evaluointiArvo > paluu._evaluointiArvo || tempPaluu._matissa == true)
-			{
-				paluu = tempPaluu;
-				paluu._parasSiirto = siirto;
-			}
-			alpha = std::max(alpha, paluu._evaluointiArvo);
-			if (beta <= alpha)
-				break;
-		}
-	}
-	else
-	{
-		paluu._evaluointiArvo = DBL_MAX;
-		for each (Siirto siirto in lista)
-		{
-			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) { kesken = true; break; }  // lähdetään pois mikäli aika on loppu
-			Asema uusiAsema = *this;
-			uusiAsema.paivitaAsema(&siirto);
-			MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, alpha, beta);
-			if (tempPaluu._evaluointiArvo < paluu._evaluointiArvo || tempPaluu._matissa == true)
-			{
-				paluu = tempPaluu;
-				paluu._parasSiirto = siirto;
-			}
-			beta = std::min(beta, paluu._evaluointiArvo);
-			if (beta <= alpha)
-				break;
-
+			break;
 		}
 	}
 	if (!kesken) {
@@ -733,13 +701,60 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		HashData item(syvyys, paluu, -1); // -1 tyyppi on ns null
 		if (paluu._evaluointiArvo <= originalAlpha)
 			item._tyyppi = 3; // 3 mikäli on pienempi kun alussa otettu alpha
-		else if (paluu._evaluointiArvo >= originalBeta)
+		else if (paluu._evaluointiArvo >= beta)
 			item._tyyppi = 1; // 1 mikäli on suurempi kun alussa otettu beta
 		else
 			item._tyyppi = 2; // 2 jos arvo on alphan ja betan keskellä
 		k->_transpositiot.Add(laudanHash, item);// tallennetaan tietokantaan
 	}
 	return paluu;
+}
+
+bool Asema::onkoMatti(int vari)
+{
+	if (onkoShakki(vari))
+		return false;
+
+	std::list<Siirto> lista; 
+	annaLaillisetSiirrot(lista);
+	bool matti = true;
+	Ruutu kuninkaanRuutu;
+
+	int vihu = vari == 0 ? 1 : 0;
+	for each (Siirto siirto in lista)
+	{
+		Asema uusiAsema = *this;
+		uusiAsema.paivitaAsema(&siirto);
+
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++)
+				if (uusiAsema._lauta[i][j] && ((vihu == 1 && uusiAsema._lauta[i][j]->getKoodi() == VK) || (vihu == 0 && uusiAsema._lauta[i][j]->getKoodi() == MK)))
+					kuninkaanRuutu = Ruutu(i, j);
+
+		if (!onkoRuutuUhattu(kuninkaanRuutu, vihu))
+		{
+			matti = false;
+			break;
+		}
+	}
+
+	return matti;
+}
+
+bool Asema::onkoShakki(int vari)
+{
+	int vihu = vari == 0 ? 1 : 0;
+
+	Ruutu kuninkaanRuutu;
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++)
+			if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK)))
+			{
+				kuninkaanRuutu = Ruutu(i, j);
+				break;
+			}
+
+	return onkoRuutuUhattu(kuninkaanRuutu, vihu);
 }
 
 // jotai optimointia
