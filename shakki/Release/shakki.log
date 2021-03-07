@@ -4,8 +4,8 @@ E:\Shakki-projekti\shakki\asema.cpp(20,52): warning C4244: 'argument': conversio
 E:\Shakki-projekti\shakki\asema.cpp(165,42): warning C4553: '==': result of expression not used; did you intend '='?
 E:\Shakki-projekti\shakki\asema.cpp(170,42): warning C4553: '==': result of expression not used; did you intend '='?
   Generating code
-  116 of 518 functions (22.4%) were compiled, the rest were copied from previous compilation.
+  3 of 530 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    15 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   shakki.vcxproj -> E:\Shakki-projekti\Release\shakki.exe

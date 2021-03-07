@@ -41,7 +41,7 @@ Asema::Asema()
 	//for (int i = 0; i < 8; i++)
 	//	_lauta[i][6] = ms;
 	//muut mustat nappulat
-	_lauta[2][4] = mt;
+	//_lauta[2][4] = mt;
 	//_lauta[6][7] = mr;
 	//_lauta[5][7] = ml;
 	_lauta[4][7] = mk;
@@ -57,7 +57,7 @@ Asema::Asema()
 	//_lauta[7][0] = vt;
 	//_lauta[6][0] = vr;
 	//_lauta[5][0] = vl;
-	_lauta[4][0] = vk;
+	_lauta[4][4] = vk;
 	//_lauta[3][0] = vd;
 	//_lauta[2][0] = vl;
 	//_lauta[1][0] = vr;
@@ -514,9 +514,10 @@ double Asema::evaluoi()
 				}
 
 			}
-			evaluaatio += sqrt((double)VKuninkaanRuutu.getRivi() * (double)MKuninkaanRuutu.getRivi() + (double)VKuninkaanRuutu.getSarake() * (double)MKuninkaanRuutu.getSarake())
-				* (15 / (valkoisiaNappuloita - mustiaNappuloita));
+
 		}
+	evaluaatio += sqrt((double)VKuninkaanRuutu.getRivi() * (double)MKuninkaanRuutu.getRivi() + (double)VKuninkaanRuutu.getSarake() * (double)MKuninkaanRuutu.getSarake())
+		* (15 / (valkoisiaNappuloita - mustiaNappuloita));
 
 	int vkSarake = valkoinenK.getSarake();
 	int vkRivi = valkoinenK.getRivi();
@@ -630,7 +631,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	double originalAlpha = alpha;
 	double originalBeta = beta;
 	// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
-	/*
+
 	if (k->_transpositiot.Exist(laudanHash))
 	{
 		HashData item = k->_transpositiot.Get(laudanHash);
@@ -653,7 +654,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			if (alpha >= beta)
 				return item._parasSiirto;
 		}
-	}*/
+	}
 	std::list<Siirto> lista;
 
 	Ruutu kuninkaanRuutu;
