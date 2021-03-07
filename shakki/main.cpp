@@ -55,7 +55,8 @@ int main()
 			paluu.push_back(asema.alphaBeta(alkuSyvyys));
 			alkuSyvyys++;
 		}
-		paluu.pop_back(); // poistetaan viiminen keskeneräinen siirto
+		if(paluu.back()._matissa == false)
+			paluu.pop_back(); // poistetaan viiminen keskeneräinen siirto
 		siirto = paluu.back()._parasSiirto;
 		chrono::steady_clock::time_point end = chrono::steady_clock::now();
 

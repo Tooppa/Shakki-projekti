@@ -40,7 +40,7 @@ Asema::Asema()
 	//for (int i = 0; i < 8; i++)
 	//	_lauta[i][6] = ms;
 	//muut mustat nappulat
-	_lauta[7][7] = mt;
+	_lauta[2][7] = mt;
 	//_lauta[6][7] = mr;
 	//_lauta[5][7] = ml;
 	_lauta[4][7] = mk;
@@ -645,6 +645,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		}
 	}*/
 	std::list<Siirto> lista;
+
 	Ruutu kuninkaanRuutu;
 	// Kantatapaukset 1 ja 2 : matti tai patti?
 	this->annaLaillisetSiirrot(lista);
@@ -667,10 +668,14 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 				}
 		return paluu;
 	}
+	if (paluu._parasSiirto == Siirto())
+		paluu._parasSiirto = lista.back();
 	// Kantatapaus 3: katkaisusyvyys
 	if (syvyys == 0)
 	{
 		paluu._evaluointiArvo = evaluoi();
+		if (paluu._evaluointiArvo == DBL_MAX || paluu._evaluointiArvo == -DBL_MAX)
+			paluu._matissa = true;
 		return paluu;
 	}
 	if (_siirtovuoro == 0)
@@ -681,10 +686,10 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) { kesken = true; break; }  // lähdetään pois mikäli aika on loppu
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
-			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
-			if (arvo > paluu._evaluointiArvo || arvo == DBL_MAX)
+			MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, alpha, beta);
+			if (tempPaluu._evaluointiArvo > paluu._evaluointiArvo)
 			{
-				paluu._evaluointiArvo = arvo;
+				paluu = tempPaluu;
 				paluu._parasSiirto = siirto;
 			}
 			alpha = std::max(alpha, paluu._evaluointiArvo);
@@ -700,10 +705,10 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) { kesken = true; break; }  // lähdetään pois mikäli aika on loppu
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
-			double arvo = uusiAsema.alphaBeta(syvyys - 1, alpha, beta)._evaluointiArvo;
-			if (arvo < paluu._evaluointiArvo || arvo == -DBL_MAX)
+			MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, alpha, beta);
+			if (tempPaluu._evaluointiArvo < paluu._evaluointiArvo)
 			{
-				paluu._evaluointiArvo = arvo;
+				paluu = tempPaluu;
 				paluu._parasSiirto = siirto;
 			}
 			beta = std::min(beta, paluu._evaluointiArvo);
