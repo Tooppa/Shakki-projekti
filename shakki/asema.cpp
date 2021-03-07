@@ -134,7 +134,7 @@ void Asema::paivitaAsema(Siirto* siirto)
 		// jos laiton siirto niin vaihdetaan vuoroa
 		if (alkuRivi < 0 || alkuRivi > 7 || loppuRivi < 0 || loppuRivi > 7 || alkuSarake < 0 || alkuSarake > 7 || loppuSarake < 0 || loppuSarake > 7)
 		{
-			if (_siirtovuoro == 1) _siirtovuoro = 0;
+			if (getSiirtovuoro() == 1) _siirtovuoro = 0;
 			else _siirtovuoro = 1;
 			return;
 		}
@@ -204,10 +204,10 @@ void Asema::paivitaAsema(Siirto* siirto)
 			if (!_onkoMustaKuningasLiikkunut)_onkoMustaKuningasLiikkunut = true;
 			break;
 		}
-		//päivitetään _siirtovuoro
+		//päivitetään getSiirtovuoro()
 
 	}
-	if (_siirtovuoro == 1) _siirtovuoro = 0;
+	if (getSiirtovuoro() == 1) _siirtovuoro = 0;
 	else _siirtovuoro = 1;
 }
 
@@ -419,11 +419,11 @@ double Asema::evaluoi()
 	Ruutu VKuninkaanRuutu;
 	Ruutu MKuninkaanRuutu;
 
-	//int vihu = _siirtovuoro == 0 ? 1 : 0;
-	//if (onkoShakki(_siirtovuoro)) {
-	//	evaluaatio = _siirtovuoro == 0 ? -DBL_MAX : DBL_MAX;
+	//int vihu = getSiirtovuoro() == 0 ? 1 : 0;
+	//if (onkoShakki(getSiirtovuoro())) {
+	//	evaluaatio = getSiirtovuoro() == 0 ? -DBL_MAX : DBL_MAX;
 	//}else if(onkoShakki(vihu))
-	//	evaluaatio = _siirtovuoro == 0 ? DBL_MAX : -DBL_MAX;
+	//	evaluaatio = getSiirtovuoro() == 0 ? DBL_MAX : -DBL_MAX;
 
 	double valkoisiaNappuloita = 0;
 	double mustiaNappuloita = 0;
@@ -622,9 +622,6 @@ uint64_t Asema::GetHash()
 
 MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 {
-	int vihu = _siirtovuoro == 0 ? 1 : 0;
-	int kerroin = _siirtovuoro == 0 ? 1 : -1;
-
 	Kayttoliittyma* k = Kayttoliittyma::getInstance();
 	k->_counter++;
 	chrono::steady_clock::time_point start = k->_aika; // tallennetaan startti aika käyttöliittymästä
@@ -636,7 +633,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	if (k->_transpositiot.Exist(laudanHash))
 	{
 		HashData item = k->_transpositiot.Get(laudanHash);
-		if (item._syvyys >= syvyys)
+		if (item._syvyys >= syvyys && item._vari == getSiirtovuoro())
 		{
 			if (item._tyyppi == 2)
 				return item._parasSiirto;
@@ -661,7 +658,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 
 	if (lista.size() == 0)
 	{
-		if (onkoMatti(this->_siirtovuoro))
+		if (onkoMatti(this->getSiirtovuoro()))
 		{
 			paluu._evaluointiArvo = -DBL_MAX;
 			return paluu;
@@ -687,7 +684,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		Asema uusiAsema = *this;
 		uusiAsema.paivitaAsema(&siirto);
 
-		if (uusiAsema.onkoShakki(_siirtovuoro))
+		if (uusiAsema.onkoShakki(getSiirtovuoro()))
 			continue;
 
 		MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, -beta, -alpha);
@@ -708,7 +705,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	}
 	if (!kesken) {
 		// kommentteihin nämä kaksi riviä taulukko systeemin poistamiseksi
-		HashData item(syvyys, paluu, -1); // -1 tyyppi on ns null
+		HashData item(syvyys, paluu, -1, getSiirtovuoro()); // -1 tyyppi on ns null
 		if (paluu._evaluointiArvo <= originalAlpha)
 			item._tyyppi = 3; // 3 mikäli on pienempi kun alussa otettu alpha
 		else if (paluu._evaluointiArvo >= beta)
@@ -716,8 +713,14 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		else
 			item._tyyppi = 2; // 2 jos arvo on alphan ja betan keskellä
 		k->_transpositiot.Add(laudanHash, item);// tallennetaan tietokantaan
+
+		return paluu;
 	}
-	return paluu;
+	else
+	{
+		paluu._evaluointiArvo = -DBL_MAX;
+		return paluu;
+	}
 }
 
 
@@ -768,7 +771,7 @@ void Asema::jarjestaLista(std::list<Siirto>& lista)
 			loppu = _lauta[siirto.getLoppuruutu().getSarake()][siirto.getLoppuruutu().getRivi()];
 
 			//jos syödään
-			if (loppu && loppu->getVari() != _siirtovuoro)
+			if (loppu && loppu->getVari() != getSiirtovuoro())
 				if (alku->getArvo() <= loppu->getArvo())
 					siirrettava.push_back(siirto);
 		}
@@ -811,9 +814,9 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
 		{
-			if (_lauta[i][j] && _lauta[i][j]->getVari() == _siirtovuoro)
+			if (_lauta[i][j] && _lauta[i][j]->getVari() == getSiirtovuoro())
 			{
-				_lauta[i][j]->annaSiirrot(lista, &Ruutu(i, j), this, _siirtovuoro);
+				_lauta[i][j]->annaSiirrot(lista, &Ruutu(i, j), this, getSiirtovuoro());
 			}
 		}
 
@@ -826,11 +829,11 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++)
-				if (uusiAsema._lauta[i][j] && ((uusiAsema._siirtovuoro == 1 && uusiAsema._lauta[i][j]->getKoodi() == VK) || (uusiAsema._siirtovuoro == 0 && uusiAsema._lauta[i][j]->getKoodi() == MK)))
+				if (uusiAsema._lauta[i][j] && ((uusiAsema.getSiirtovuoro() == 1 && uusiAsema._lauta[i][j]->getKoodi() == VK) || (uusiAsema.getSiirtovuoro() == 0 && uusiAsema._lauta[i][j]->getKoodi() == MK)))
 					kuninkaanRuutu = Ruutu(i, j);
 
 		//mikäli siirto uhkaa kuningasta laitetaan se poistettavaksi
-		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) poistettava.push_back(siirto);
+		if (uusiAsema.onkoRuutuUhattu(kuninkaanRuutu, !getSiirtovuoro())) poistettava.push_back(siirto);
 	}
 	// käy läpi loopissa ja poistaa kaikki pää listasta 
 	if (poistettava.size() != 0)
@@ -845,41 +848,41 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 
 void Asema::annaLinnoitusSiirrot(const Ruutu& kuninkaanRuutu, std::list<Siirto>& lista)
 {
-	if (_siirtovuoro == 0 && (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaDTliikkunut())) {
+	if (getSiirtovuoro() == 0 && (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaDTliikkunut())) {
 		bool laiton = false;
 		Ruutu ruutu1 = Ruutu(2, 0);
 		Ruutu ruutu2 = Ruutu(3, 0);
 		if (_lauta[1][0] || _lauta[2][0] || _lauta[3][0]) laiton = true;
-		else if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
-		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
-		else if (onkoRuutuUhattu(ruutu2, !_siirtovuoro)) laiton = true;
+		else if (onkoRuutuUhattu(kuninkaanRuutu, !getSiirtovuoro())) laiton = true;
+		else if (onkoRuutuUhattu(ruutu1, !getSiirtovuoro())) laiton = true;
+		else if (onkoRuutuUhattu(ruutu2, !getSiirtovuoro())) laiton = true;
 		if (!laiton) lista.push_back(Siirto(false, true));
 	}
-	if (_siirtovuoro == 1 && (!getOnkoMustaKuningasLiikkunut() && !getOnkoMustaDTliikkunut())) {
+	if (getSiirtovuoro() == 1 && (!getOnkoMustaKuningasLiikkunut() && !getOnkoMustaDTliikkunut())) {
 		bool laiton = false;
 		Ruutu ruutu1 = Ruutu(2, 7);
 		Ruutu ruutu2 = Ruutu(3, 7);
 		if (_lauta[1][7] || _lauta[2][7] || _lauta[3][7]) laiton = true;
-		else if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
-		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
-		else if (onkoRuutuUhattu(ruutu2, !_siirtovuoro)) laiton = true;
+		else if (onkoRuutuUhattu(kuninkaanRuutu, !getSiirtovuoro())) laiton = true;
+		else if (onkoRuutuUhattu(ruutu1, !getSiirtovuoro())) laiton = true;
+		else if (onkoRuutuUhattu(ruutu2, !getSiirtovuoro())) laiton = true;
 		if (!laiton) lista.push_back(Siirto(false, true));
 	}
-	if (_siirtovuoro == 0 && (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaKTliikkunut())) {
+	if (getSiirtovuoro() == 0 && (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaKTliikkunut())) {
 		bool laiton = false;
 		Ruutu ruutu1 = Ruutu(5, 0);
 		if (_lauta[5][0] || _lauta[6][0]) laiton = true;
-		else if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
-		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
+		else if (onkoRuutuUhattu(kuninkaanRuutu, !getSiirtovuoro())) laiton = true;
+		else if (onkoRuutuUhattu(ruutu1, !getSiirtovuoro())) laiton = true;
 		if (!laiton) lista.push_back(Siirto(true, false));
 
 	}
-	if (_siirtovuoro == 1 && (!getOnkoMustaKuningasLiikkunut() && !getOnkoMustaKTliikkunut())) {
+	if (getSiirtovuoro() == 1 && (!getOnkoMustaKuningasLiikkunut() && !getOnkoMustaKTliikkunut())) {
 		bool laiton = false;
 		Ruutu ruutu1 = Ruutu(5, 7);
 		if (_lauta[5][7] || _lauta[6][7]) laiton = true;
-		else if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
-		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
+		else if (onkoRuutuUhattu(kuninkaanRuutu, !getSiirtovuoro())) laiton = true;
+		else if (onkoRuutuUhattu(ruutu1, !getSiirtovuoro())) laiton = true;
 		if (!laiton) lista.push_back(Siirto(true, false));
 	}
 }
