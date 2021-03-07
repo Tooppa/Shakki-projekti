@@ -651,18 +651,15 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		}
 	}
 	MinMaxPaluu paluu;
-	if (onkoMatti(_siirtovuoro))
+	if (onkoMatti(this->_siirtovuoro))
 	{
-		if (_siirtovuoro == 0)
-			paluu._evaluointiArvo = kerroin * -DBL_MAX;
-		else
-			paluu._evaluointiArvo = kerroin * DBL_MAX;
+		paluu._evaluointiArvo = this->_siirtovuoro == 0 ? -DBL_MAX : DBL_MAX;
 		return paluu;
 	}
 
 	if (syvyys <= 0)
 	{
-		paluu._evaluointiArvo = kerroin * evaluoi();
+		paluu._evaluointiArvo = evaluoi();
 		/*if (paluu._evaluointiArvo == DBL_MAX || paluu._evaluointiArvo == -DBL_MAX)
 			paluu._matissa = true;*/
 		return paluu;
@@ -716,32 +713,15 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 bool Asema::onkoMatti(int vari)
 {
 	if (onkoShakki(vari))
-		return false;
-
-	std::list<Siirto> lista; 
-	annaLaillisetSiirrot(lista);
-	bool matti = true;
-	Ruutu kuninkaanRuutu;
-
-	int vihu = vari == 0 ? 1 : 0;
-	for each (Siirto siirto in lista)
 	{
-		Asema uusiAsema = *this;
-		uusiAsema.paivitaAsema(&siirto);
-
-		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 8; j++)
-				if (uusiAsema._lauta[i][j] && ((vihu == 1 && uusiAsema._lauta[i][j]->getKoodi() == VK) || (vihu == 0 && uusiAsema._lauta[i][j]->getKoodi() == MK)))
-					kuninkaanRuutu = Ruutu(i, j);
-
-		if (!onkoRuutuUhattu(kuninkaanRuutu, vihu))
-		{
-			matti = false;
-			break;
-		}
+		int vihu = vari == 0 ? 1 : 0;
+		std::list<Siirto> lista;
+		annaLaillisetSiirrot(lista);
+		if (lista.size() == 0)
+			return true;
+		else
+			return false;
 	}
-
-	return matti;
 }
 
 bool Asema::onkoShakki(int vari)
@@ -751,7 +731,7 @@ bool Asema::onkoShakki(int vari)
 	Ruutu kuninkaanRuutu;
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
-			if (_lauta[i][j] && ((_siirtovuoro == 0 && _lauta[i][j]->getKoodi() == VK) || (_siirtovuoro == 1 && _lauta[i][j]->getKoodi() == MK)))
+			if (_lauta[i][j] && ((vari == 0 && _lauta[i][j]->getKoodi() == VK) || (vari == 1 && _lauta[i][j]->getKoodi() == MK)))
 			{
 				kuninkaanRuutu = Ruutu(i, j);
 				break;
