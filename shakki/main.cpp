@@ -11,23 +11,23 @@
 
 using namespace std;
 
-int main()
+short int main()
 {
 	Kayttoliittyma* k = Kayttoliittyma::getInstance();
-	int lopetus = 100;
+	short int lopetus = 100;
 	Asema asema;
 	list<Siirto> lista;
 	system("cls");
 
 	// alphabetan alku syvyys ja max aika. tämä menee käytännössä aina yli noin 20 sek omalla koneella
-	int maxAika = 3;
-	int alkuSyvyys;
+	short int maxAika = 10;
+	short int alkuSyvyys;
 
 	k->_maxAika = maxAika;
 	k->aseta_asema(&asema);
 	wcout << "Tervetuloa pelaamaan! \nSiirrot muodossa g2-g3, ra1-a2 ja korotukset \ng2-g1=R (muista isot kirjaimet lopussa)\n\n";
 	Peli peli(k->kysyVastustajanVari());
-	int koneenVari = peli.getKoneenVari();
+	short int koneenVari = peli.getKoneenVari();
 
 	while (lopetus != 0) {
 		lista.clear();

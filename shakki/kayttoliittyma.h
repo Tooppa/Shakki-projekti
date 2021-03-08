@@ -16,14 +16,14 @@ public:
 	void aseta_asema(Asema* asema) { this->_asema = asema; }
 	void piirraLauta();
 	Siirto annaVastustajanSiirto(Asema asema);
-	int kysyVastustajanVari();
-	int koordinaattiKirjainNumeroksi(char kirjain);
+	short int kysyVastustajanVari();
+	short int koordinaattiKirjainNumeroksi(char kirjain);
 
 	static Kayttoliittyma* getInstance();
 	uint64_t _counter;
 	HashTaulukko _transpositiot;
 	chrono::steady_clock::time_point _aika;
-	int _maxAika;
+	short int _maxAika;
 private:
 
 	Asema* _asema;

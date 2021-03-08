@@ -5,7 +5,7 @@ HashData::HashData() : HashData(0, MinMaxPaluu(), -1)
 
 }
 
-HashData::HashData(int syvyys, MinMaxPaluu parasSiirto, int tyyppi)
+HashData::HashData(short int syvyys, MinMaxPaluu parasSiirto, short int tyyppi)
 {
 	_syvyys = syvyys;
 	_parasSiirto = parasSiirto;
