@@ -25,11 +25,11 @@ Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS, 1);
 Asema::Asema()
 {
 	_siirtovuoro = 0;
-	_onkoValkeaKuningasLiikkunut = true;;
-	_onkoMustaKuningasLiikkunut = true;
-	_onkoValkeaDTliikkunut = true;
-	_onkoValkeaKTliikkunut = true;
-	_onkoMustaDTliikkunut = true;
+	_onkoValkeaKuningasLiikkunut = false;;
+	_onkoMustaKuningasLiikkunut = false;
+	_onkoValkeaDTliikkunut = false;
+	_onkoValkeaKTliikkunut = false;
+	_onkoMustaDTliikkunut = false;
 	_onkoMustaKTliikkunut = false;
 
 	for (int i = 0; i < 8; i++)
@@ -38,30 +38,30 @@ Asema::Asema()
 	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
 
 	// mustat sotilaat
-	//for (int i = 0; i < 8; i++)
-	//	_lauta[i][6] = ms;
+	for (int i = 0; i < 8; i++)
+		_lauta[i][6] = ms;
 	//muut mustat nappulat
-	//_lauta[4][4] = mt;
-	//_lauta[6][7] = mr;
-	//_lauta[5][7] = ml;
+	_lauta[7][7] = mt;
+	_lauta[6][7] = mr;
+	_lauta[5][7] = ml;
 	_lauta[4][7] = mk;
-	//_lauta[3][7] = md;
-	//_lauta[2][7] = ml;
-	//_lauta[1][7] = mr;
+	_lauta[3][7] = md;
+	_lauta[2][7] = ml;
+	_lauta[1][7] = mr;
 	_lauta[0][7] = mt;
 
 	// valkoiset sotilaat
-	//for (int i = 0; i < 8; i++)
-	//	_lauta[i][1] = vs;
+	for (int i = 0; i < 8; i++)
+		_lauta[i][1] = vs;
 	//muut valkoiset nappulat
-	//_lauta[7][0] = vt;
-	//_lauta[6][0] = vr;
-	//_lauta[5][0] = vl;
-	_lauta[2][4] = vk;
-	//_lauta[3][0] = vd;
-	//_lauta[2][0] = vl;
-	//_lauta[1][0] = vr;
-	//_lauta[0][0] = vt;
+	_lauta[7][0] = vt;
+	_lauta[6][0] = vr;
+	_lauta[5][0] = vl;
+	_lauta[4][0] = vk;
+	_lauta[3][0] = vd;
+	_lauta[2][0] = vl;
+	_lauta[1][0] = vr;
+	_lauta[0][0] = vt;
 
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
 
@@ -279,29 +279,29 @@ double Asema::evaluoi()
 {
 	double evaluaatio = 0;
 	//kertoimet asetettu sen takia että niiden avulla asioiden painoarvoa voidaan säätää helposti yhdestä paikasta
-	double k = 1000, d = 9, t = 5, l = 3.25, r = 3, s = 1;
+	double k = 1000, d = 60, t = 20, l = 8, r = 6, s = 3;
 
 	Ruutu valkoinenK;
 	Ruutu mustaK;
 
 	//1. Nappuloiden arvo
 	double arvostusTaulukkoMS[8][8] =
-	{ {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+	{ {0, 0, 0, 0, 0, 0, 0, 0},
 	{4, 4, 4, 4, 4, 4, 4, 4},
-	{0.0, 0.0, 0.0, 3, 3, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 3, 3, 0.0, 0.0, 0.0},
-	{0.0, 0.0, 0.0, 4, 4, 0.0, 0.0, 0.0},
-	{0.5, 0.0, 0.0, 3, 3, 0.0, 0.0, 0.5},
+	{0, 0, 0.0, 2, 2, 0, 0, 0},
+	{0, 0, 0.0, 4, 4, 0, 0, 0},
+	{0, 0, 0, 4, 4, 0, 0, 0},
+	{0, 0, 0, 3, 3, 0.0, 0.0, 0.5},
 	{0.5, 1, 1, -2, -2, 1, 1, 0.5},
 	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0} };
 
 	double arvostusTaulukkoVS[8][8] =
 	{ {0, 0, 0, 0, 0, 0, 0, 0},
 	{0.5, 1, 1, -2, -2, 1, 1, 0.5},
-	{1, 0.0, 0.0, 2, 2, 0, 0, 1},
-	{0, 0, 0.0, 3, 3, 0, 0, 0},
-	{0, 0, 0.0, 0.3, 3, 0, 0, 0},
-	{0, 0, 0.0, 3, 3, 0, 0, 0},
+	{1, 0, 0, 3, 3, 0, 0, 1},
+	{0, 0, 0, 7, 4, 0, 0, 0},
+	{0, 0, 0, 4, 4, 0, 0, 0},
+	{0, 0, 0, 3, 3, 0, 0, 0},
 	{4, 4, 4, 4, 4, 4, 4, 4},
 	{0, 0, 0, 0, 0, 0, 0, 0} };
 
@@ -441,8 +441,8 @@ double Asema::evaluoi()
 					valkoisiaNappuloita++;
 				else mustiaNappuloita++;
 
-	double mustaKerroin = mustiaNappuloita / 10;
-	double valkoinenKerroin = valkoisiaNappuloita / 10;
+	double mustaKerroin = mustiaNappuloita / 17;
+	double valkoinenKerroin = valkoisiaNappuloita / 17;
 
 
 
