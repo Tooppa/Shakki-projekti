@@ -63,6 +63,7 @@ Asema::Asema()
 	_lauta[1][0] = vr;
 	_lauta[0][0] = vt;
 
+
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
 
 }
@@ -131,13 +132,7 @@ void Asema::paivitaAsema(Siirto* siirto)
 		int loppuRivi = siirto->getLoppuruutu().getRivi();
 		int loppuSarake = siirto->getLoppuruutu().getSarake();
 
-		// jos laiton siirto niin vaihdetaan vuoroa
-		if (alkuRivi < 0 || alkuRivi > 7 || loppuRivi < 0 || loppuRivi > 7 || alkuSarake < 0 || alkuSarake > 7 || loppuSarake < 0 || loppuSarake > 7)
-		{
-			if (_siirtovuoro == 1) _siirtovuoro = 0;
-			else _siirtovuoro = 1;
-			return;
-		}
+
 		//Ottaa siirron alkuruudussa olleen nappulan talteen 
 
 
@@ -146,31 +141,37 @@ void Asema::paivitaAsema(Siirto* siirto)
 		//Alustus
 		int nappulanKoodi = nappula->getKoodi();
 
+		//oheistalyönti
+		if (nappulanKoodi == MS || nappulanKoodi == VS)
+			if (abs(alkuRivi - loppuRivi) == 2)
+				kaksoisaskelSarakkeella = alkuSarake;
+			else if (kaksoisaskelSarakkeella >= 0) {
+				if (nappulanKoodi == VS) {
+					if (_lauta[kaksoisaskelSarakkeella - 1][4] && kaksoisaskelSarakkeella == alkuSarake + 1 && loppuRivi == 5) {
+						_lauta[loppuSarake][loppuRivi - 1] = nullptr;
+					}
+					else if (_lauta[kaksoisaskelSarakkeella + 1][4] && kaksoisaskelSarakkeella == alkuSarake - 1 && loppuRivi == 5) {
+						_lauta[loppuSarake][loppuRivi - 1] = nullptr;
+					}
+				}
+				else if (nappulanKoodi == MS) {
+					if (_lauta[kaksoisaskelSarakkeella - 1][3] && kaksoisaskelSarakkeella == alkuSarake + 1 && loppuRivi == 2) {
+						_lauta[loppuSarake][loppuRivi + 1] = nullptr;
+					}
+					else if (_lauta[kaksoisaskelSarakkeella + 1][3] && kaksoisaskelSarakkeella == alkuSarake - 1 && loppuRivi == 2) {
+						_lauta[loppuSarake][loppuRivi + 1] = nullptr;
+					}
+				}
+				kaksoisaskelSarakkeella = -1;
+			}
+
 		_lauta[alkuSarake][alkuRivi] = nullptr;
 		//Laittaa talteen otettu nappula uuteen ruutuun
 		_lauta[loppuSarake][loppuRivi] = nappula;
 
-		// Tarkistetaan oliko sotilaan kaksoisaskel
-		if (nappulanKoodi == MS || nappulanKoodi == VS)
-			if (abs(alkuRivi - loppuRivi) == 2)
-				kaksoisaskelSarakkeella = alkuSarake;
-			else
-				kaksoisaskelSarakkeella = -1;
 
-		// (asetetaan kaksoisaskel-lippu)
-		if (kaksoisaskelSarakkeella != -1 && loppuSarake == kaksoisaskelSarakkeella)
-		{
-			// Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
-			if (nappulanKoodi == MS && alkuRivi == 3)
-				if (alkuSarake != loppuSarake)
-					if (_lauta[loppuSarake][loppuRivi] == nullptr)
-						_lauta[loppuSarake][loppuRivi + 1] = nullptr;
 
-			if (nappulanKoodi == VS && alkuRivi == 4)
-				if (alkuSarake != loppuSarake)
-					if (_lauta[loppuSarake][loppuRivi] == nullptr)
-						_lauta[loppuSarake][loppuRivi - 1] = nullptr;
-		}
+
 
 
 		//// Katsotaan jos nappula on sotilas ja rivi on päätyrivi niin ei vaihdeta nappulaa 
@@ -839,6 +840,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 
 	//Tornitukset
 	annaLinnoitusSiirrot(kuninkaanRuutu, lista);
+	annaOheistaLyonnit(lista);
 }
 
 
@@ -880,5 +882,55 @@ void Asema::annaLinnoitusSiirrot(const Ruutu& kuninkaanRuutu, std::list<Siirto>&
 		else if (onkoRuutuUhattu(kuninkaanRuutu, !_siirtovuoro)) laiton = true;
 		else if (onkoRuutuUhattu(ruutu1, !_siirtovuoro)) laiton = true;
 		if (!laiton) lista.push_back(Siirto(true, false));
+	}
+}
+void Asema::annaOheistaLyonnit(std::list<Siirto>& lista) {
+	if (_siirtovuoro == 0) {
+		if (kaksoisaskelSarakkeella >= 0) {
+			if (0 < kaksoisaskelSarakkeella && kaksoisaskelSarakkeella < 7) {
+				if (_lauta[kaksoisaskelSarakkeella][4] && _lauta[kaksoisaskelSarakkeella][4]->getKoodi() == MS) {
+					if (_lauta[kaksoisaskelSarakkeella - 1][4] && _lauta[kaksoisaskelSarakkeella - 1][4]->getKoodi() == VS) {
+						lista.push_back(Siirto(Ruutu(kaksoisaskelSarakkeella - 1, 4), Ruutu(kaksoisaskelSarakkeella, 5)));
+					}
+					if (_lauta[kaksoisaskelSarakkeella + 1][4] && _lauta[kaksoisaskelSarakkeella + 1][4]->getKoodi() == VS) {
+						lista.push_back(Siirto(Ruutu(kaksoisaskelSarakkeella + 1, 4), Ruutu(kaksoisaskelSarakkeella, 5)));
+					}
+				}
+				else if (kaksoisaskelSarakkeella == 0) {
+					if (_lauta[kaksoisaskelSarakkeella + 1][4] && _lauta[kaksoisaskelSarakkeella + 1][4]->getKoodi() == VS) {
+						lista.push_back(Siirto(Ruutu(kaksoisaskelSarakkeella + 1, 4), Ruutu(kaksoisaskelSarakkeella, 5)));
+					}
+				}
+				else if (kaksoisaskelSarakkeella == 7) {
+					if (_lauta[kaksoisaskelSarakkeella - 1][4] && _lauta[kaksoisaskelSarakkeella - 1][4]->getKoodi() == VS) {
+						lista.push_back(Siirto(Ruutu(kaksoisaskelSarakkeella - 1, 4), Ruutu(kaksoisaskelSarakkeella, 5)));
+					}
+				}
+			}
+		}
+	}
+	else {
+		if (kaksoisaskelSarakkeella >= 0) {
+			if (0 < kaksoisaskelSarakkeella && kaksoisaskelSarakkeella < 7) {
+				if (_lauta[kaksoisaskelSarakkeella][3] && _lauta[kaksoisaskelSarakkeella][3]->getKoodi() == VS) {
+					if (_lauta[kaksoisaskelSarakkeella - 1][3] && _lauta[kaksoisaskelSarakkeella - 1][3]->getKoodi() == MS) {
+						lista.push_back(Siirto(Ruutu(kaksoisaskelSarakkeella - 1, 3), Ruutu(kaksoisaskelSarakkeella, 2)));
+					}
+					if (_lauta[kaksoisaskelSarakkeella + 1][3] && _lauta[kaksoisaskelSarakkeella + 1][3]->getKoodi() == MS) {
+						lista.push_back(Siirto(Ruutu(kaksoisaskelSarakkeella + 1, 3), Ruutu(kaksoisaskelSarakkeella, 2)));
+					}
+				}
+				else if (kaksoisaskelSarakkeella == 0) {
+					if (_lauta[kaksoisaskelSarakkeella + 1][3] && _lauta[kaksoisaskelSarakkeella + 1][3]->getKoodi() == MS) {
+						lista.push_back(Siirto(Ruutu(kaksoisaskelSarakkeella + 1, 3), Ruutu(kaksoisaskelSarakkeella, 2)));
+					}
+				}
+				else if (kaksoisaskelSarakkeella == 7) {
+					if (_lauta[kaksoisaskelSarakkeella - 1][3] && _lauta[kaksoisaskelSarakkeella - 1][3]->getKoodi() == MS) {
+						lista.push_back(Siirto(Ruutu(kaksoisaskelSarakkeella - 1, 3), Ruutu(kaksoisaskelSarakkeella, 2)));
+					}
+				}
+			}
+		}
 	}
 }

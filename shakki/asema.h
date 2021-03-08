@@ -26,14 +26,14 @@ public:
 	// Nappula-oliot. Huomaa, ett� samaa nappulaa voidaan k�ytt�� useissa eri ruuduissa.
 	// M��ritelty static-m��reell�, joten nappulat ovat kaikkien lauta-olioiden "yhteisk�yt�ss�"
 	// (suorituskyvyn vuoksi).
-	static Nappula *vk, *vd, *vt, *vl, *vr, *vs;	// Valkeat nappulat.
-	static Nappula *mk, *md, *mt, *ml, *mr, *ms;	// Mustat nappulat.
+	static Nappula* vk, * vd, * vt, * vl, * vr, * vs;	// Valkeat nappulat.
+	static Nappula* mk, * md, * mt, * ml, * mr, * ms;	// Mustat nappulat.
 
 	// Ohestaly�nti� varten (-1 = sotilaan kaksoisaskelta ei tapahtunut edellisell� siirrolla).
 	int kaksoisaskelSarakkeella = -1;
 
 
-	Asema();	
+	Asema();
 	void paivitaAsema(Siirto*);															// P�ivitt�� aseman annetulla siirrolla.
 	double evaluoi();																	// Aseman numeerinen arviointi.
 	uint64_t Asema::GetHash();															// ottaa laudan hashin.
@@ -48,7 +48,7 @@ public:
 	bool getOnkoValkeaKTliikkunut();													// Linnoittuminen mahdollista?
 	bool getOnkoMustaDTliikkunut();														// Linnoittuminen mahdollista?
 	bool getOnkoMustaKTliikkunut();														// Linnoittuminen mahdollista?
-	
+
 private:
 
 	// Lis�informaatio pelitilanteesta.
@@ -67,6 +67,8 @@ private:
 	bool onkoRuutuUhattu(Ruutu, int vastustajanVari);
 	void annaLinnoitusSiirrot(const Ruutu& kuninkaanRuutu, std::list<Siirto>& lista);
 
+	void annaOheistaLyonnit(std::list<Siirto>& lista);
+
 	// Karsii siirrot, jotka j�tt�v�t oman K:n shakkiin.
-	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari); 
+	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari);
 };
