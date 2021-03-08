@@ -635,34 +635,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	MinMaxPaluu paluu;
 
 	bool kesken = false;
-	uint64_t laudanHash = Asema::GetHash();
-	double originalAlpha = alpha;
-	double originalBeta = beta;
-	// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
-	/*
-	if (k->_transpositiot.Exist(laudanHash))
-	{
-		HashData item = k->_transpositiot.Get(laudanHash);
-		if (item._syvyys >= syvyys)
-		{
-			if (item._tyyppi == 2)
-				return item._parasSiirto;
-			else if (item._tyyppi == 1)
-			{
-				if (item._parasSiirto._evaluointiArvo > alpha)
-					alpha = item._parasSiirto._evaluointiArvo;
-			}
-			else if (item._tyyppi == 3)
-			{
-				if (item._parasSiirto._evaluointiArvo < beta)
-					beta = item._parasSiirto._evaluointiArvo;
-			}
 
-			// jos alpha on saavuttanut tai ylittänyt betan
-			if (alpha >= beta)
-				return item._parasSiirto;
-		}
-	}*/
 	std::list<Siirto> lista;
 
 	Ruutu kuninkaanRuutu;
@@ -705,7 +678,18 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) { kesken = true; break; }  // lähdetään pois mikäli aika on loppu
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
+
+			// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
+			uint64_t laudanHash = uusiAsema.GetHash();
+			if (k->_transpositiot.Exist(laudanHash))
+			{
+				HashData item = k->_transpositiot.Get(laudanHash);
+				if (item._syvyys == syvyys - 1 && item._vari == uusiAsema.getSiirtovuoro())
+					paluu = item._parasSiirto;
+			}
+
 			MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, alpha, beta);
+			
 			if (tempPaluu._evaluointiArvo > paluu._evaluointiArvo || tempPaluu._matissa == true)
 			{
 				paluu = tempPaluu;
@@ -724,7 +708,18 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			if (chrono::steady_clock::now() - start >= std::chrono::seconds(k->_maxAika)) { kesken = true; break; }  // lähdetään pois mikäli aika on loppu
 			Asema uusiAsema = *this;
 			uusiAsema.paivitaAsema(&siirto);
+
+			// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
+			uint64_t laudanHash = uusiAsema.GetHash();
+			if (k->_transpositiot.Exist(laudanHash))
+			{
+				HashData item = k->_transpositiot.Get(laudanHash);
+				if (item._syvyys == syvyys - 1 && item._vari == uusiAsema.getSiirtovuoro())
+					paluu = item._parasSiirto;
+			}
 			MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, alpha, beta);
+
+
 			if (tempPaluu._evaluointiArvo < paluu._evaluointiArvo || tempPaluu._matissa == true)
 			{
 				paluu = tempPaluu;
@@ -735,18 +730,13 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 				break;
 
 		}
-	}/*
+	}
 	if (!kesken) {
 		// kommentteihin nämä kaksi riviä taulukko systeemin poistamiseksi
-		HashData item(syvyys, paluu, -1); // -1 tyyppi on ns null
-		if (paluu._evaluointiArvo <= originalAlpha)
-			item._tyyppi = 3; // 3 mikäli on pienempi kun alussa otettu alpha
-		else if (paluu._evaluointiArvo >= originalBeta)
-			item._tyyppi = 1; // 1 mikäli on suurempi kun alussa otettu beta
-		else
-			item._tyyppi = 2; // 2 jos arvo on alphan ja betan keskellä
+		HashData item(syvyys, paluu, getSiirtovuoro());
+		uint64_t laudanHash = GetHash();
 		k->_transpositiot.Add(laudanHash, item);// tallennetaan tietokantaan
-	}*/
+	}
 	return paluu;
 }
 
