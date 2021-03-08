@@ -710,12 +710,12 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			uusiAsema.paivitaAsema(&siirto);
 
 			// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
-			uint64_t laudanHash = uusiAsema.GetHash();
+			uint64_t laudanHash = uusiAsema.GetHash();// hash tekee nyt hashin uudesta asemasta
 			if (k->_transpositiot.Exist(laudanHash))
 			{
 				HashData item = k->_transpositiot.Get(laudanHash);
-				if (item._syvyys == syvyys - 1 && item._vari == uusiAsema.getSiirtovuoro())
-					paluu = item._parasSiirto;
+				if (item._syvyys == syvyys - 1 && item._vari == uusiAsema.getSiirtovuoro())	// mikäli hashin tuloksen väri ja syvyys on täsmälleen sama nii
+					paluu = item._parasSiirto;												// asetetaan paluu arvon tilalle se paras siirto. alpha beta cut of tulee nopeemmin
 			}
 			MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, alpha, beta);
 
