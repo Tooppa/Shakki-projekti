@@ -42,7 +42,7 @@ short int main()
 		}
 		Siirto siirto;
 		//if (asema.getSiirtovuoro() == koneenVari) {
-		alkuSyvyys = 1;
+		alkuSyvyys = 0;
 
 		k->_counter = 0; // asetetaan siirtojen lasku nollaan
 		chrono::steady_clock::time_point begin = chrono::steady_clock::now();
@@ -50,15 +50,24 @@ short int main()
 		std::list<MinMaxPaluu> paluu;
 		// testaillaan yksi syvyys kerralla kunnes aika loppuu
 		// sama on alphabeta kaavassa. se kaava ottaa alku ja max ajan käyttöliittymästä instancin avulla
-		paluu.push_back(asema.alphaBeta(alkuSyvyys));
 		alkuSyvyys++;
+		paluu.push_back(asema.alphaBeta(alkuSyvyys));
+
 		while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika) && !paluu.empty() && paluu.back()._matissa == false)
 		{
-			paluu.push_back(asema.alphaBeta(alkuSyvyys));
 			alkuSyvyys++;
+			paluu.push_back(asema.alphaBeta(alkuSyvyys));
 		}
-		if (paluu.back()._matissa == false)
+		if (paluu.back()._matissa == false) {
 			paluu.pop_back(); // poistetaan viiminen keskeneräinen siirto
+			alkuSyvyys--;
+		}
+
+		if (alkuSyvyys % 2 == 1) {
+			paluu.pop_back();
+			alkuSyvyys--;
+		}
+
 		siirto = paluu.back()._parasSiirto;
 		chrono::steady_clock::time_point end = chrono::steady_clock::now();
 
@@ -67,7 +76,7 @@ short int main()
 			<< " ja " << Kayttoliittyma::getInstance()->_counter
 			<< " testattua siirtoa.\naika: "
 			<< chrono::duration_cast<chrono::milliseconds>(end - begin).count() / 1000.0
-			<< "/s syvyydessä " << alkuSyvyys - 1 << endl << endl; // alkusyvyys -1 koska vika oli keskeneräinen
+			<< "/s syvyydessä " << alkuSyvyys << endl << endl; // alkusyvyys -1 koska vika oli keskeneräinen
 		paluu.clear();
 		/*}
 		else {

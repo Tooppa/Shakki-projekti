@@ -280,7 +280,7 @@ double Asema::evaluoi()
 {
 	double evaluaatio = 0;
 	//kertoimet asetettu sen takia että niiden avulla asioiden painoarvoa voidaan säätää helposti yhdestä paikasta
-	double k = 1000, d = 60, t = 20, l = 8, r = 6, s = 3;
+	double k = 1000, d = 120, t = 90, l = 32, r = 30, s = 10;
 
 	Ruutu valkoinenK;
 	Ruutu mustaK;
@@ -290,17 +290,17 @@ double Asema::evaluoi()
 	{ {0, 0, 0, 0, 0, 0, 0, 0},
 	{4, 4, 4, 4, 4, 4, 4, 4},
 	{0, 0, 0.0, 2, 2, 0, 0, 0},
-	{0, 0, 0.0, 4, 4, 0, 0, 0},
-	{0, 0, 0, 4, 4, 0, 0, 0},
-	{0, 0, 0, 3, 3, 0.0, 0.0, 0.5},
-	{0.5, 1, 1, -2, -2, 1, 1, 0.5},
-	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0} };
+	{0, 0, 0.0, 7, 4, 0, 0, 0},
+	{0, 2, 3, 5, 5, 3, 3, 0},
+	{1, 3, 3, 3, 3, 3, 3, 1},
+	{1, 1, 1, -2, -2, 1, 1, 1},
+	{0, 0, 0, 0, 0, 0, 0, 0} };
 
 	double arvostusTaulukkoVS[8][8] =
 	{ {0, 0, 0, 0, 0, 0, 0, 0},
 	{0.5, 1, 1, -2, -2, 1, 1, 0.5},
-	{1, 0, 0, 3, 3, 0, 0, 1},
-	{0, 0, 0, 7, 4, 0, 0, 0},
+	{1, 2, 3, 3, 3, 3, 4, 1},
+	{0, 2, 0, 7, 4, 0, 4, 0},
 	{0, 0, 0, 4, 4, 0, 0, 0},
 	{0, 0, 0, 3, 3, 0, 0, 0},
 	{4, 4, 4, 4, 4, 4, 4, 4},
@@ -327,31 +327,31 @@ double Asema::evaluoi()
 	{-3, -2, -1, 0, 0, -1, -2, -3} };
 
 	double arvostusTaulukkoMT[8][8] =
-	{ {2, 2, 2, 2, 2, 2, 2, 2},
+	{ {1, 2, 2, 2, 2, 2, 2, 1},
 	{3, 4, 4, 4, 4, 4, 4, 3},
+	{1, 0, 0, 0, 0, 0, 0, 1},
 	{-1, 0, 0, 0, 0, 0, 0, -1},
 	{-1, 0, 0, 0, 0, 0, 0, -1},
 	{-1, 0, 0, 0, 0, 0, 0, -1},
 	{-1, 0, 0, 0, 0, 0, 0, -1},
-	{-1, 0, 0, 0, 0, 0, 0, -1},
-	{0, 0, 1, 2, 2, 1, 0, 0} };
+	{-1, 0, 3, 4, 4, 3, 0, -1} };
 
 	double arvostusTaulukkoVT[8][8] =
-	{ {0, 0, 1, 2, 2, 1, 0, 0},
+	{ {-1, 0, 1, 2, 2, 1, 0, -1},
 	{-1, 0, 0, 0, 0, 0, 0, -1},
 	{-1, 0, 0, 0, 0, 0, 0, -1},
 	{-1, 0, 0, 0, 0, 0, 0, -1},
 	{-1, 0, 0, 0, 0, 0, 0, -0},
-	{-1, 0, 0, 0, 0, 0, 0, -1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
 	{3, 4, 4, 4, 4, 4, 4, 3},
-	{2, 2, 2, 2, 2, 2, 2, 2} };
+	{1, 2, 2, 2, 2, 2, 2, 1} };
 
 	double arvostusTaulukkoML[8][8] =
-	{ {-1, 1, 1, 1, 1, 1, 1, -1},
+	{ {-1, 1, -1, 1, 1, -1, 1, -1},
 	{1, 2, 2, 2, 2, 2, 2, 1},
 	{1, 2, 0, 3, 3, 0, 2, 1},
 	{1, 2, 0, 3, 3, 0, 2, 1},
-	{1, 2, 4, 3, 3, 4, 2, 1},
+	{1, 2, 5, 3, 3, 5, 2, 1},
 	{1, 0, 3, 3, 3, 3, 0, 1},
 	{1, 0, 2, 2, 2, 2, 0, 1},
 	{2, 0, 0, 0, 0, 0, 0, 2} };
@@ -360,11 +360,11 @@ double Asema::evaluoi()
 	{ {2, 0, 0, 0, 0, 0, 0, 2 },
 	{ 1, 0, 2, 2, 2, 2, 0, 1 },
 	{ 1, 0, 3, 3, 3, 3, 0, 1 },
-	{ 1, 1, 4, 3, 3, 4, 2, 1 },
+	{ 1, 1, 5, 3, 3, 5, 2, 1 },
 	{ 1, 2, 0, 3, 3, 3, 2, 1},
 	{ 1, 2, 0, 3, 3, 0, 2, 1 },
 	{ 1, 2, 2, 2, 2, 2, 2, 1 },
-	{ -1, 1, 1, 1, 1, 1, 1, -1} };
+	{ -1, 1, -1, 1, 1, -1, 1, -1} };
 
 	double arvostusTaulukkoMD[8][8] =
 	{ {-1, 1, 1, 2, 2, 1, 1, -1},
@@ -387,34 +387,34 @@ double Asema::evaluoi()
 		{-1, 1, 1, 2, 2, 1, 1, -1} };
 
 	double arvostusTaulukkoVK[8][8] =
-	{ {0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
+	{ {4, 5, 3, 0, 0, 0, 5, 4},
+		{0, 0, -3, -2, -2, -1, 0, 2},
+		{0, -1, -1, -2, -2, -1, -1, 0},
+		{0, 0, 0, -2, -2, 0, 0, 0},
 		{0, 0, 0, -2, -2, 0, 0, 0},
 		{0, -1, -1, -2, -2, -1, -1, 0},
-		{0, 0, 0, 0, 0, 0, 0, 2},
-		{2, 3, 3, -1, -1, 0, 4, 3} };
+		{0, 0, -1, -2, -2, -1, 2},
+		{-1, -1, -1, -2, -2, -1, -1, -1} };
 
 	double arvostusTaulukkoMK[8][8] =
-	{ {2, 3, 3, -1, -1, 0, 4, 3},
-		{0, 0, 0, 0, 0, 0, 0, 2},
+	{ { -1, -1, -1, -2, -2, -1, -1, -1 },
+		{0, 0, -1, -2, -2, -1, 0, 2},
 		{0, -1, -1, -2, -2, -1, -1, 0},
 		{0, 0, 0, -2, -2, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0} };
+		{0, 0, 0, -2, -2, 0, 0, 0},
+		{0, -1, -1, -2, -2, -1, -1, 0},
+		{0, 0, -1, -2, -3, -1, 2},
+		{4, 5, 3, 0, 0, 0, 5, 4} };
 
 	double arvostusTaulukkoKLoppupeli[8][8] =
-	{ {5, 4, 3, 1, 1, 3, 4, 5},
-		{4, 3, 1, 0, 1, 1, 3, 4},
+	{ {5, 4, 3, 0, 0, 3, 4, 5},
+		{4, 3, 1, 0, 0, 1, 3, 4},
 		{3, 1, 0, 0, 0, 0, 1, 3},
-		{1, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 1},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
 		{3, 1, 0, 0, 0, 0, 1, 3},
-		{4, 3, 1, 0, 1, 1, 3, 4},
-		{5, 4, 3, 1, 1, 3, 4, 5} };
+		{4, 3, 1, 0, 0, 1, 3, 4},
+		{5, 4, 3, 0, 0, 3, 4, 5} };
 
 	Ruutu kuninkaanRuutu;
 	Ruutu VKuninkaanRuutu;
@@ -442,8 +442,8 @@ double Asema::evaluoi()
 					valkoisiaNappuloita++;
 				else mustiaNappuloita++;
 
-	double mustaKerroin = mustiaNappuloita / 17;
-	double valkoinenKerroin = valkoisiaNappuloita / 17;
+	double mustaKerroin = mustiaNappuloita / 5;
+	double valkoinenKerroin = valkoisiaNappuloita / 5;
 
 
 
@@ -526,7 +526,7 @@ double Asema::evaluoi()
 
 		}
 	evaluaatio += sqrt(pow(((double)VKuninkaanRuutu.getRivi() - (double)MKuninkaanRuutu.getRivi()), 2) + pow(((double)VKuninkaanRuutu.getSarake() - (double)MKuninkaanRuutu.getSarake()), 2))
-		* 2 * (valkoisiaNappuloita - mustiaNappuloita);
+		* 4 * (valkoisiaNappuloita - mustiaNappuloita);
 
 	short int vkSarake = valkoinenK.getSarake();
 	short int vkRivi = valkoinenK.getRivi();
@@ -690,7 +690,7 @@ MinMaxPaluu Asema::alphaBeta(short int syvyys, double alpha, double beta)
 			}
 
 			MinMaxPaluu tempPaluu = uusiAsema.alphaBeta(syvyys - 1, alpha, beta);
-			
+
 			if (tempPaluu._evaluointiArvo > paluu._evaluointiArvo || tempPaluu._matissa == true)
 			{
 				paluu = tempPaluu;
