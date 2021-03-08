@@ -12,11 +12,11 @@ ZobristHash::ZobristHash()
 		std::mt19937_64 gen64bit(randomDevice());
 		std::uniform_int_distribution<uint64_t> dis(0, UINT64_MAX);
 
-		for (int x = 0; x < 8; x++)
+		for (short int x = 0; x < 8; x++)
 		{
-			for (int y = 0; y < 8; y++)
+			for (short int y = 0; y < 8; y++)
 			{
-				for (int i = 0; i < 12; i++)
+				for (short int i = 0; i < 12; i++)
 				{
 					_randomLauta[x][y][i] = dis(gen64bit);
 				}
@@ -35,18 +35,18 @@ uint64_t ZobristHash::GetHash(Nappula* lauta[8][8], bool castlingArray[4])
 {
 	uint64_t hash = 0;
 
-	for (int i = 0; i < 8; i++)
+	for (short int i = 0; i < 8; i++)
 	{
-		for (int j = 0; j < 8; j++)
+		for (short int j = 0; j < 8; j++)
 		{
 			if (lauta[i][j])
 			{
-				int pieceValue = nappulanArvo(lauta[i][j]->getKoodi());
+				short int pieceValue = nappulanArvo(lauta[i][j]->getKoodi());
 				hash ^= _randomLauta[i][j][pieceValue];
 			}
 		}
 	}
-	for (int i = 0; i < 4; i++)
+	for (short int i = 0; i < 4; i++)
 	{
 		if (castlingArray[i])
 			hash ^= _castlingTable[i];
@@ -55,7 +55,7 @@ uint64_t ZobristHash::GetHash(Nappula* lauta[8][8], bool castlingArray[4])
 	return hash;
 }
 
-int ZobristHash::nappulanArvo(char nappulaKoodi)
+short int ZobristHash::nappulanArvo(char nappulaKoodi)
 {
 	switch (nappulaKoodi)
 	{

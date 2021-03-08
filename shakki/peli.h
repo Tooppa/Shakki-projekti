@@ -5,9 +5,9 @@
 class Peli
 {
 public:
-	Peli(int);
-	int getKoneenVari();
+	Peli(short int);
+	short int getKoneenVari();
 
 private:
-	int _koneenVari; // Valkoinen = 0, Musta = 1
+	short int _koneenVari; // Valkoinen = 0, Musta = 1
 };

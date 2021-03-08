@@ -30,18 +30,18 @@ public:
 	static Nappula* mk, * md, * mt, * ml, * mr, * ms;	// Mustat nappulat.
 
 	// Ohestaly�nti� varten (-1 = sotilaan kaksoisaskelta ei tapahtunut edellisell� siirrolla).
-	int kaksoisaskelSarakkeella = -1;
+	short int kaksoisaskelSarakkeella = -1;
 
 
 	Asema();
 	void paivitaAsema(Siirto*);															// P�ivitt�� aseman annetulla siirrolla.
 	double evaluoi();																	// Aseman numeerinen arviointi.
 	uint64_t Asema::GetHash();															// ottaa laudan hashin.
-	MinMaxPaluu alphaBeta(int depth, double alpha = -DBL_MAX, double beta = DBL_MAX);	// Minimax-algoritmi.
+	MinMaxPaluu alphaBeta(short int depth, double alpha = -DBL_MAX, double beta = DBL_MAX);	// Minimax-algoritmi.
 	void annaLaillisetSiirrot(std::list<Siirto>& lista);								// Siirtogeneraattori.
 	void jarjestaLista(std::list<Siirto>& lista);										// järjestää siirrot paremmin alphabetaa varten
-	int getSiirtovuoro();																// Palauttaa siirtovuoron.
-	void setSiirtovuoro(int);															// Asettaa siirtovuoron.
+	short int getSiirtovuoro();																// Palauttaa siirtovuoron.
+	void setSiirtovuoro(short int);															// Asettaa siirtovuoron.
 	bool getOnkoValkeaKuningasLiikkunut();												// Linnoittuminen mahdollista?
 	bool getOnkoMustaKuningasLiikkunut();												// Linnoittuminen mahdollista?
 	bool getOnkoValkeaDTliikkunut();													// Linnoittuminen mahdollista?
@@ -52,7 +52,7 @@ public:
 private:
 
 	// Lis�informaatio pelitilanteesta.
-	int _siirtovuoro;					// 0 = valkea, 1 = musta.
+	short int _siirtovuoro;					// 0 = valkea, 1 = musta.
 	bool _onkoValkeaKuningasLiikkunut;	// Linnoitus ei ole sallittu, jos kuningas on liikkunut.
 	bool _onkoMustaKuningasLiikkunut;	// Linnoitus ei ole sallittu, jos kuningas on liikkunut.
 	bool _onkoValkeaDTliikkunut;		// Linnoitus ei ole sallittu, jos daamisivustan torni on liikkunut.
@@ -60,15 +60,15 @@ private:
 	bool _onkoMustaDTliikkunut;			// Linnoitus ei ole sallittu, jos daamisuvustan torni on liikkunut.	
 	bool _onkoMustaKTliikkunut;			// Linnoitus ei ole sallittu, jos kuningassivustan torni on liikkunut.
 
-	double laskeNappuloidenArvo(int);
-	bool onkoAvausTaiKeskipeli(int);
-	double nappuloitaKeskella(int);
-	double linjat(int);
-	bool onkoRuutuUhattu(Ruutu, int vastustajanVari);
+	double laskeNappuloidenArvo(short int);
+	bool onkoAvausTaiKeskipeli(short int);
+	double nappuloitaKeskella(short int);
+	double linjat(short int);
+	bool onkoRuutuUhattu(Ruutu, short int vastustajanVari);
 	void annaLinnoitusSiirrot(const Ruutu& kuninkaanRuutu, std::list<Siirto>& lista);
 
 	void annaOheistaLyonnit(std::list<Siirto>& lista);
 
 	// Karsii siirrot, jotka j�tt�v�t oman K:n shakkiin.
-	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari);
+	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, short int vari); 
 };

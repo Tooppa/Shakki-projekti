@@ -17,5 +17,5 @@ private:
 	static uint64_t _castlingTable[4];
 	static bool _isInit;
 
-	int nappulanArvo(char pieceID);
+	short int nappulanArvo(char pieceID);
 };

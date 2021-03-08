@@ -26,12 +26,12 @@ void Kayttoliittyma::piirraLauta()
 	bool lastSquareBlack = true;
 
 
-	for (int i = 0; i < 8; i++)
+	for (short int i = 0; i < 8; i++)
 	{
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
 			BACKGROUND_GREEN | BACKGROUND_BLUE);
 		wcout << " " << i + 1 << " ";
-		for (int j = 7; j >= 0; j--)
+		for (short int j = 7; j >= 0; j--)
 		{
 			if (lastSquareBlack) {
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
@@ -51,7 +51,7 @@ void Kayttoliittyma::piirraLauta()
 	}
 
 	wcout << "   ";
-	for (int i = 7; i >= 0; i--)
+	for (short int i = 7; i >= 0; i--)
 	{
 		wcout << " " << _kirjaimet[i] << " ";
 	}
@@ -86,11 +86,11 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(Asema asema)
 			{
 				//sotilas input
 					// 0 unikodessa numero 48, eli 49 miinustetaan vastauksesta ja 
-					// saadaan int muotoinen numero. "Purkkaa" t. menneisyyden Miika.
-				int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
+					// saadaan short int muotoinen numero. "Purkkaa" t. menneisyyden Miika.
+				short int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
 				Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1] - 49);
 
-				int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
+				short int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
 				Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
 
 				siirto = Siirto(aloitusRuutu, lopetusRuutu);
@@ -99,10 +99,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(Asema asema)
 		}
 		else if (vastaus.length() == 6) {
 			//joku nappula siirto;
-			int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[1]);
+			short int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[1]);
 			Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[2] - 49);
 
-			int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[4]);
+			short int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[4]);
 			Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[5] - 49);
 
 			siirto = Siirto(aloitusRuutu, lopetusRuutu);
@@ -114,10 +114,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(Asema asema)
 		else if (vastaus.length() == 7)
 		{
 			//korotus siirto;
-			int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
+			short int aloitusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[0]);
 			Ruutu aloitusRuutu = Ruutu(aloitusRuudunKirjain, vastaus[1] - 49);
 
-			int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
+			short int lopetusRuudunKirjain = koordinaattiKirjainNumeroksi(vastaus[3]);
 			Ruutu lopetusRuutu = Ruutu(lopetusRuudunKirjain, vastaus[4] - 49);
 
 			siirto = Siirto(aloitusRuutu, lopetusRuutu);
@@ -180,9 +180,9 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(Asema asema)
 
 }
 
-int Kayttoliittyma::koordinaattiKirjainNumeroksi(char kirjain)
+short int Kayttoliittyma::koordinaattiKirjainNumeroksi(char kirjain)
 {
-	for (int i = 0; i < 8; i++)
+	for (short int i = 0; i < 8; i++)
 	{
 		if (_kirjaimet[i] == kirjain)
 		{
@@ -192,7 +192,7 @@ int Kayttoliittyma::koordinaattiKirjainNumeroksi(char kirjain)
 }
 
 
-int Kayttoliittyma::kysyVastustajanVari()
+short int Kayttoliittyma::kysyVastustajanVari()
 {
 	wstring vastaus; vastaus;
 	wcout << "Valitse puoli 0=valkoinen/1=musta: ";
