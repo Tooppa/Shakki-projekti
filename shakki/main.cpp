@@ -50,9 +50,12 @@ int main()
 		std::list<MinMaxPaluu> paluu;
 		// testaillaan yksi syvyys kerralla kunnes aika loppuu
 		// sama on alphabeta kaavassa. se kaava ottaa alku ja max ajan käyttöliittymästä instancin avulla
-		while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika) && paluu.back()._matissa == false)
+		wcout << "s: " << alkuSyvyys << "\n";
+		paluu.push_back(asema.alphaBeta(alkuSyvyys));
+		alkuSyvyys++;
+		while (chrono::steady_clock::now() - begin <= std::chrono::seconds(maxAika) && !paluu.empty() && paluu.back()._matissa == false)
 		{
-			wcout << "syvyydessä: " << alkuSyvyys;
+			wcout << "s: " << alkuSyvyys << "\n";
 			paluu.push_back(asema.alphaBeta(alkuSyvyys));
 			alkuSyvyys++;
 		}
@@ -68,11 +71,11 @@ int main()
 			<< chrono::duration_cast<chrono::milliseconds>(end - begin).count() / 1000.0
 			<< "/s syvyydessä " << alkuSyvyys - 1 << endl << endl; // alkusyvyys -1 koska vika oli keskeneräinen
 		paluu.clear();
-	/*}
-	else {
-		siirto = Kayttoliittyma::getInstance()->
-			annaVastustajanSiirto(asema);
-	}*/
+		/*}
+		else {
+			siirto = Kayttoliittyma::getInstance()->
+				annaVastustajanSiirto(asema);
+		}*/
 		asema.paivitaAsema(&siirto);
 	}
 

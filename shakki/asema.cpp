@@ -41,7 +41,7 @@ Asema::Asema()
 	//for (int i = 0; i < 8; i++)
 	//	_lauta[i][6] = ms;
 	//muut mustat nappulat
-	//_lauta[2][4] = mt;
+	//_lauta[4][4] = mt;
 	//_lauta[6][7] = mr;
 	//_lauta[5][7] = ml;
 	_lauta[4][7] = mk;
@@ -57,7 +57,7 @@ Asema::Asema()
 	//_lauta[7][0] = vt;
 	//_lauta[6][0] = vr;
 	//_lauta[5][0] = vl;
-	_lauta[4][4] = vk;
+	_lauta[2][4] = vk;
 	//_lauta[3][0] = vd;
 	//_lauta[2][0] = vl;
 	//_lauta[1][0] = vr;
@@ -418,13 +418,19 @@ double Asema::evaluoi()
 	Ruutu kuninkaanRuutu;
 	Ruutu VKuninkaanRuutu;
 	Ruutu MKuninkaanRuutu;
+	list<Siirto> lista;
+	annaLaillisetSiirrot(lista);
+
 	int vihu = _siirtovuoro == 0 ? 1 : 0;
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
 			if (_lauta[i][j] && _lauta[i][j]->getVari() == vihu && (_lauta[i][j]->getKoodi() == VK || _lauta[i][j]->getKoodi() == MK))
 				kuninkaanRuutu = Ruutu(i, j);
-	if (this->onkoRuutuUhattu(kuninkaanRuutu, _siirtovuoro))
+	if (this->onkoRuutuUhattu(kuninkaanRuutu, _siirtovuoro && lista.size() == 0))
 		evaluaatio = _siirtovuoro == 0 ? DBL_MAX : -DBL_MAX;
+	if (this->onkoRuutuUhattu(kuninkaanRuutu, _siirtovuoro && lista.size() != 0))
+		evaluaatio = _siirtovuoro == 0 ? 1000 : -1000;
+
 
 	double valkoisiaNappuloita = 0;
 	double mustiaNappuloita = 0;
@@ -518,8 +524,8 @@ double Asema::evaluoi()
 			}
 
 		}
-	evaluaatio -= sqrt(pow(((double)VKuninkaanRuutu.getRivi() + (double)MKuninkaanRuutu.getRivi()), 2) + pow(((double)VKuninkaanRuutu.getSarake() + (double)MKuninkaanRuutu.getSarake()), 2))
-		* (valkoisiaNappuloita - mustiaNappuloita);
+	evaluaatio += sqrt(pow(((double)VKuninkaanRuutu.getRivi() - (double)MKuninkaanRuutu.getRivi()), 2) + pow(((double)VKuninkaanRuutu.getSarake() - (double)MKuninkaanRuutu.getSarake()), 2))
+		* 2 * (valkoisiaNappuloita - mustiaNappuloita);
 
 	int vkSarake = valkoinenK.getSarake();
 	int vkRivi = valkoinenK.getRivi();
@@ -633,7 +639,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 	double originalAlpha = alpha;
 	double originalBeta = beta;
 	// kommentteihin tämä iffi ja alempaa muutama rivi jos haluaa taulukot pois päältä
-
+	/*
 	if (k->_transpositiot.Exist(laudanHash))
 	{
 		HashData item = k->_transpositiot.Get(laudanHash);
@@ -656,7 +662,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 			if (alpha >= beta)
 				return item._parasSiirto;
 		}
-	}
+	}*/
 	std::list<Siirto> lista;
 
 	Ruutu kuninkaanRuutu;
@@ -682,7 +688,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		return paluu;
 	}
 	if (paluu._parasSiirto == Siirto())
-		paluu._parasSiirto = lista.back();
+		paluu._parasSiirto = lista.front();
 	// Kantatapaus 3: katkaisusyvyys
 	if (syvyys == 0)
 	{
@@ -729,7 +735,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 				break;
 
 		}
-	}
+	}/*
 	if (!kesken) {
 		// kommentteihin nämä kaksi riviä taulukko systeemin poistamiseksi
 		HashData item(syvyys, paluu, -1); // -1 tyyppi on ns null
@@ -740,7 +746,7 @@ MinMaxPaluu Asema::alphaBeta(int syvyys, double alpha, double beta)
 		else
 			item._tyyppi = 2; // 2 jos arvo on alphan ja betan keskellä
 		k->_transpositiot.Add(laudanHash, item);// tallennetaan tietokantaan
-	}
+	}*/
 	return paluu;
 }
 
